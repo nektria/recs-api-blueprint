@@ -12,7 +12,7 @@ The API is organized in 3 sets of requests:
 synchronized between the systems at all times, thus making sure incentives can achieve the best improvements.
 - Configuration and Assets Management requests permit day to day management of the client resources used to execute deliveries.
 
-# Authentication Schemes
+## Authentication Schemes
 
 + Basic (apikey)
 
@@ -37,12 +37,21 @@ An address contains information about a physical address for pick-up and deliver
         + latitude: 41.123456 (required, number)
         + longitude: 2.123456 (required, number)
 
+### Check Address [POST /address/validate]
++ Attributes (Address)
++ Response 404 
+
 ## Product [/product]
 
 + Attributes (object)
     + name: box (required, string) - should be set to box for Ulabox requests
     + quantity: 8 (required, number)
     + weight_kg: 4.5 (optional, number)
+
+### Check Product [POST /products/validate]
++ Attributes (Product)
++ Response 404 
+
 
 ## Service [/api/services]
 
