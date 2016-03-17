@@ -12,6 +12,38 @@ The API is organized in 3 sets of requests:
 synchronized between the systems at all times, thus making sure incentives can achieve the best improvements.
 - Configuration and Assets Management requests permit day to day management of the client resources used to execute deliveries.
 
+# Authentication Schemes
+
++ Basic (apikey)
+
+    You must provide an API key, which is a unique identifier for your account, as well as an application identifier that helps to
+    track which of your applications is making calls to the API.
+    + Headers
+        + Authorization: Basic YourApiKey
+
+
+## Address [/address]
+An address contains information about a physical address for pick-up and delivery pruposes
+
++ Attributes (object)
+    + postal_code: 08022 (required, string)
+    + street_type: Pza. (optional, string)
+    + street_name: Urquinaona (optional, string)
+    + street_number: 5 (optional, string)
+    + city: Barcelona (optional, string)
+    + country_code: ES (required, string)
+    + elevator: true (optional, boolean) 
+    + coordinates (required)
+        + latitude: 41.123456 (required, number)
+        + longitude: 2.123456 (required, number)
+
+## Product [/product]
+
++ Attributes (object)
+    + name: box (required, string) - should be set to box for Ulabox requests
+    + quantity: 8 (required, number)
+    + weight_kg: 4.5 (optional, number)
+
 ## Service [/api/services]
 
 The checkout process with dynamic delivery prices will get information about the cost of the routes in two steps: The **service request** 
@@ -23,68 +55,26 @@ Once the costs have been retrieved, the **validation request** retrieves the use
 execute the request. This is executed typically before the payment is done by the shopper, and is optional. After the payment has been performed,
 the **confirmation request** closes the flow of messages.
 
-### Service Request [POST /api/services]
++ Attributes (object)
+    + services (required, array[string]) - Array with the names of the services to check
+        - `routing-costs`
+    + destination_address (required, Address)
+    + products (required, array[Product])
 
+### Service Request [POST /api/services]
 
 + Request (application/json)
 
-        {
-            "services": [
-                "routing-costs"
-            ],
-            "destination_address": {
-                "postal_code": "08022",
-                "street_type": "Pza.",
-                "street_name": "Urquinaona",
-                "street_number": "5",
-                "city": "Barcelona",
-                "country_code": "ES",
-                "elevator" : true,
-                "coordinates": {
-                    "latitude": 41.123456,
-                    "longitude": 2.123456
-                }
-            },
-            "products": [
-                {
-                    "name": "box",
-                    "quantity": 8,
-                    "weight_kg": 4.5
-                }
-            ]
-        }
-        
-    + Attributes
-        + services (required, array) - Array with the names of the services to check
-        + destination_address (required, array)
-            + postal_code (required, string)
-            + street_type (optional, string)
-            + street_name (optional, string)
-            + street_number (optional, string)
-            + city (optional, string)
-            + country_code (required, string)
-            + elevator (optional, boolean) 
-            + coordinates (required)
-                + latitude (required, number)
-                + longitude (required, number)
-        + products (required, array)
-            + name (required, string) - should be set to box for Ulabox requests
-            + quantity (required, number)
-            + weight_kg (optional, number)
-            
++ Attributes (Service)
+
 + Response 201 (application/json)
-    Returned on creation success  
-    + Body
-    
-            {
-                "status": "success",
-                "content": {
-                    "service_number": 4095,
-                    "routing-costs": {
-                        "eligible": true
-                    }
-                }
-            }
+    Service has been successfully created
+    + Attributes
+        + status: success
+        + content
+            + service_number: 4095
+            + `routing-costs` (array)
+                + eligible: true
 
 
 ### Availability Request [POST /api/services/{service_number}/routing-costs]
@@ -189,55 +179,10 @@ the **confirmation request** closes the flow of messages.
 
 ### Group Service and Availability Requests [POST /api/services/bulk]
 
-
 + Request (application/json)
 
-        {
-            "services": [
-                "routing-costs"
-            ],
-            "destination_address": {
-                "postal_code": "08022",
-                "street_type": "Pza.",
-                "street_name": "Urquinaona",
-                "street_number": "5",
-                "city": "Barcelona",
-                "country_code": "ES",
-                "elevator" : true,
-                "coordinates": {
-                    "latitude": 41.123456,
-                    "longitude": 2.123456
-                }
-            },
-            "products": [
-                {
-                    "name": "box",
-                    "quantity": 8,
-                    "weight_kg": 4.5
-                }
-            ]
-        }
-        
-    + Attributes
-        + services (required, array) - Array with the names of the services to check
-        + destination_address (required, array)
-            + postal_code (required, string)
-            + street_type (optional, string)
-            + street_name (optional, string)
-            + street_number (optional, string)
-            + city (optional, string)
-            + country_code (required, string)
-            + elevator (optional, boolean) 
-            + coordinates (required)
-                + latitude (required, number)
-                + longitude (required, number)
-        + products (required, array)
-            + name (required, string) - should be set to box for Ulabox requests
-            + quantity (required, number)
-            + weight_kg (optional, number)
-            
-        
-        
++ Attributes (Service)
+
 + Response 201 (application/json)
     Returned on creation success  
 
