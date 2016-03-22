@@ -22,7 +22,7 @@ synchronized between the systems at all times, thus making sure incentives can a
         + Authorization: Basic YourApiKey
 
 
-## Address [/address]
+## Address [/check/address]
 An address contains information about a physical address for pick-up and delivery pruposes
 
 + Attributes (object)
@@ -37,47 +37,326 @@ An address contains information about a physical address for pick-up and deliver
         + latitude: 41.123456 (required, number)
         + longitude: 2.123456 (required, number)
 
-### Check Address [POST /address/validate]
+### Check if an Address is valid [POST /check/address]
 + Attributes (Address)
-+ Response 404 
++ Response 200 (application/json)
+    Address is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Address
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The address is invalid"
+            }
+    
 
-## Product [/product]
+## Product [/check/product]
 
 + Attributes (object)
     + name: box (required, string) - should be set to box for Ulabox requests
     + quantity: 8 (required, number)
     + weight_kg: 4.5 (optional, number)
 
-### Check Product [POST /products/validate]
+### Check if an Product is valid [POST /check/product]
 + Attributes (Product)
-+ Response 404 
++ Response 200 (application/json)
+    Product is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Product / malformatted
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The product is missing weight information"
+            }
 
-
-## Service [/api/services]
-
-The checkout process with dynamic delivery prices will get information about the cost of the routes in two steps: The **service request** 
-will say if the routing-costs service is able to handle the incoming order given a specific destination address and the products to deliver.
-The detail of the slots and the costs of each of then comes in the **availability request**. In order to improve response times, the 
-**group service and availability request** is made available: it merges the service request and the availability request in a single request.
-
-Once the costs have been retrieved, the **validation request** retrieves the user selection and assigns the resources that will be needed to 
-execute the request. This is executed typically before the payment is done by the shopper, and is optional. After the payment has been performed,
-the **confirmation request** closes the flow of messages.
+## Order [/orders]    
 
 + Attributes (object)
-    + services (required, array[string]) - Array with the names of the services to check
-        - `routing-costs`
+    + order_id: AA123456 (required, string)
+    + destination_address (required, Address)
+    + products (array[Product])
+
+### Create an Order [POST /orders]
++ Request (application/json)
++ Response 201 (application/json)
+    Returned on creation success  
+
+    + Headers
+    
+            Location: /orders/{order_id}
+    
+    + Body  
+
+            {
+                "status": "success",
+                "content": null
+            }
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 409
+    Returned if there is already an order with the same order_id
+    + Body
++ Response 500
+    Returned if an error occurred storing the order
+    + Body
+
+### Get an Order [GET /orders/{order_id}]
++ Parameters
+    + order_id (required, string) - Order ID provided during the order creation request
++ Response 200 (application/json)
+    + Attributes (Order)
+
+### Update an Order [PUT /orders/{order_id}]
++ Parameters
+    + order_id (required, string) - Order id provided during the order creation request
+    
++ Request (application/json)
+    + Attributes (object)
+        + destination_address (required, Address)
+        + products (array[Product])
+
++ Response 204 (application/json)
+    Update successful
+    + Body
+
++ Response 400
+    There are missing parameters or with wrong type/format
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_id
+    + Body
+
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+        
+
+### Delete an Order [DELETE /orders/{order_id}]
++ Parameters
+    + order_id (required, string) - Order id provided during the order creation request
+
++ Response 204 (application/json)
+    Returned on deletion success  
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_id
+    + Body
+
++ Response 500
+    Returned if an error occurred deleting the order
+    + Body
+
+
+## Shift [/shifts]
+A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
+
++ Attributes (object)
+    + shift_id: 123 (required, number)
+    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
+    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
+    + status (string)
+
+
+### List Shifts [GET /shifts?limit={limit}&expand={expand}]
+
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + expand: false (optional, boolean) - When true, returns entire shift objects.
+
++ Response 200 (application/json)
+
+    + Attributes
+        + status (required)
+        + content (array[Shift])
+        
+    + Body
+    
+            {
+                "status": "success",
+                "content": [
+                    {
+                        "shift_id": 1,
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T15:00:00+0100",
+                        "status": ...
+                    },
+                    {
+                        "shift_id": 2,
+                        "start_time": "2016-03-14T15:00:00+0100",
+                        "end_time": "2016-03-14T23:00:00+0100",
+                        "status": ...
+                    }
+                ]
+            }
+
+
+### Get a Shift [GET /shifts/{shift_id}]
+
++ Parameters
+    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": 
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100",
+                "status": "optimized",
+                "routes": ["1", "2", "3", "4"]
+            }
+        }
+        
++ Response 404
+    Shift doesn't exists
+    + Body
+       
+
+
+### Close a Shift [PATCH /shifts/{shift_id}/close]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json) 
+    
++ Response 404
+
+
+### Optimize a Shift [PATCH /shifts/{shift_id}/optimize]
+
++ Parameters
+    + shift_id (required, string)
+        
++ Request (application/json)
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": null
+        }
+        
++ Response 404
+
+### Get all Routes of a Shift [GET /shifts/{shift_id}/routes]
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": 
+            [
+                {
+                    "order_number": 123,
+                    "expected_delivery_time": "2016-03-17T09:01:00+0100"
+                },
+                {
+                    "order_number": 456,
+                    "expected_delivery_time": "2016-03-17T09:17:00+0100"
+                },
+                {
+                    "order_number": 776,
+                    "expected_delivery_time": "2016-03-17T09:35:00+0100"
+                },
+                {
+                    "order_number": 801,
+                    "expected_delivery_time": "2016-03-17T09:54:00+0100"
+                }
+            ]
+        }
+        
++ Response 404
+    
+
+## Service [/services]
+
++ Attributes (object)
+    + type (required, string)
     + destination_address (required, Address)
     + products (required, array[Product])
 
-### Service Request [POST /api/services]
+### List Created Services [GET /services?type={type}&expand={expand}&limit={limit}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + expand: false (optional, boolean) - When true, returns entire shift objects.
+    + type: routing (optional, string) - Filter the services by type
+
++ Response 200 (application/json)
+    + Attributes (array[Service])
+        
+
+### Check if a Service would be possible [POST /services/routing/check]
+
++ Attributes
+    + Attributes (RoutingService)
+
++ Response 200 (application/json)
+    Service is possible
+    + Body
+    
+            {
+                "availability": true,
+                "best_cost": 68,
+                "highest_cost": 100,
+                "time_window_costs": [
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "cost": 78
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "cost": 80
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "cost": 93
+                    }
+                ]
+                }
+            }
+
+
+### Create a new Routing Service [POST /services/routing]
 
 + Request (application/json)
 
-+ Attributes (Service)
++ Attributes (RoutingService)
 
 + Response 201 (application/json)
-    Service has been successfully created
+    Service has been successfully requested
     + Attributes
         + status: success
         + content
@@ -86,230 +365,10 @@ the **confirmation request** closes the flow of messages.
                 + eligible: true
 
 
-### Availability Request [POST /api/services/{service_number}/routing-costs]
+### Book Routing Service Request [PATCH /services/routing/{service_id}/book]
 
 + Parameters
-    + service_number (required, string) - id identifying the service request
-    
-+ Response 201 (application/json)
-    Returned on creation success  
-    + Body
-        
-            {
-                "status": "success",
-                "content": {
-                    "best_cost": 68,
-                    "highest_cost": 100,
-                    "time_window_costs": [
-                        {
-                            "start_time": "2016-03-14T07:00:00+0100",
-                            "end_time": "2016-03-14T09:00:00+0100",
-                            "cost": 76
-                        },
-                        {
-                            "start_time": "2016-03-14T08:00:00+0100",
-                            "end_time": "2016-03-14T10:00:00+0100",
-                            "cost": 77
-                        },
-                        {
-                            "start_time": "2016-03-14T09:00:00+0100",
-                            "end_time": "2016-03-14T11:00:00+0100",
-                            "cost": 78
-                        },
-                        {
-                            "start_time": "2016-03-14T10:00:00+0100",
-                            "end_time": "2016-03-14T12:00:00+0100",
-                            "cost": 80
-                        },
-                        {
-                            "start_time": "2016-03-14T11:00:00+0100",
-                            "end_time": "2016-03-14T13:00:00+0100",
-                            "cost": 93
-                        },
-                        {
-                            "start_time": "2016-03-14T12:00:00+0100",
-                            "end_time": "2016-03-14T14:00:00+0100",
-                            "cost": 95
-                        },
-                        {
-                            "start_time": "2016-03-14T13:00:00+0100",
-                            "end_time": "2016-03-14T15:00:00+0100",
-                            "cost": 74
-                        },
-                        {
-                            "start_time": "2016-03-14T15:00:00+0100",
-                            "end_time": "2016-03-14T17:00:00+0100",
-                            "cost": 80
-                        },
-                        {
-                            "start_time": "2016-03-14T16:00:00+0100",
-                            "end_time": "2016-03-14T18:00:00+0100",
-                            "cost": 88
-                        },
-                        {
-                            "start_time": "2016-03-14T17:00:00+0100",
-                            "end_time": "2016-03-14T19:00:00+0100",
-                            "cost": 98
-                        },
-                        {
-                            "start_time": "2016-03-14T18:00:00+0100",
-                            "end_time": "2016-03-14T20:00:00+0100",
-                            "cost": 100
-                        },
-                        {
-                            "start_time": "2016-03-14T19:00:00+0100",
-                            "end_time": "2016-03-14T21:00:00+0100",
-                            "cost": 76
-                        },
-                        {
-                            "start_time": "2016-03-14T20:00:00+0100",
-                            "end_time": "2016-03-14T22:00:00+0100",
-                            "cost": 82
-                        },
-                        {
-                            "start_time": "2016-03-14T21:00:00+0100",
-                            "end_time": "2016-03-14T23:00:00+0100",
-                            "cost": 92
-                        },
-                        {
-                            "start_time": "2016-03-14T09:00:00+0100",
-                            "end_time": "2016-03-14T14:00:00+0100",
-                            "cost": 68
-                        },
-                        {
-                            "start_time": "2016-03-14T15:00:00+0100",
-                            "end_time": "2016-03-14T22:00:00+0100",
-                            "cost": 70
-                        }
-                    ]
-                }
-            }
-
-
-### Group Service and Availability Requests [POST /api/services/bulk]
-
-+ Request (application/json)
-
-+ Attributes (Service)
-
-+ Response 201 (application/json)
-    Returned on creation success  
-
-    + Headers
-    
-            Location:  /api/services/{service_number}
-            
-    + Body
-        
-            {
-                "status": "success",
-                "content": {
-                    "service_number": 4095,
-                    "routing-costs" : {
-                        "availability": true,
-                        "location": "/api/services/4095/routing-costs", 
-                        "availability_response": {
-                            "best_cost": 68,
-                            "highest_cost": 100,
-                            "time_window_costs": [
-                                {
-                                    "start_time": "2016-03-14T07:00:00+0100",
-                                    "end_time": "2016-03-14T09:00:00+0100",
-                                    "cost": 76
-                                },
-                                {
-                                    "start_time": "2016-03-14T08:00:00+0100",
-                                    "end_time": "2016-03-14T10:00:00+0100",
-                                    "cost": 77
-                                },
-                                {
-                                    "start_time": "2016-03-14T09:00:00+0100",
-                                    "end_time": "2016-03-14T11:00:00+0100",
-                                    "cost": 78
-                                },
-                                {
-                                    "start_time": "2016-03-14T10:00:00+0100",
-                                    "end_time": "2016-03-14T12:00:00+0100",
-                                    "cost": 80
-                                },
-                                {
-                                    "start_time": "2016-03-14T11:00:00+0100",
-                                    "end_time": "2016-03-14T13:00:00+0100",
-                                    "cost": 93
-                                },
-                                {
-                                    "start_time": "2016-03-14T12:00:00+0100",
-                                    "end_time": "2016-03-14T14:00:00+0100",
-                                    "cost": 95
-                                },
-                                {
-                                    "start_time": "2016-03-14T13:00:00+0100",
-                                    "end_time": "2016-03-14T15:00:00+0100",
-                                    "cost": 74
-                                },
-                                {
-                                    "start_time": "2016-03-14T15:00:00+0100",
-                                    "end_time": "2016-03-14T17:00:00+0100",
-                                    "cost": 80
-                                },
-                                {
-                                    "start_time": "2016-03-14T16:00:00+0100",
-                                    "end_time": "2016-03-14T18:00:00+0100",
-                                    "cost": 88
-                                },
-                                {
-                                    "start_time": "2016-03-14T17:00:00+0100",
-                                    "end_time": "2016-03-14T19:00:00+0100",
-                                    "cost": 98
-                                },
-                                {
-                                    "start_time": "2016-03-14T18:00:00+0100",
-                                    "end_time": "2016-03-14T20:00:00+0100",
-                                    "cost": 100
-                                },
-                                {
-                                    "start_time": "2016-03-14T19:00:00+0100",
-                                    "end_time": "2016-03-14T21:00:00+0100",
-                                    "cost": 76
-                                },
-                                {
-                                    "start_time": "2016-03-14T20:00:00+0100",
-                                    "end_time": "2016-03-14T22:00:00+0100",
-                                    "cost": 82
-                                },
-                                {
-                                    "start_time": "2016-03-14T21:00:00+0100",
-                                    "end_time": "2016-03-14T23:00:00+0100",
-                                    "cost": 92
-                                },
-                                {
-                                    "start_time": "2016-03-14T09:00:00+0100",
-                                    "end_time": "2016-03-14T14:00:00+0100",
-                                    "cost": 68
-                                },
-                                {
-                                    "start_time": "2016-03-14T15:00:00+0100",
-                                    "end_time": "2016-03-14T22:00:00+0100",
-                                    "cost": 70
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-            
-    + Attributes
-        + location (optional, string) - URI of the service
-        + availability_response (optional, array) - Availability response
-            + best_cost - The lowest cost among available time windows
-            + highest_cost - The highest cost among available time windows
-            + time_window_costs - Array of available time windows with their costs
-
-
-### Validation Request [PATCH /api/services/{service_number}/routing-costs/validate]
-
-+ Parameters
-    + service_number (required, string) - id identifying the service request
+    + service_id (required, string)
 
 + Request (application/json)
 
@@ -338,10 +397,10 @@ the **confirmation request** closes the flow of messages.
         
         
 
-### Confirmation Request [PATCH /api/services/{service_number}/routing-costs/confirm]
+### Confirmation Request [PATCH /services/routing/{service_id}/confirm]
 
 + Parameters
-    + service_number (required, string) - id identifying the service request
+    + service_id (required, string)
 
 + Request (application/json)
 
@@ -366,314 +425,33 @@ the **confirmation request** closes the flow of messages.
             "cost": 76
         }
 
-## Optimization [/api/routing]
 
-Orders synchronization is key to obtain the best incentives from our services. The set of orders CRUD operations will be used for this purpose.
-A **shift** groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
 
-### Create an Order [POST /api/routing/orders]
-
-+ Request (application/json)
-
-        {
-            "order_id": "AA123456",
-            "destination_address": {
-                "postal_code": "08022",
-                "street_type": "Pza.",
-                "street_name": "Urquinaona",
-                "street_number": "5",
-                "city": "Barcelona",
-                "country_code": "ES",
-                "elevator" : true,
-                "coordinates": {
-                    "latitude": 41.123456,
-                    "longitude": 2.123456
-                }
-            },
-            "products": [
-                {
-                    "name": "box",
-                    "quantity": 8,
-                    "weight_kg": 4.5
-                }
-            ]
-        }
-        
-
-+ Response 201 (application/json)
-    Returned on creation success  
-
-    + Headers
     
-            Location: /api/routing/orders/{order_id}
-    
-    + Body  
-    
-            {
-                "status": "success",
-                "content": null
-            }
+
+## Configuration & Assets Management [/settings]
 
 
-+ Response 400
-    Returned if there is any parameter missing or with wrong type or format
-    + Body
-
-+ Response 409
-    Returned if there is already an order with the same order_id
-    + Body
-
-+ Response 500
-    Returned if an error occurred storing the order
-    + Body
-       
-
-### Update an Order [PUT /api/routing/orders/{order_id}]
+### Get Setting [GET /settings/{key}]
 + Parameters
-    + order_id (required, number) - Order id provided during the order creation request
+    + key (required, string) - Setting Key
++ Response 200 (application/json)
++ Response 404
+
+### Update Setting [PUT /settings/{key}]
++ Parameters
+    + key (required, string) - Setting Key
     
 + Request (application/json)
-
-        {
-            "destination_address": {
-                "postal_code": "08022",
-                "street_type": "Pza.",
-                "street_name": "Urquinaona",
-                "street_number": "5",
-                "city": "Barcelona",
-                "country_code": "ES",
-                "elevator" : true,
-                "coordinates": {
-                    "latitude": 41.123456,
-                    "longitude": 2.123456
-                }
-            },
-            "products": [
-                {
-                    "name": "box",
-                    "quantity": 8,
-                    "weight_kg": 4.5
-                }
-            ]
-        }
-        
+    + Attributes
+        + value (required, string)
 
 + Response 204 (application/json)
-    Returned on creation success  
+    Update successful
     + Body
-
-+ Response 400
-    Returned if there is any parameter missing or with wrong type or format
-    + Body
-
 + Response 404
-    Returned if there is no order with the specified order_id
-    + Body
-
-+ Response 500
-    Returned if an error occurred updating the order
-    + Body
         
 
-### Delete an Order [DELETE /api/routing/orders/{order_id}]
-+ Parameters
-    + order_id (required, number) - Order id provided during the order creation request
 
-+ Response 204 (application/json)
-    Returned on deletion success  
-    + Body
-
-+ Response 404
-    Returned if there is no order with the specified order_id
-    + Body
-
-+ Response 500
-    Returned if an error occurred deleting the order
-    + Body
-        
-
-### Get all shifts [GET /api/routing/shifts?limit=10&full_details=false]
-
-+ Parameters
-    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + full_details (optional, boolead) - Default false. If true, returns entire shift objects.
-
-+ Response 200 (application/json)
-    Returned on deletion success  
-    + Body
-    
-            {
-                "status": "success",
-                "content": [
-                    {
-                        "id": 1,
-                        "start_time": "2016-03-14T07:00:00+0100",
-                        "end_time": "2016-03-14T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 2,
-                        "start_time": "2016-03-14T15:00:00+0100",
-                        "end_time": "2016-03-14T23:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 3,
-                        "start_time": "2016-03-15T07:00:00+0100",
-                        "end_time": "2016-03-15T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 4,
-                        "start_time": "2016-03-15T15:00:00+0100",
-                        "end_time": "2016-03-15T23:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 5,
-                        "start_time": "2016-03-16T07:00:00+0100",
-                        "end_time": "2016-03-16T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 6,
-                        "start_time": "2016-03-16T15:00:00+0100",
-                        "end_time": "2016-03-16T23:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 7,
-                        "start_time": "2016-03-17T07:00:00+0100",
-                        "end_time": "2016-03-17T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 8,
-                        "start_time": "2016-03-17T15:00:00+0100",
-                        "end_time": "2016-03-17T23:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 9,
-                        "start_time": "2016-03-18T07:00:00+0100",
-                        "end_time": "2016-03-18T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "id": 10,
-                        "start_time": "2016-03-18T15:00:00+0100",
-                        "end_time": "2016-03-18T23:00:00+0100",
-                        "status": ...
-                    }
-                ]
-            }
-
-+ Response 500
-    Returned if an error occurred in the server
-    + Body
-        
-
-### Get a Shift [GET /api/routing/shifts/{shift_id}]
-
-+ Parameters
-    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
-
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": 
-            {
-                "start_time": "2016-03-17T15:00:00+0100",
-                "end_time": "2016-03-17T23:00:00+0100",
-                "status": "optimized",
-                "routes": ["1", "2", "3", "4"]
-            }
-        }
-        
-+ Response 404
-    Returned if there is no shift with the specified shift_id
-    + Body
-       
-
-
-### Close a Shift [PATCH /api/routing/shifts/{shift_id}/close]
-
-+ Parameters
-    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
-
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": null
-        }
-        
-+ Response 404
-    Returned if there is no shift with the specified shift_id
-    + Body
-    
-    
-
-### Optimize a Shift [PATCH /api/routing/shifts/{shift_id}/optimize]
-
-+ Parameters
-    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
-        
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": null
-        }
-        
-+ Response 404
-    Returned if there is no shift with the specified shift_id
-    + Body
-    
-
-### Get all Routes of a Shift [GET /api/routing/shifts/{shift_id}/routes]
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": 
-            [
-                {
-                    "order_number": 123,
-                    "expected_delivery_time": "2016-03-17T09:01:00+0100"
-                },
-                {
-                    "order_number": 456,
-                    "expected_delivery_time": "2016-03-17T09:17:00+0100"
-                },
-                {
-                    "order_number": 776,
-                    "expected_delivery_time": "2016-03-17T09:35:00+0100"
-                },
-                {
-                    "order_number": 801,
-                    "expected_delivery_time": "2016-03-17T09:54:00+0100"
-                }
-            ]
-        }
-        
-+ Response 404
-    Returned if there is no shift with the specified shift_id
-    + Body
-    
-
-## Configuration & Assets Management [/api/configuration]
-
-In development ...
-
-### Get assets[GET /api/configuration/assets]
-
-+ Response 404 (application/json)
+##RoutingService [/services/routing]
++ Attributes (Service)
