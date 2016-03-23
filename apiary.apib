@@ -22,6 +22,7 @@ synchronized between the systems at all times, thus making sure incentives can a
         + Authorization: Basic YourApiKey
 
 
+##Group Data Types
 ## Address [/check/address]
 An address contains information about a physical address for pick-up and delivery pruposes
 
@@ -86,8 +87,28 @@ An address contains information about a physical address for pick-up and deliver
     + destination_address (required, Address)
     + products (array[Product])
 
+### Check if an Order is valid [POST /check/order]
++ Attributes (Address)
++ Response 200 (application/json)
+    Address is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Address
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The address is invalid"
+            }
+    
+
+
 ### Create an Order [POST /orders]
 + Request (application/json)
++ Attributes (Order)
 + Response 201 (application/json)
     Returned on creation success  
 
@@ -160,133 +181,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred deleting the order
     + Body
 
-
-## Shift [/shifts]
-A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
-
-+ Attributes (object)
-    + shift_id: 123 (required, number)
-    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
-    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
-    + status (string)
-
-
-### List Shifts [GET /shifts?limit={limit}&expand={expand}]
-
-+ Parameters
-    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + expand: false (optional, boolean) - When true, returns entire shift objects.
-
-+ Response 200 (application/json)
-
-    + Attributes
-        + status (required)
-        + content (array[Shift])
-        
-    + Body
-    
-            {
-                "status": "success",
-                "content": [
-                    {
-                        "shift_id": 1,
-                        "start_time": "2016-03-14T07:00:00+0100",
-                        "end_time": "2016-03-14T15:00:00+0100",
-                        "status": ...
-                    },
-                    {
-                        "shift_id": 2,
-                        "start_time": "2016-03-14T15:00:00+0100",
-                        "end_time": "2016-03-14T23:00:00+0100",
-                        "status": ...
-                    }
-                ]
-            }
-
-
-### Get a Shift [GET /shifts/{shift_id}]
-
-+ Parameters
-    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
-
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": 
-            {
-                "start_time": "2016-03-17T15:00:00+0100",
-                "end_time": "2016-03-17T23:00:00+0100",
-                "status": "optimized",
-                "routes": ["1", "2", "3", "4"]
-            }
-        }
-        
-+ Response 404
-    Shift doesn't exists
-    + Body
-       
-
-
-### Close a Shift [PATCH /shifts/{shift_id}/close]
-
-+ Parameters
-    + shift_id (required, string)
-
-+ Request (application/json)
-        
-+ Response 200 (application/json) 
-    
-+ Response 404
-
-
-### Optimize a Shift [PATCH /shifts/{shift_id}/optimize]
-
-+ Parameters
-    + shift_id (required, string)
-        
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": null
-        }
-        
-+ Response 404
-
-### Get all Routes of a Shift [GET /shifts/{shift_id}/routes]
-        
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": 
-            [
-                {
-                    "order_number": 123,
-                    "expected_delivery_time": "2016-03-17T09:01:00+0100"
-                },
-                {
-                    "order_number": 456,
-                    "expected_delivery_time": "2016-03-17T09:17:00+0100"
-                },
-                {
-                    "order_number": 776,
-                    "expected_delivery_time": "2016-03-17T09:35:00+0100"
-                },
-                {
-                    "order_number": 801,
-                    "expected_delivery_time": "2016-03-17T09:54:00+0100"
-                }
-            ]
-        }
-        
-+ Response 404
-    
+##Group Set up a Service
 
 ## Service [/services]
 
@@ -427,9 +322,129 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 
 
-    
+##Group Optimize
+Restored
 
-## Configuration & Assets Management [/settings]
+### List Shifts [GET /shifts?limit={limit}&expand={expand}]
+
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + expand: false (optional, boolean) - When true, returns entire shift objects.
+
++ Response 200 (application/json)
+
+    + Attributes
+        + status (required)
+        + content (array[Shift])
+        
+    + Body
+    
+            {
+                "status": "success",
+                "content": [
+                    {
+                        "shift_id": 1,
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T15:00:00+0100",
+                        "status": ...
+                    },
+                    {
+                        "shift_id": 2,
+                        "start_time": "2016-03-14T15:00:00+0100",
+                        "end_time": "2016-03-14T23:00:00+0100",
+                        "status": ...
+                    }
+                ]
+            }
+
+
+### Get a Shift [GET /shifts/{shift_id}]
+
++ Parameters
+    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": 
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100",
+                "status": "optimized",
+                "routes": ["1", "2", "3", "4"]
+            }
+        }
+        
++ Response 404
+    Shift doesn't exists
+    + Body
+       
+
+
+### Close a Shift [PATCH /shifts/{shift_id}/close]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json) 
+    
++ Response 404
+
+
+### Optimize a Shift [PATCH /shifts/{shift_id}/optimize]
+
++ Parameters
+    + shift_id (required, string)
+        
++ Request (application/json)
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": null
+        }
+        
++ Response 404
+
+### Get all Routes of a Shift [GET /shifts/{shift_id}/routes]
+        
++ Response 200 (application/json)
+        
+        {
+            "status": "success",
+            "content": 
+            [
+                {
+                    "order_number": 123,
+                    "expected_delivery_time": "2016-03-17T09:01:00+0100"
+                },
+                {
+                    "order_number": 456,
+                    "expected_delivery_time": "2016-03-17T09:17:00+0100"
+                },
+                {
+                    "order_number": 776,
+                    "expected_delivery_time": "2016-03-17T09:35:00+0100"
+                },
+                {
+                    "order_number": 801,
+                    "expected_delivery_time": "2016-03-17T09:54:00+0100"
+                }
+            ]
+        }
+        
++ Response 404
+
+
+##Group Configuration & Assets Management
+
+#Settings [/settings]
 
 
 ### Get Setting [GET /settings/{key}]
@@ -437,7 +452,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + key (required, string) - Setting Key
 + Response 200 (application/json)
 + Response 404
-
+http://docs.nektriaroutingwip.apiary.io/
 ### Update Setting [PUT /settings/{key}]
 + Parameters
     + key (required, string) - Setting Key
@@ -451,7 +466,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + Body
 + Response 404
         
+## Shift [/shifts]
+A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
 
++ Attributes (object)
+    + shift_id: 123 (required, number)
+    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
+    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
+    + status (string)
 
 ##RoutingService [/services/routing]
 + Attributes (Service)
