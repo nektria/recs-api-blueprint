@@ -119,8 +119,8 @@ An address contains information about a physical address for pick-up and deliver
     + Body  
 
             {
-                "status": "success",
-                "content": null
+                "status": "success",
+                "content": null
             }
 
 + Response 400
@@ -189,6 +189,7 @@ An address contains information about a physical address for pick-up and deliver
     + type (required, string)
     + destination_address (required, Address)
     + products (required, array[Product])
+    + origin_address (optional, Address) - Overrides the default Warehouse address
 
 ### List Created Services [GET /services?type={type}&expand={expand}&limit={limit}]
 + Parameters
@@ -200,16 +201,32 @@ An address contains information about a physical address for pick-up and deliver
     + Attributes (array[Service])
         
 
-### Check if a Service would be possible [POST /services/routing/check]
+
+### Create a new Routing Service [POST /services/routing]
+
++ Request (application/json)
 
 + Attributes
-    + Attributes (RoutingService)
+    + destination_address (required, Address)
+    + products (required, array[Product])
+    + origin_address (optional, Address) - Overrides the default Warehouse address
 
-+ Response 200 (application/json)
-    Service is possible
++ Response 201 (application/json)
+  Service has been successfully requested
+    
+    + Attributes
+        + status (required): success
+        + content (required)
+            + service_number (required): 4095
+            + availability (required): true
+            + best_cost (required): 68
+            + highest_cost (required): 100
+            + `time_window_costs` (required, array)
+
     + Body
     
             {
+                "service_number": 4095,
                 "availability": true,
                 "best_cost": 68,
                 "highest_cost": 100,
@@ -240,25 +257,9 @@ An address contains information about a physical address for pick-up and deliver
                         "cost": 93
                     }
                 ]
-                }
+                }
             }
-
-
-### Create a new Routing Service [POST /services/routing]
-
-+ Request (application/json)
-
-+ Attributes (RoutingService)
-
-+ Response 201 (application/json)
-    Service has been successfully requested
-    + Attributes
-        + status: success
-        + content
-            + service_number: 4095
-            + `routing-costs` (array)
-                + eligible: true
-
+            
 
 ### Book Routing Service Request [PATCH /services/routing/{service_id}/book]
 
@@ -273,15 +274,13 @@ An address contains information about a physical address for pick-up and deliver
                     "start_time": "2016-03-14T19:00:00+0100",
                     "end_time": "2016-03-14T21:00:00+0100"
                 }
-            ],
-            "cost": 76
+            ]
         }
         
     + Attributes
-        + delivery_windows (required, array) - the selected delivery time window (array of 1 element for Ulabox)
+        + delivery_windows (required, array) - the selected delivery time windows
             + start_time (required, string)
             + end_time (required, string)
-        + cost (required, number) - the actual cost that the order will have
 
 + Response 200 (application/json)
         
@@ -300,11 +299,20 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
         {
-            "order_number": "LP22842-U"
+            "order_number": "LP22842-U",
+            "delivery_windows":[
+                {
+                    "start_time": "2016-03-14T19:00:00+0100",
+                    "end_time": "2016-03-14T21:00:00+0100"
+                }
+            ]
         }
         
     + Attributes
         + order_number (required, string) - the order number in Ulabox servers
+        + delivery_windows (optional, array) - the selected delivery time windows
+            + start_time (required, string)
+            + end_time (required, string)
         
 + Response 200 (application/json)
         
@@ -312,18 +320,17 @@ An address contains information about a physical address for pick-up and deliver
             "status": "success",
             "content": {
             "delivery_windows":[
-                {
-                    "start_time": "2016-03-14T19:00:00+0100",
-                    "end_time": "2016-03-14T21:00:00+0100"
-                }
-            ],
-            "cost": 76
+                    {
+                        "start_time": "2016-03-14T19:00:00+0100",
+                        "end_time": "2016-03-14T21:00:00+0100"
+                    }
+                ]
+            }
         }
 
 
 
 ##Group Optimize
-Restored
 
 ### List Shifts [GET /shifts?limit={limit}&expand={expand}]
 
@@ -340,19 +347,19 @@ Restored
     + Body
     
             {
-                "status": "success",
-                "content": [
-                    {
+                "status": "success",
+                "content": [
+                    {
                         "shift_id": 1,
                         "start_time": "2016-03-14T07:00:00+0100",
                         "end_time": "2016-03-14T15:00:00+0100",
-                        "status": ...
+                        "status": "pending"
                     },
                     {
                         "shift_id": 2,
                         "start_time": "2016-03-14T15:00:00+0100",
                         "end_time": "2016-03-14T23:00:00+0100",
-                        "status": ...
+                        "status": "closed"
                     }
                 ]
             }
@@ -374,7 +381,11 @@ Restored
                 "start_time": "2016-03-17T15:00:00+0100",
                 "end_time": "2016-03-17T23:00:00+0100",
                 "status": "optimized",
-                "routes": ["1", "2", "3", "4"]
+                "routes": [
+                    {
+                        // Work currently in progress
+                    },
+                ]
             }
         }
         
@@ -444,15 +455,23 @@ Restored
 
 ##Group Configuration & Assets Management
 
+##Vehicle [/vehicles]
++ Attributes (object)
+    + order_id: AA123456 (required, string)
+    + destination_address (required, Address)
+    + products (array[Product])
+    
+### Get List of Vehicles [GET /vehicles]
++ Response 200 (application/json)
+
+
 #Settings [/settings]
-
-
 ### Get Setting [GET /settings/{key}]
 + Parameters
     + key (required, string) - Setting Key
 + Response 200 (application/json)
 + Response 404
-http://docs.nektriaroutingwip.apiary.io/
+
 ### Update Setting [PUT /settings/{key}]
 + Parameters
     + key (required, string) - Setting Key
@@ -474,6 +493,3 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
     + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
     + status (string)
-
-##RoutingService [/services/routing]
-+ Attributes (Service)
