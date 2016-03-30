@@ -45,8 +45,6 @@ An address contains information about a physical address for pick-up and deliver
     Address is valid
     + Body
     
-            {"status": "success"}
-            
 + Response 400 (application/json)
     Invalid Address
     + Body
@@ -69,8 +67,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Product is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Product / malformatted
@@ -92,8 +88,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Time Window is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Time Window
@@ -117,8 +111,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Recurrent Time Window is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Recurrent Time Window
@@ -141,8 +133,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Step is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Step
@@ -163,18 +153,16 @@ An address contains information about a physical address for pick-up and deliver
 ### Check if an Order is valid [POST /check/order]
 + Attributes (Address)
 + Response 200 (application/json)
-    Address is valid
+    Order is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
-    Invalid Address
+    Invalid Order
     + Body
     
             {
                 "status": "error",
-                "error": "The address is invalid"
+                "error": "The order is invalid"
             }
     
 
@@ -188,13 +176,6 @@ An address contains information about a physical address for pick-up and deliver
     + Headers
     
             Location: /orders/{order_number}
-    
-    + Body  
-
-            {
-                "status": "success",
-                "content": null
-            }
 
 + Response 400
     Returned if there is any parameter missing or with wrong type or format
@@ -269,8 +250,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Vehicle is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Vehicle
@@ -307,8 +286,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Area is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Area
@@ -351,8 +328,6 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     Vehicle is valid
     + Body
-    
-            {"status": "success"}
             
 + Response 400 (application/json)
     Invalid Route
@@ -415,13 +390,11 @@ An address contains information about a physical address for pick-up and deliver
   Service has been successfully requested
     
     + Attributes
-        + status (required): success
-        + content (required)
-            + service_number (required): 4095
-            + availability (required): true
-            + best_cost (required): 68
-            + highest_cost (required): 100
-            + `time_window_costs` (required, array)
+        + service_number (required): 4095
+        + availability (required): true
+        + best_cost (required): 68
+        + highest_cost (required): 100
+        + `time_window_costs` (required, array)
 
     + Body
     
@@ -482,12 +455,7 @@ An address contains information about a physical address for pick-up and deliver
             + start_time (required, string)
             + end_time (required, string)
 
-+ Response 200 (application/json)
-        
-        {
-          "status": "success",
-          "content": null
-        }
++ Response 200
         
         
 
@@ -517,15 +485,12 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
         
         {
-            "status": "success",
-            "content": {
             "delivery_windows":[
                     {
                         "start_time": "2016-03-14T19:00:00+0100",
                         "end_time": "2016-03-14T21:00:00+0100"
                     }
                 ]
-            }
         }
 
 ##Group Optimize
@@ -549,14 +514,12 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
 
     + Attributes
-        + status (required)
         + content (array[Shift])
         
     + Body
     
             {
-                "status": "success",
-                "content": [
+                "list": [
                     {
                         "shift_id": 1,
                         "start_time": "2016-03-14T07:00:00+0100",
@@ -583,23 +546,19 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
         
         {
-            "status": "success",
-            "content": 
-            {
-                "start_time": "2016-03-17T15:00:00+0100",
-                "end_time": "2016-03-17T23:00:00+0100",
-                "status": "optimized",
-                "routes": [
-                    123, 456, 789
-                ],
-                "pending_orders":[
-                    
-                ]
-            }
+            "start_time": "2016-03-17T15:00:00+0100",
+            "end_time": "2016-03-17T23:00:00+0100",
+            "status": "optimized",
+            "routes": [
+                123, 456, 789
+            ],
+            "pending_orders":[
+                'UMX-324', 'UMX-309', 'UMX-343'
+            ]
         }
         
 + Response 404
-    Shift doesn't exists
+    Shift does not exist
     + Body
        
 
@@ -611,7 +570,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Request (application/json)
         
-+ Response 200 (application/json) 
++ Response 200
     
 + Response 404
 
@@ -623,12 +582,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         
 + Request (application/json)
         
-+ Response 200 (application/json)
-        
-        {
-            "status": "success",
-            "content": null
-        }
++ Response 200
         
 + Response 404
 
@@ -637,8 +591,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
         
         {
-            "status": "success",
-            "content": 
+            "list": 
             [
                 {
                     "order_number": 123,
