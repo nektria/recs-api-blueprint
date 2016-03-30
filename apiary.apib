@@ -7,11 +7,10 @@ minimize delivery bottlenecks using our real time incentive proposals for the sh
 passed, he can retrieve the optimized route to execute the deliveries.
 
 The API is organized in 4 main areas:
-- Data Types are defined in the first part, along with methods that allow the validation of the corresponding elements.
-- Service Requests allow real time proposals so that the shopper is invited to choose delivery time slots that best suits the delivery planning.
-- Optimization requests aim to provide optimal routes for executing the deliveries. As a part of it, a set of requests guarantees we can keep orders 
-synchronized between the systems at all times, thus making sure incentives can achieve the best improvements.
-- Configuration and Assets Management requests permit day to day management of the client resources used to execute deliveries.
+- Base Types are defined in the first part, and are made available with requests to validate their elements.
+- Configuration and Assets are designed for the day to day management of the client resources used to execute deliveries.
+- Service Requests allow to adapt real time proposals so that the shopper is invited to choose delivery time slots that best suits the delivery planning.
+- Optimization requests aim to provide optimal routes for executing the deliveries.
 
 ## Authentication Schemes
 
@@ -23,7 +22,7 @@ synchronized between the systems at all times, thus making sure incentives can a
         + Authorization: Basic YourApiKey
 
 
-##Group Data Types
+##Group Base Types
 ## Address [/check/address]
 An address contains information about a physical address for pick-up and delivery pruposes
 
@@ -143,98 +142,8 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "unknown order reference"
             }
 
-## Order [/orders]    
+##Group Configuration & Assets
 
-+ Attributes (object)
-    + order_number: AA123456 (required, string)
-    + destination (required, Address)
-    + products (array[Product])
-
-### Check if an Order is valid [POST /check/order]
-+ Attributes (Address)
-+ Response 200 (application/json)
-    Order is valid
-    + Body
-            
-+ Response 400 (application/json)
-    Invalid Order
-    + Body
-    
-            {
-                "status": "error",
-                "error": "The order is invalid"
-            }
-    
-
-
-### Create an Order [POST /orders]
-+ Request (application/json)
-+ Attributes (Order)
-+ Response 201 (application/json)
-    Returned on creation success  
-
-    + Headers
-    
-            Location: /orders/{order_number}
-
-+ Response 400
-    Returned if there is any parameter missing or with wrong type or format
-    + Body
-+ Response 409
-    Returned if there is already an order with the same order_number
-    + Body
-+ Response 500
-    Returned if an error occurred storing the order
-    + Body
-
-### Get an Order [GET /orders/{order_number}]
-+ Parameters
-    + order_number (required, string) - Order ID provided during the order creation request
-+ Response 200 (application/json)
-    + Attributes (Order)
-
-### Update an Order [PUT /orders/{order_number}]
-+ Parameters
-    + order_number (required, string) - Order id provided during the order creation request
-    
-+ Request (application/json)
-    + Attributes (object)
-        + destination (required, Address)
-        + products (array[Product])
-
-+ Response 204 (application/json)
-    Update successful
-    + Body
-
-+ Response 400
-    There are missing parameters or with wrong type/format
-    + Body
-
-+ Response 404
-    Returned if there is no order with the specified order_number
-    + Body
-
-+ Response 500
-    Returned if an error occurred updating the order
-    + Body
-        
-
-### Delete an Order [DELETE /orders/{order_number}]
-+ Parameters
-    + order_number (required, string) - Order id provided during the order creation request
-
-+ Response 204 (application/json)
-    Returned on deletion success  
-    + Body
-
-+ Response 404
-    Returned if there is no order with the specified order_number
-    + Body
-
-+ Response 500
-    Returned if an error occurred deleting the order
-    + Body
-    
 ## Vehicle [/vehicles]    
 
 + Attributes (object)
@@ -311,47 +220,6 @@ An address contains information about a physical address for pick-up and deliver
     + area_number (required, string) - Unique Area Identifier
 + Response 200 (application/json)
     + Attributes (Area)
-
-## Route [/routes]    
-
-+ Attributes (object)
-    + `route_number`: 783 (required, string)
-    + origin (required, Address)
-    + `loading_window` (required, TimeWindow)
-    + `execution_window` (required, TimeWindow)
-    + vehicle (required, Vehicle)
-    + itinerary (required, array[Step])
-    + status (required, string)
-
-### Check if a Route is valid [POST /check/route]
-+ Attributes (Route)
-+ Response 200 (application/json)
-    Vehicle is valid
-    + Body
-            
-+ Response 400 (application/json)
-    Invalid Route
-    + Body
-    
-            {
-                "status": "error",
-                "error": "Unknown vehicle BCN_VAN_15"
-            }
-    
-### List Routes [GET /routes?status={status}&limit={limit}]
-+ Parameters
-    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + status: pending (optional, string) - Filter the routes by status
-
-+ Response 200 (application/json)
-    + Attributes (array[Vehicle])
-        
-
-### Get a Route [GET /routes/{route_number}]
-+ Parameters
-    + route_number (required, string) - Route unique identification number
-+ Response 200 (application/json)
-    + Attributes (Route)
 
 ##Group Services
 
@@ -493,28 +361,168 @@ An address contains information about a physical address for pick-up and deliver
                 ]
         }
 
-##Group Optimize
+##Group Optimization
+
+## Order [/orders]    
+
++ Attributes (object)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
+    + products (array[Product])
+
+### Check if an Order is valid [POST /check/order]
++ Attributes (Address)
++ Response 200 (application/json)
+    Order is valid
+    + Body
+            
++ Response 400 (application/json)
+    Invalid Order
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The order is invalid"
+            }
+    
+
+
+### Create an Order [POST /orders]
++ Request (application/json)
++ Attributes (Order)
++ Response 201 (application/json)
+    Returned on creation success  
+
+    + Headers
+    
+            Location: /orders/{order_number}
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 409
+    Returned if there is already an order with the same order_number
+    + Body
++ Response 500
+    Returned if an error occurred storing the order
+    + Body
+
+### Get an Order [GET /orders/{order_number}]
++ Parameters
+    + order_number (required, string) - Order ID provided during the order creation request
++ Response 200 (application/json)
+    + Attributes (Order)
+
+### Update an Order [PUT /orders/{order_number}]
++ Parameters
+    + order_number (required, string) - Order id provided during the order creation request
+    
++ Request (application/json)
+    + Attributes (object)
+        + destination (required, Address)
+        + products (array[Product])
+
++ Response 204 (application/json)
+    Update successful
+    + Body
+
++ Response 400
+    There are missing parameters or with wrong type/format
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_number
+    + Body
+
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+        
+
+### Delete an Order [DELETE /orders/{order_number}]
++ Parameters
+    + order_number (required, string) - Order id provided during the order creation request
+
++ Response 204 (application/json)
+    Returned on deletion success  
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_number
+    + Body
+
++ Response 500
+    Returned if an error occurred deleting the order
+    + Body
+    
+
+## Route [/routes]    
+
++ Attributes (object)
+    + `route_number`: 783 (required, string)
+    + origin (required, Address)
+    + `loading_window` (required, TimeWindow)
+    + `execution_window` (required, TimeWindow)
+    + vehicle (required, Vehicle)
+    + itinerary (required, array[Step])
+    + status (required, string)
+
+### Check if a Route is valid [POST /check/route]
++ Attributes (Route)
++ Response 200 (application/json)
+    Vehicle is valid
+    + Body
+            
++ Response 400 (application/json)
+    Invalid Route
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Unknown vehicle BCN_VAN_15"
+            }
+    
+### List Routes [GET /routes?status={status}&limit={limit}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + status: pending (optional, string) - Filter the routes by status
+
++ Response 200 (application/json)
+    + Attributes (array[Vehicle])
+        
+
+### Get a Route [GET /routes/{route_number}]
++ Parameters
+    + route_number (required, string) - Route unique identification number
++ Response 200 (application/json)
+    + Attributes (Route)
 
 ## Shift [/shifts]
 
 A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
 
 + Attributes (object)
-    + shift_id: 123 (required, number)
-    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
-    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
-    + status (string)
+    + shift_id: 123 (required, number) Unique shift identifier
+    + name: 2016-03-29 mañana (optional, string) Custom name of this shift
+    + span (required, TimeWindow)
+    + status: pending (required, string) shift status
+    + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
+    + area_number: BCN (required, string) unique identifier of shift area
+    + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
+    + order_numbers (required, array[string]) list of orders assigned to this shift
 
-### List Shifts [GET /shifts?limit={limit}&expand={expand}]
+### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_number={area_number}&status={status}]
 
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
+    + area_number: BCN (optional, string) - filter shift of an area
+    + status: pending (optional, string) - filter shift by status
 
 + Response 200 (application/json)
 
     + Attributes
-        + content (array[Shift])
+        + content (array[])
         
     + Body
     
@@ -522,15 +530,23 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "list": [
                     {
                         "shift_id": 1,
-                        "start_time": "2016-03-14T07:00:00+0100",
-                        "end_time": "2016-03-14T15:00:00+0100",
-                        "status": "pending"
+                        "name": "2016-03-29 mañana",
+                        "span": 
+                        {
+                            "start_time": "2016-03-14T07:00:00+0100",
+                            "end_time": "2016-03-14T15:00:00+0100"
+                        },
+                        "status": "closed"
                     },
                     {
                         "shift_id": 2,
-                        "start_time": "2016-03-14T15:00:00+0100",
-                        "end_time": "2016-03-14T23:00:00+0100",
-                        "status": "closed"
+                        "name": "2016-03-29 tarde",
+                        "span":
+                        {
+                            "start_time": "2016-03-14T15:00:00+0100",
+                            "end_time": "2016-03-14T23:00:00+0100"
+                        },
+                        "status": "pending"
                     }
                 ]
             }
@@ -546,15 +562,44 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
         
         {
-            "start_time": "2016-03-17T15:00:00+0100",
-            "end_time": "2016-03-17T23:00:00+0100",
+            "span":
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100"
+            },
             "status": "optimized",
-            "routes": [
-                123, 456, 789
+            "area": "BCN",
+            "fleet":
+            [
+                {
+                    "vehicle_number": "BCN_VAN_1",
+                    "capacity": 60
+                },
+                {
+                    "vehicle_number": "BCN_VAN_2",
+                    "capacity": 60,
+                    "options":
+                    {
+                        "helpers": 1
+                    }
+                }
             ],
-            "pending_orders":[
-                'UMX-324', 'UMX-309', 'UMX-343'
-            ]
+            "time_slots":
+            [
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T27:00:00+0100"
+                },
+                {
+                    "start_time": "2016-03-17T16:00:00+0100",
+                    "end_time": "2016-03-17T28:00:00+0100"
+                },
+                {
+                    "start_time": "2016-03-17T16:00:00+0100",
+                    "end_time": "2016-03-17T21:00:00+0100"
+                }
+            ],
+            "order_numbers":['UMX-324', 'UMX-309', 'UMX-343']
         }
         
 + Response 404
@@ -591,48 +636,41 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
         
         {
-            "list": 
+            "unreached_orders": ["UXW-5732", "UXW-5749"],
+            "unused_vehicles": [],
+            "routes": 
             [
                 {
-                    "order_number": 123,
-                    "expected_delivery_time": "2016-03-17T09:01:00+0100"
+                    "route_number": 7654,
+                    "delivery_window": 
+                    {
+                        "start_time": "2016-03-17T09:00:00+0100",
+                        "end_time": "2016-03-17T12:15:00+0100"
+                    },
+                    "vehicle": 
+                    {
+                        "vehicle_numnber": "BCN_VAN_1",
+                        "capacity": 60
+                    }
                 },
                 {
-                    "order_number": 456,
-                    "expected_delivery_time": "2016-03-17T09:17:00+0100"
-                },
-                {
-                    "order_number": 776,
-                    "expected_delivery_time": "2016-03-17T09:35:00+0100"
-                },
-                {
-                    "order_number": 801,
-                    "expected_delivery_time": "2016-03-17T09:54:00+0100"
+                    "route_number": 7655,
+                    "delivery_window": 
+                    {
+                        "start_time": "2016-03-17T09:10:00+0100",
+                        "end_time": "2016-03-17T11:45:00+0100"
+                    },
+                    "vehicle": 
+                    {
+                        "vehicle_numnber": "BCN_VAN_2",
+                        "capacity": 60,
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
                 }
             ]
         }
         
-+ Response 404
-
-
-##Group Configuration & Assets Management
-
-#Settings [/settings]
-### Get Setting [GET /settings/{key}]
-+ Parameters
-    + key (required, string) - Setting Key
-+ Response 200 (application/json)
-+ Response 404
-
-### Update Setting [PUT /settings/{key}]
-+ Parameters
-    + key (required, string) - Setting Key
-    
-+ Request (application/json)
-    + Attributes
-        + value (required, string)
-
-+ Response 204 (application/json)
-    Update successful
-    + Body
 + Response 404
