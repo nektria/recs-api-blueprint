@@ -6,7 +6,8 @@ The Routing Service of RECS API is designed to elaborate and plan optimized deli
 minimize delivery bottlenecks using our real time incentive proposals for the shoppers. Then, once all the orders have been 
 passed, he can retrieve the optimized route to execute the deliveries.
 
-The API is organized in 3 sets of requests:
+The API is organized in 4 main areas:
+- Data Types are defined in the first part, along with methods that allow the validation of the corresponding elements.
 - Service Requests allow real time proposals so that the shopper is invited to choose delivery time slots that best suits the delivery planning.
 - Optimization requests aim to provide optimal routes for executing the deliveries. As a part of it, a set of requests guarantees we can keep orders 
 synchronized between the systems at all times, thus making sure incentives can achieve the best improvements.
@@ -181,7 +182,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred deleting the order
     + Body
 
-##Group Set up a Service
+##Group Services
 
 ## Service [/services]
 
@@ -191,7 +192,7 @@ An address contains information about a physical address for pick-up and deliver
     + products (required, array[Product])
     + origin_address (optional, Address) - Overrides the default Warehouse address
 
-### List Created Services [GET /services?type={type}&expand={expand}&limit={limit}]
+### List Services [GET /services?type={type}&expand={expand}&limit={limit}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
@@ -202,7 +203,7 @@ An address contains information about a physical address for pick-up and deliver
         
 
 
-### Create a new Routing Service [POST /services/routing]
+### Create Routing Service [POST /services/routing]
 
 + Request (application/json)
 
@@ -261,7 +262,7 @@ An address contains information about a physical address for pick-up and deliver
             }
             
 
-### Book Routing Service Request [PATCH /services/routing/{service_id}/book]
+### Book Routing Service [PATCH /services/routing/{service_id}/book]
 
 + Parameters
     + service_id (required, string)
@@ -291,7 +292,7 @@ An address contains information about a physical address for pick-up and deliver
         
         
 
-### Confirmation Request [PATCH /services/routing/{service_id}/confirm]
+### Confirm Routing Service [PATCH /services/routing/{service_id}/confirm]
 
 + Parameters
     + service_id (required, string)
@@ -328,9 +329,17 @@ An address contains information about a physical address for pick-up and deliver
             }
         }
 
-
-
 ##Group Optimize
+
+## Shift [/shifts]
+
+A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
+
++ Attributes (object)
+    + shift_id: 123 (required, number)
+    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
+    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
+    + status (string)
 
 ### List Shifts [GET /shifts?limit={limit}&expand={expand}]
 
@@ -382,9 +391,10 @@ An address contains information about a physical address for pick-up and deliver
                 "end_time": "2016-03-17T23:00:00+0100",
                 "status": "optimized",
                 "routes": [
-                    {
-                        // Work currently in progress
-                    },
+                    123, 456, 789
+                ],
+                "pending_orders":[
+                    
                 ]
             }
         }
@@ -455,16 +465,6 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Configuration & Assets Management
 
-##Vehicle [/vehicles]
-+ Attributes (object)
-    + order_id: AA123456 (required, string)
-    + destination_address (required, Address)
-    + products (array[Product])
-    
-### Get List of Vehicles [GET /vehicles]
-+ Response 200 (application/json)
-
-
 #Settings [/settings]
 ### Get Setting [GET /settings/{key}]
 + Parameters
@@ -484,12 +484,3 @@ An address contains information about a physical address for pick-up and deliver
     Update successful
     + Body
 + Response 404
-        
-## Shift [/shifts]
-A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
-
-+ Attributes (object)
-    + shift_id: 123 (required, number)
-    + start_time: `2016-03-14T07:00:00+0100` (required, string) - The start date/time (ISO8601 format)
-    + end_time: `2016-03-14T15:00:00+0100` (required, string) - The end date/time (ISO8601 format)
-    + status (string)
