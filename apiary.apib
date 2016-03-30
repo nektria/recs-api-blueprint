@@ -81,11 +81,59 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "The product is missing weight information"
             }
 
+## TimeWindow [/time_windows] 
+
++ Attributes (object)
+    + `start_time`: 2016-03-29T15:19:00+01:00 (required, string) ISO8601 time at which the window starts
+    + `end_time`: 2016-03-29T15:37:00+01:00 (required, string) ISO8601 time at which the window ends
+
+### Check if a Time Window is valid [POST /check/time_window]
++ Attributes (TimeWindow)
++ Response 200 (application/json)
+    Time Window is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Time Window
+    + Body
+    
+            {
+                "status": "error",
+                "error": "start time is earlier than end time"
+            }
+
+
+## Step [/steps] 
+
++ Attributes (object)
+    + location (required, Address) delivery address of the order
+    + `delivery_window` (required, TimeWindow) expected delivery window
+    + `order_number` (required, string) reference corresponding to an order
+
+### Check if a Step is valid [POST /check/step]
++ Attributes (Step)
++ Response 200 (application/json)
+    Step is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Step
+    + Body
+    
+            {
+                "status": "error",
+                "error": "unknown order reference"
+            }
+
 ## Order [/orders]    
 
 + Attributes (object)
-    + order_id: AA123456 (required, string)
-    + destination_address (required, Address)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
     + products (array[Product])
 
 ### Check if an Order is valid [POST /check/order]
@@ -115,7 +163,7 @@ An address contains information about a physical address for pick-up and deliver
 
     + Headers
     
-            Location: /orders/{order_id}
+            Location: /orders/{order_number}
     
     + Body  
 
@@ -128,25 +176,25 @@ An address contains information about a physical address for pick-up and deliver
     Returned if there is any parameter missing or with wrong type or format
     + Body
 + Response 409
-    Returned if there is already an order with the same order_id
+    Returned if there is already an order with the same order_number
     + Body
 + Response 500
     Returned if an error occurred storing the order
     + Body
 
-### Get an Order [GET /orders/{order_id}]
+### Get an Order [GET /orders/{order_number}]
 + Parameters
-    + order_id (required, string) - Order ID provided during the order creation request
+    + order_number (required, string) - Order ID provided during the order creation request
 + Response 200 (application/json)
     + Attributes (Order)
 
-### Update an Order [PUT /orders/{order_id}]
+### Update an Order [PUT /orders/{order_number}]
 + Parameters
-    + order_id (required, string) - Order id provided during the order creation request
+    + order_number (required, string) - Order id provided during the order creation request
     
 + Request (application/json)
     + Attributes (object)
-        + destination_address (required, Address)
+        + destination (required, Address)
         + products (array[Product])
 
 + Response 204 (application/json)
@@ -158,7 +206,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
 
 + Response 404
-    Returned if there is no order with the specified order_id
+    Returned if there is no order with the specified order_number
     + Body
 
 + Response 500
@@ -166,21 +214,145 @@ An address contains information about a physical address for pick-up and deliver
     + Body
         
 
-### Delete an Order [DELETE /orders/{order_id}]
+### Delete an Order [DELETE /orders/{order_number}]
 + Parameters
-    + order_id (required, string) - Order id provided during the order creation request
+    + order_number (required, string) - Order id provided during the order creation request
 
 + Response 204 (application/json)
     Returned on deletion success  
     + Body
 
 + Response 404
-    Returned if there is no order with the specified order_id
+    Returned if there is no order with the specified order_number
     + Body
 
 + Response 500
     Returned if an error occurred deleting the order
     + Body
+    
+## Vehicle [/vehicles]    
+
++ Attributes (object)
+    + `vehicle_number`: BCN_VAN_1 (required, string)
+    + capacity: 60 (required, number)
+    + type: van (optional, string)
+    + options (optional) 
+        + efficiency: 1.2 (optional, number)
+        + helpers: 1 (optional, number)
+
+### Check if an Vehicle is valid [POST /check/vehicle]
++ Attributes (Vehicle)
++ Response 200 (application/json)
+    Vehicle is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Vehicle
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Unknown option speed"
+            }
+    
+### List Vehicles [GET /vehicles?type={type}&limit={limit}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + type: routing (optional, string) - Filter the services by type
+
++ Response 200 (application/json)
+    + Attributes (array[Vehicle])
+        
+
+### Get a Vehicle [GET /vehicles/{vehicle_number}]
++ Parameters
+    + vehicle_number (required, string) - Vehicle number provided during the vehicle creation request
++ Response 200 (application/json)
+    + Attributes (Vehicle)
+
+## Area [/areas]    
+
++ Attributes (object)
+    + `area_number`: BCN (required, string)
+    + `postal_codes` (required, array)
+
+### Check if an Area is valid [POST /check/area]
++ Attributes (Area)
++ Response 200 (application/json)
+    Area is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Area
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Incorrect postal code"
+            }
+    
+### List Areas [GET /areas?limit={limit}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+
++ Response 200 (application/json)
+    + Attributes (array[])
+    
+        list of area numbers
+        
+
+### Get an Area [GET /areas/{area_number}]
++ Parameters
+    + area_number (required, string) - Unique Area Identifier
++ Response 200 (application/json)
+    + Attributes (Area)
+
+## Route [/routes]    
+
++ Attributes (object)
+    + `route_number`: 783 (required, string)
+    + origin (required, Address)
+    + `loading_window` (required, TimeWindow)
+    + `execution_window` (required, TimeWindow)
+    + vehicle (required, Vehicle)
+    + itinerary (required, array[Step])
+    + status (required, string)
+
+### Check if a Route is valid [POST /check/route]
++ Attributes (Route)
++ Response 200 (application/json)
+    Vehicle is valid
+    + Body
+    
+            {"status": "success"}
+            
++ Response 400 (application/json)
+    Invalid Route
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Unknown vehicle BCN_VAN_15"
+            }
+    
+### List Routes [GET /routes?status={status}&limit={limit}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + status: pending (optional, string) - Filter the routes by status
+
++ Response 200 (application/json)
+    + Attributes (array[Vehicle])
+        
+
+### Get a Route [GET /routes/{route_number}]
++ Parameters
+    + route_number (required, string) - Route unique identification number
++ Response 200 (application/json)
+    + Attributes (Route)
 
 ##Group Services
 
@@ -188,9 +360,11 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + type (required, string)
-    + destination_address (required, Address)
+    + destination (required, Address)
     + products (required, array[Product])
-    + origin_address (optional, Address) - Overrides the default Warehouse address
+    + origin (optional, Address) - Overrides the default Warehouse address
+
+
 
 ### List Services [GET /services?type={type}&expand={expand}&limit={limit}]
 + Parameters
@@ -208,9 +382,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
 + Attributes
-    + destination_address (required, Address)
+    + destination (required, Address)
     + products (required, array[Product])
-    + origin_address (optional, Address) - Overrides the default Warehouse address
+    + origin (optional, Address) - Overrides the default Warehouse address
 
 + Response 201 (application/json)
   Service has been successfully requested
