@@ -1,6 +1,6 @@
 FORMAT: 1A
 
-# Nektria Routing - Work in Progress
+# Nektria Routing - Work In Progress
 
 The Routing Service of RECS API is designed to elaborate and plan optimized deliveries. First, the merchant can identify and 
 minimize delivery bottlenecks using our real time incentive proposals for the shoppers. Then, once all the orders have been 
@@ -125,7 +125,7 @@ An address contains information about a physical address for pick-up and deliver
 + Attributes (object)
     + location (required, Address) delivery address of the order
     + `delivery_window` (required, TimeWindow) expected delivery window
-    + `order_number` (required, string) reference corresponding to an order
+    + `order_number`: UX5392 (required, string) reference corresponding to an order
 
 ### Check if a Step is valid [POST /check/step]
 + Attributes (Step)
@@ -465,7 +465,7 @@ An address contains information about a physical address for pick-up and deliver
     + `execution_window` (required, TimeWindow)
     + vehicle (required, Vehicle)
     + itinerary (required, array[Step])
-    + status (required, string)
+    + status: done (required, string)
 
 ### Check if a Route is valid [POST /check/route]
 + Attributes (Route)
@@ -631,7 +631,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         
 + Response 404
 
-### Get all Routes of a Shift [GET /shifts/{shift_id}/routes]
+### Get Shift Roadmap [GET /shifts/{shift_id}/roadmap]
         
 + Response 200 (application/json)
         
