@@ -260,7 +260,7 @@ An address contains information about a physical address for pick-up and deliver
         + availability (required): true
         + best_cost (required): 68
         + highest_cost (required): 100
-        + `time_window_costs` (required, array)
+        + time_window_costs (required, array[TimeWindow])
 
     + Body
     
@@ -296,7 +296,6 @@ An address contains information about a physical address for pick-up and deliver
                         "cost": 93
                     }
                 ]
-                }
             }
             
 
@@ -388,7 +387,7 @@ An address contains information about a physical address for pick-up and deliver
 + Attributes (Order)
 + Response 201 (application/json)
     Returned on creation success  
-
+    + Attributes (Order)
     + Headers
     
             Location: /orders/{order_number}
@@ -418,9 +417,9 @@ An address contains information about a physical address for pick-up and deliver
         + destination (required, Address)
         + products (array[Product])
 
-+ Response 204 (application/json)
++ Response 200 (application/json)
     Update successful
-    + Body
+    + Attributes (Order)
 
 + Response 400
     There are missing parameters or with wrong type/format
@@ -498,7 +497,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Attributes (object)
     + shift_id: 123 (required, number) Unique shift identifier
-    + name: 2016-03-29 mañana (optional, string) Custom name of this shift
+    + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
@@ -610,7 +609,51 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Request (application/json)
         
-+ Response 200
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "closed",
+                "area": "BCN",
+                "fleet":
+                [
+                    {
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacity": 60
+                    },
+                    {
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacity": 60,
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
+            }
+    
     
 + Response 404
 
@@ -622,7 +665,51 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         
 + Request (application/json)
         
-+ Response 200
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "optimizing",
+                "area": "BCN",
+                "fleet":
+                [
+                    {
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacity": 60
+                    },
+                    {
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacity": 60,
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
+            }
+    
         
 + Response 404
 
