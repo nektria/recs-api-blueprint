@@ -175,7 +175,8 @@ An address contains information about a physical address for pick-up and deliver
     + type: routing (optional, string) - Filter the services by type
 
 + Response 200 (application/json)
-    + Attributes (array[Vehicle])
+    + Attributes 
+        + list (array[Vehicle])
         
 
 ### Get a Vehicle [GET /vehicles/{vehicle_number}]
@@ -210,10 +211,20 @@ An address contains information about a physical address for pick-up and deliver
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
 
 + Response 200 (application/json)
-    + Attributes (array[])
+    + Attributes 
+        + list (array[])
     
-        list of area numbers
+            list of area numbers
         
+    + Body
+        
+            {
+                "list": [ 
+                    "BCN_MET", 
+                    "BCN_HOS",
+                    "BCN_BAD"
+                ]
+            }
 
 ### Get an Area [GET /areas/{area_number}]
 + Parameters
@@ -240,7 +251,8 @@ An address contains information about a physical address for pick-up and deliver
     + type: routing (optional, string) - Filter the services by type
 
 + Response 200 (application/json)
-    + Attributes (array[Service])
+    + Attributes 
+        + list (array[Service])
         
 
 
@@ -470,7 +482,7 @@ An address contains information about a physical address for pick-up and deliver
 ### Check if a Route is valid [POST /check/route]
 + Attributes (Route)
 + Response 200 (application/json)
-    Vehicle is valid
+    Route is valid
     + Body
             
 + Response 400 (application/json)
@@ -488,7 +500,8 @@ An address contains information about a physical address for pick-up and deliver
     + status: pending (optional, string) - Filter the routes by status
 
 + Response 200 (application/json)
-    + Attributes (array[Vehicle])
+    + Attributes 
+        + list (array[Route])
         
 
 ### Get a Route [GET /routes/{route_number}]
@@ -522,7 +535,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 200 (application/json)
 
     + Attributes
-        + content (array[])
+        + list (array[Shift])
         
     + Body
     
@@ -599,7 +612,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "end_time": "2016-03-17T21:00:00+0100"
                 }
             ],
-            "order_numbers":['UMX-324', 'UMX-309', 'UMX-343']
+            "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
         }
         
 + Response 404
