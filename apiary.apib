@@ -180,7 +180,24 @@ An address contains information about a physical address for pick-up and deliver
     + `postal_codes` (required, array)
 
 ### Check if an Area is valid [POST /check/area]
-+ Attributes (Area)
+
++ Request
+
+    + Attributes (Area)
+    + Body
+
+            {
+                "area_number" : "BCN_1",
+                "postal_codes": [
+                    "08001", 
+                    "08002", 
+                    "08003", 
+                    "08004", 
+                    "08005", 
+                    "08006"
+                ]
+            }
+
 + Response 204 (application/json)
             
 + Response 400 (application/json)
@@ -223,7 +240,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Service [/services]
 
 + Attributes (object)
-    + type (required, string)
+    + type: routing (required, string) 
     + destination (required, Address)
     + products (required, array[Product])
     + origin (optional, Address) - Overrides the default Warehouse address
