@@ -97,7 +97,7 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "start time is earlier than end time"
             }
 
-## RecurrentTimeWindow [/recurrent_time_windows] 
+## RecurringTimeWindow [/recurring_time_windows] 
 
 + Attributes (object)
     + `start_time`: 2016-03-29T15:19:00+01:00 (required, string) ISO8601 time at which the window starts
@@ -105,19 +105,19 @@ An address contains information about a physical address for pick-up and deliver
     + `repeat_every`: weekday (required, string) string defining the frequency of the repeated time window. 
                         Allowed values are never, day, weekday, week, month, year
 
-### Check if a Recurrent Time Window is valid [POST /check/recurrent_time_window]
-+ Attributes (RecurrentTimeWindow)
+### Check if a Recurring Time Window is valid [POST /check/recurring_time_window]
++ Attributes (RecurringTimeWindow)
 + Response 200 (application/json)
-    Recurrent Time Window is valid
+    Recurring Time Window is valid
     + Body
             
 + Response 400 (application/json)
-    Invalid Recurrent Time Window
+    Invalid Recurring Time Window
     + Body
     
             {
                 "status": "error",
-                "error": "Incorrect recurrent value"
+                "error": "Incorrect recurring value"
             }
 
 ## Step [/steps] 
@@ -252,7 +252,7 @@ An address contains information about a physical address for pick-up and deliver
     + destination (required, Address)
     + products (required, array[Product])
     + origin (optional, Address) - Overrides the default Warehouse address
-    + excluded (optional, RecurrentTimeWindow) - exclude delivery hours within recurrent time slot
+    + excluded (optional, RecurringTimeWindow) - exclude delivery hours within recurring time slot
 
 + Response 201 (application/json)
   Service has been successfully requested
