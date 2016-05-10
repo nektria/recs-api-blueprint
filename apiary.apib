@@ -91,6 +91,26 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "start time is earlier than end time"
             }
 
+## TimeWindowCost [/time_window_costs] 
+
++ Attributes (object)
+    + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+    + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
+    + `cost`: 90 (required, number) relative estimated cost of delivery during this time window, between 0 and 100.
+
+### Check if a Time Window Cost is valid [POST /check/time_window_cost]
++ Attributes (TimeWindowCost)
++ Response 204 (application/json)
+            
++ Response 400 (application/json)
+    Invalid Time Window Cost
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Invalid cost 'low'"
+            }
+
 ## RecurringTimeWindow [/recurring_time_windows] 
 
 + Attributes (object)
@@ -277,7 +297,7 @@ An address contains information about a physical address for pick-up and deliver
         + availability (required): true
         + best_cost (required): 68
         + highest_cost (required): 100
-        + time_window_costs (required, array[TimeWindow])
+        + time_window_costs (required, array[TimeWindowCost])
 
     + Body
     
