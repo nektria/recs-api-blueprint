@@ -353,9 +353,7 @@ An address contains information about a physical address for pick-up and deliver
         }
         
     + Attributes
-        + delivery_windows (required, array) - the selected delivery time windows
-            + start_time (required, string)
-            + end_time (required, string)
+        + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
 
 + Response 204
         
@@ -380,20 +378,9 @@ An address contains information about a physical address for pick-up and deliver
         
     + Attributes
         + order_number (required, string) - the order number in Ulabox servers
-        + delivery_windows (optional, array) - the selected delivery time windows
-            + start_time (required, string)
-            + end_time (required, string)
+        + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
         
-+ Response 200 (application/json)
-        
-        {
-            "delivery_windows":[
-                    {
-                        "start_time": "2016-03-14T19:00:00+0100",
-                        "end_time": "2016-03-14T21:00:00+0100"
-                    }
-                ]
-        }
++ Response 204
 
 ##Group Optimization
 
@@ -476,7 +463,6 @@ An address contains information about a physical address for pick-up and deliver
     + order_number (required, string) - Order id provided during the order creation request
 
 + Response 204
-    Returned on deletion success  
 
 + Response 404
     Returned if there is no order with the specified order_number
