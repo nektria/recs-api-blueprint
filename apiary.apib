@@ -40,7 +40,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if an Address is valid [POST /check/address]
 + Attributes (Address)
-+ Response 204 (application/json)
++ Response 204
     
 + Response 400 (application/json)
     Invalid Address
@@ -61,7 +61,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if an Product is valid [POST /check/product]
 + Attributes (Product)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Product / malformatted
@@ -80,7 +80,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if a Time Window is valid [POST /check/time_window]
 + Attributes (TimeWindow)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Time Window
@@ -100,7 +100,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if a Time Window Cost is valid [POST /check/time_window_cost]
 + Attributes (TimeWindowCost)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Time Window Cost
@@ -121,7 +121,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if a Recurring Time Window is valid [POST /check/recurring_time_window]
 + Attributes (RecurringTimeWindow)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Recurring Time Window
@@ -141,7 +141,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if a Step is valid [POST /check/step]
 + Attributes (Step)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Step
@@ -166,7 +166,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if an Vehicle is valid [POST /check/vehicle]
 + Attributes (Vehicle)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Vehicle
@@ -218,7 +218,7 @@ An address contains information about a physical address for pick-up and deliver
                 ]
             }
 
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Area
@@ -357,7 +357,7 @@ An address contains information about a physical address for pick-up and deliver
             + start_time (required, string)
             + end_time (required, string)
 
-+ Response 200
++ Response 204
         
         
 
@@ -406,7 +406,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if an Order is valid [POST /check/order]
 + Attributes (Order)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Order
@@ -475,9 +475,8 @@ An address contains information about a physical address for pick-up and deliver
 + Parameters
     + order_number (required, string) - Order id provided during the order creation request
 
-+ Response 204 (application/json)
++ Response 204
     Returned on deletion success  
-    + Body
 
 + Response 404
     Returned if there is no order with the specified order_number
@@ -501,7 +500,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if a Route is valid [POST /check/route]
 + Attributes (Route)
-+ Response 204 (application/json)
++ Response 204
             
 + Response 400 (application/json)
     Invalid Route
