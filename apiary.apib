@@ -287,7 +287,7 @@ An address contains information about a physical address for pick-up and deliver
     + destination (required, Address)
     + products (required, array[Product])
     + origin (optional, Address) - Overrides the default Warehouse address
-    + excluded (optional, RecurringTimeWindow) - exclude delivery hours within recurring time slot
+    + excluded (optional, array[RecurringTimeWindow]) - exclude delivery hours within recurring time slot
 
 + Response 201 (application/json)
   Service has been successfully requested
