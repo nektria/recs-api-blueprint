@@ -257,26 +257,109 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Services
 
-## Service [/services]
+## ServiceListElement [/services-list-element]
 
 + Attributes (object)
-    + type: routing (required, string) 
-    + destination (required, Address)
-    + products (required, array[Product])
-    + origin (optional, Address) - Overrides the default Warehouse address
+    + destination (required, Address) - Submitted delivery address
+    + products (required, array[Product]) - Submitted list of products
+    + origin (optional, Address) - Submitted overriding default Warehouse address
+    + excluded_windows (optional, array[RecurringTimeWindow]) - submitted excluded windows
+    + service_number (required, string) service identifier
+    + availability (required, boolean) is there some delivery option available ?
+    + `proposed_delivery_windows` (required, array[TimeWindowCost])
+    + `selected_delivery_windows` (required, array[TimeWindow])
+    + status (required, string) - requeted, validated, confirmed or cancelled
+    + order (optional, Order) - details of the related order, if an order has been created
+    + created_date (required, string) - date the service has been created, in format YYYY-mm-dd
+    + confirmed_date (optional, string) - date the service has been confirmed, in format YYYY-mm-dd
+    
 
-
-
-### List Services [GET /services/routing?type={type}&expand={expand}&limit={limit}]
+### List Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
 + Parameters
+    + offset (optional, number) - Default 1. Postion of the first returned record.
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + expand: false (optional, boolean) - When true, returns entire shift objects.
-    + type: routing (optional, string) - Filter the services by type
+    + status (optional, string) - requested, validated, confirmed or cancelled
+    + availability (optional, boolean) - do we have available delivery options ?
+    + created_date (optional, string) - date of service creation, in format YYYY-mm-dd
+    + confirmed_date(optional, string) - date of service confirmation, in format YYYY-mm-dd
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[Service])
+        + list (array[ServiceListElement])
         
+    + Body
+    
+            {
+            "list":[
+            {
+                "service_number": 4095,
+                "availability": true,
+                "status": "requested",
+                "created_date": "2016-05-12",
+                "destination": {
+                    "postal_code": "08022",
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "country_code": "ES",
+                    "elevator": true,
+                    "coordinates": {
+                      "latitude": 41.123456,
+                      "longitude": 2.123456
+                    }
+                },
+              "products": [
+                {
+                  "name": "box",
+                  "quantity": 8,
+                  "weight_kg": 4.5
+                }
+              ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
+                "proposed_delivery_windows": [
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "cost": 78
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "cost": 80
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "cost": 93
+                    }
+                ]
+            }
+            ]
+                
+            }
+
+
+## Service [/services]
+
++ Attributes (object)
+    + destination (required, Address)
+    + products (required, array[Product])
+    + origin (optional, Address) - Overrides the default Warehouse address
 
 
 ### Create Routing Service [POST /services/routing]
@@ -297,7 +380,7 @@ An address contains information about a physical address for pick-up and deliver
         + availability (required): true
         + best_cost (required): 68
         + highest_cost (required): 100
-        + time_window_costs (required, array[TimeWindowCost])
+        + `time_window_costs` (required, array[TimeWindowCost])
 
     + Body
     
