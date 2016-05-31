@@ -257,7 +257,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Services
 
-## ServiceListElement [/services-list-element]
+## RoutingService [/services/routing]
 
 + Attributes (object)
     + destination (required, Address) - Submitted delivery address
@@ -269,12 +269,12 @@ An address contains information about a physical address for pick-up and deliver
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
     + `selected_delivery_windows` (required, array[TimeWindow])
     + status (required, string) - requeted, validated, confirmed or cancelled
-    + order (optional, Order) - details of the related order, if an order has been created
+    + order_number (optional, string) - related order identification number, if an order has been created
     + created_date (required, string) - date the service has been created, in format YYYY-mm-dd
     + confirmed_date (optional, string) - date the service has been confirmed, in format YYYY-mm-dd
     
 
-### List Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
+### List Routing Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
 + Parameters
     + offset (optional, number) - Default 1. Postion of the first returned record.
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
@@ -285,7 +285,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[ServiceListElement])
+        + list (array[RoutingService])
         
     + Body
     
@@ -354,14 +354,6 @@ An address contains information about a physical address for pick-up and deliver
             }
 
 
-## Service [/services]
-
-+ Attributes (object)
-    + destination (required, Address)
-    + products (required, array[Product])
-    + origin (optional, Address) - Overrides the default Warehouse address
-
-
 ### Create Routing Service [POST /services/routing]
 
 + Request (application/json)
@@ -376,20 +368,41 @@ An address contains information about a physical address for pick-up and deliver
   Service has been successfully requested
     
     + Attributes
-        + service_number (required): 4095
-        + availability (required): true
-        + best_cost (required): 68
-        + highest_cost (required): 100
-        + `time_window_costs` (required, array[TimeWindowCost])
+        + RoutingService
 
     + Body
     
             {
                 "service_number": 4095,
                 "availability": true,
-                "best_cost": 68,
-                "highest_cost": 100,
-                "time_window_costs": [
+                "status": "requested",
+                "created_date": "2016-05-12",
+                "destination": {
+                    "postal_code": "08022",
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "country_code": "ES",
+                    "elevator": true,
+                    "coordinates": {
+                      "latitude": 41.123456,
+                      "longitude": 2.123456
+                    }
+                },
+              "products": [
+                {
+                  "name": "box",
+                  "quantity": 8,
+                  "weight_kg": 4.5
+                }
+              ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
+                "proposed_delivery_windows": [
                     {
                         "start_time": "2016-03-14T07:00:00+0100",
                         "end_time": "2016-03-14T09:00:00+0100",
@@ -438,9 +451,78 @@ An address contains information about a physical address for pick-up and deliver
     + Attributes
         + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
 
-+ Response 204
-        
-        
++ Response 200 (application/json)
+  Service has been successfully requested
+    
+    + Attributes
+        + RoutingService
+
+    + Body
+    
+            {
+                "service_number": 4095,
+                "availability": true,
+                "status": "booked",
+                "created_date": "2016-05-12",
+                "destination": {
+                    "postal_code": "08022",
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "country_code": "ES",
+                    "elevator": true,
+                    "coordinates": {
+                      "latitude": 41.123456,
+                      "longitude": 2.123456
+                    }
+                },
+              "products": [
+                {
+                  "name": "box",
+                  "quantity": 8,
+                  "weight_kg": 4.5
+                }
+              ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
+                "proposed_delivery_windows": [
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "cost": 78
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "cost": 80
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "cost": 93
+                    }
+                ],
+                "selected_delivery_windows":[
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100"
+                    }
+                ]
+            }
 
 ### Confirm Routing Service [PATCH /services/routing/{service_id}/confirm]
 
@@ -463,7 +545,82 @@ An address contains information about a physical address for pick-up and deliver
         + order_number (required, string) - the order number in Ulabox servers
         + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
         
-+ Response 204
++ Response 201 (application/json)
+  Service has been successfully requested
+    
+    + Attributes
+        + RoutingService
+
+    + Body
+    
+            {
+                "service_number": 4095,
+                "availability": true,
+                "status": "confirmed",
+                "created_date": "2016-05-12",
+                "destination": {
+                    "postal_code": "08022",
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "country_code": "ES",
+                    "elevator": true,
+                    "coordinates": {
+                      "latitude": 41.123456,
+                      "longitude": 2.123456
+                    }
+                },
+              "products": [
+                {
+                  "name": "box",
+                  "quantity": 8,
+                  "weight_kg": 4.5
+                }
+              ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
+                "proposed_delivery_windows": [
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "cost": 78
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "cost": 80
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "cost": 93
+                    }
+                ],
+                "selected_delivery_windows":[
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100"
+                    }
+                ],
+                "order_number":"XHKL-5429",
+                "confirmed_date": "2016-05-12"
+            }
+            
+
 
 ##Group Optimization
 
