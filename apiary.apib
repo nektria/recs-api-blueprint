@@ -56,6 +56,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + name: box (required, string) - should be set to box for Ulabox requests
+    + type: dry (required, string) - dry or cold, describes the type of product
     + quantity: 8 (required, number)
     + weight_kg: 4.5 (optional, number)
 
@@ -71,6 +72,26 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "The product is missing weight information"
             }
+
+## Capacity [/check/capacity]
+
++ Attributes (object)
+    + type: dry (required, string) - dry or cold, describes the type of product it can hold
+    + quantity: 8 (required, number) - describes the number of products it can hold
+
+### Check if an Capacity is valid [POST /check/capacity]
++ Attributes (Capacity)
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid Product / malformatted
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The capacity is missing quantity information"
+            }
+
 
 ## TimeWindow [/time_windows] 
 
@@ -158,13 +179,13 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + `vehicle_number`: BCN_VAN_1 (required, string)
-    + capacity: 60 (required, number)
+    + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
     + type: van (optional, string)
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
 
-### Check if an Vehicle is valid [POST /check/vehicle]
+### Check if a Vehicle is valid [POST /check/vehicle]
 + Attributes (Vehicle)
 + Response 204
             
