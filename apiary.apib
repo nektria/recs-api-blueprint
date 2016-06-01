@@ -652,6 +652,12 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
+    + status (required, string)
+    + `estimated_delivery_time` (optional, string)
+    + `estimated_delivery_duration` (optional, string)
+    + `delivery_time` (optional, string)
+    + `delivery_duration` (optional, string)
+    
 
 ### Check if an Order is valid [POST /check/order]
 + Attributes (Order)
@@ -670,7 +676,11 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Create an Order [POST /orders]
 + Request (application/json)
-+ Attributes (Order)
++ Attributes (object)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
+    + products (array[Product])
+    
 + Response 201 (application/json)
     Returned on creation success  
     + Attributes (Order)
