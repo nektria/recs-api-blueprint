@@ -729,6 +729,55 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
         
+### Process an Order [PATCH /orders/{order_number}/process]
++ Parameters
+    + order_number (required, string) - Order id provided during the order creation request
+    
++ Request (application/json)
+    + Attributes (object)
+        + `estimated_delivery_time`(optional, string)
+        + `estimated_delivery_duration`(optional, string)
+
++ Response 200 (application/json)
+    Process action successful
+    + Attributes (Order)
+
++ Response 400
+    There are missing parameters or with wrong type/format
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_number
+    + Body
+
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+    
+### Deliver an Order [PATCH /orders/{order_number}/deliver]
++ Parameters
+    + order_number (required, string) - Order id provided during the order creation request
+    
++ Request (application/json)
+    + Attributes (object)
+        + `delivery_time`(optional, string)
+        + `delivery_duration`(optional, string)
+
++ Response 200 (application/json)
+    Deliver action successful
+    + Attributes (Order)
+
++ Response 400
+    There are missing parameters or with wrong type/format
+    + Body
+
++ Response 404
+    Returned if there is no order with the specified order_number
+    + Body
+
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
 
 ### Delete an Order [DELETE /orders/{order_number}]
 + Parameters
