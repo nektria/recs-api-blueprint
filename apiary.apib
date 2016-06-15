@@ -653,7 +653,7 @@ An address contains information about a physical address for pick-up and deliver
     + products (required, array[Product])
     + origin (optional, Address)
     + destination (required, Address)
-    + `deliver_windows` (required, array[TimeWindow])
+    + `delivery_windows` (required, array[TimeWindow])
     + shift (optional, Shift)
     + status (required, string)
     + `estimated_delivery_time` (optional, string)
@@ -683,6 +683,10 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
+    + origin (optional, Address)
+    + `delivery_windows` (required, array[TimeWindow])
+    + auto_assign_shift (optional, boolean)
+    
     
 + Response 201 (application/json)
     Returned on creation success  
