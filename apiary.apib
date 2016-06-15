@@ -650,8 +650,10 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + order_number: AA123456 (required, string)
+    + products (required, array[Product])
+    + origin (optional, Address)
     + destination (required, Address)
-    + products (array[Product])
+    + `deliver_windows` (required, array[TimeWindow])
     + status (required, string)
     + `estimated_delivery_time` (optional, string)
     + `estimated_delivery_duration` (optional, string)
