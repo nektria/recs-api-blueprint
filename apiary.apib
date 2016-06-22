@@ -154,26 +154,6 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Incorrect recurring value"
             }
 
-## Step [/steps] 
-
-+ Attributes (object)
-    + location (required, Address) delivery address of the order
-    + `delivery_window` (required, TimeWindow) expected delivery window
-    + `order_number`: UX5392 (required, string) reference corresponding to an order
-
-### Check if a Step is valid [POST /check/step]
-+ Attributes (Step)
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Step
-    + Body
-    
-            {
-                "status": "error",
-                "error": "unknown order reference"
-            }
-
 ##Group Configuration & Assets
 
 ## Vehicle [/vehicles]    
@@ -646,6 +626,29 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Optimization
 
+## Step [/steps] 
+
++ Attributes (object)
+    + `delivery_window` (required, TimeWindow) order delivery window
+    + `order` (required, Order) order coverd by this step
+    + `estimated_delivery_time` (optional, string)
+    + `estimated_delivery_duration` (optional, string)
+    + `delivery_time` (optional, string)
+    + `delivery_duration` (optional, string)
+
+### Check if a Step is valid [POST /check/step]
++ Attributes (Step)
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid Step
+    + Body
+    
+            {
+                "status": "error",
+                "error": "unknown order reference"
+            }
+
 ## Order [/orders]    
 
 + Attributes (object)
@@ -656,10 +659,6 @@ An address contains information about a physical address for pick-up and deliver
     + `delivery_windows` (required, array[TimeWindow])
     + shift (optional, Shift)
     + status (required, string)
-    + `estimated_delivery_time` (optional, string)
-    + `estimated_delivery_duration` (optional, string)
-    + `delivery_time` (optional, string)
-    + `delivery_duration` (optional, string)
     
 
 ### Check if an Order is valid [POST /check/order]
