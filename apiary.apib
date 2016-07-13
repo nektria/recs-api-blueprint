@@ -704,6 +704,119 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred storing the order
     + Body
 
+### List Orders [GET /orders?limit={limit}&offset={offset}&status={status}&created_date={created_date}&delivery_day={delivery_day}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + offset (optional, number) - Default 0. Start point of the returned array.
+    + status (optional, string) - filter orders by status
+    + created_date (optional, string) - Date in format YYYY-MM-DD. Filter orders starting from creation date.
+    + delivery_day (optional, string) - Date in format YYYY-MM-DD. Filter orders with delivery programmed for delivery day.
+
++ Response 200 (application/json)
+
+    + Attributes
+        + list (array[Order])
+        
+    + Body
+    
+            {
+                "list": 
+                [
+                    {
+                      "order_number": "AA123456",
+                      "destination": {
+                        "postal_code": "08022",
+                        "street_type": "Pza.",
+                        "street_name": "Urquinaona",
+                        "street_number": "5",
+                        "city": "Barcelona",
+                        "country_code": "ES",
+                        "elevator": 1,
+                        "coordinates": {
+                          "latitude": 41.123456,
+                          "longitude": 2.123456
+                        }
+                      },
+                      "status": "pending",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2016-03-29T15:19:00+01:00",
+                          "end_time": "2016-03-29T15:37:00+01:00"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "type": "dry",
+                          "quantity": 8,
+                          "quantity_estimated": true,
+                          "weight_kg": 4.5
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08022",
+                        "street_type": "Pza.",
+                        "street_name": "Urquinaona",
+                        "street_number": "5",
+                        "city": "Barcelona",
+                        "country_code": "ES",
+                        "elevator": 1,
+                        "coordinates": {
+                          "latitude": 41.123456,
+                          "longitude": 2.123456
+                        }
+                      },
+                      "shift": 123
+                    },
+                    {
+                      "order_number": "AA123678",
+                      "destination": {
+                        "postal_code": "08022",
+                        "street_type": "Pza.",
+                        "street_name": "Urquinaona",
+                        "street_number": "5",
+                        "city": "Barcelona",
+                        "country_code": "ES",
+                        "elevator": 1,
+                        "coordinates": {
+                          "latitude": 41.123456,
+                          "longitude": 2.123456
+                        }
+                      },
+                      "status": "pending",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2016-03-29T15:19:00+01:00",
+                          "end_time": "2016-03-29T15:37:00+01:00"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "type": "dry",
+                          "quantity": 8,
+                          "quantity_estimated": true,
+                          "weight_kg": 4.5
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08022",
+                        "street_type": "Pza.",
+                        "street_name": "Urquinaona",
+                        "street_number": "5",
+                        "city": "Barcelona",
+                        "country_code": "ES",
+                        "elevator": 1,
+                        "coordinates": {
+                          "latitude": 41.123456,
+                          "longitude": 2.123456
+                        }
+                      },
+                      "shift": 123
+                    }
+                ]
+            }
+    
 ### Get an Order [GET /orders/{order_number}]
 + Parameters
     + order_number (required, string) - Order ID provided during the order creation request
@@ -847,7 +960,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Attributes (object)
     + shift_id: 123 (required, number) Unique shift identifier
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-    + span (required, TimeWindow)
+    + time_span (required, TimeWindow)
     + status: pending (required, string) shift status
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
     + area_number: BCN (required, string) unique identifier of shift area
@@ -916,11 +1029,31 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             [
                 {
                     "vehicle_number": "BCN_VAN_1",
-                    "capacity": 60
+                    "capacities" : 
+                    [
+                        {
+                            "type": "dry",
+                            "quantity": 30
+                        },
+                        {
+                            "type": "cold",
+                            "quantity": 30
+                        }
+                    ]
                 },
                 {
                     "vehicle_number": "BCN_VAN_2",
-                    "capacity": 60,
+                    "capacities" : 
+                    [
+                        {
+                            "type": "dry",
+                            "quantity": 30
+                        },
+                        {
+                            "type": "cold",
+                            "quantity": 30
+                        }
+                    ],
                     "options":
                     {
                         "helpers": 1
@@ -974,11 +1107,31 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity": 60
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity": 60,
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
                         "options":
                         {
                             "helpers": 1
@@ -1032,11 +1185,31 @@ Once the shift optimization has been completed, an event will be triggered.
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity": 60
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity": 60,
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
                         "options":
                         {
                             "helpers": 1
@@ -1083,7 +1256,17 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_numnber": "BCN_VAN_1",
-                        "capacity": 60
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
                     }
                 },
                 {
@@ -1096,7 +1279,17 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_numnber": "BCN_VAN_2",
-                        "capacity": 60,
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
                         "options":
                         {
                             "helpers": 1
