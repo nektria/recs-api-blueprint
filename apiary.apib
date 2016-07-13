@@ -817,6 +817,13 @@ An address contains information about a physical address for pick-up and deliver
                 ]
             }
     
++ Response 400 (application/json)
+    + Body
+    
+            [
+                "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Orders\\ListRoutingOrderRequest"
+            ]
+            
 ### Get an Order [GET /orders/{order_number}]
 + Parameters
     + order_number (required, string) - Order ID provided during the order creation request
@@ -1006,6 +1013,13 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     }
                 ]
             }
+            
++ Response 400 (application/json)
+    + Body
+    
+            [
+                "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Shifts\\ListRoutingShiftRequest"
+            ]
 
 
 ### Get a Shift [GET /shifts/{shift_id}]
