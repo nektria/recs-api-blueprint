@@ -629,6 +629,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Step [/steps] 
 
 + Attributes (object)
+    + `id` (required, number) 
     + `delivery_window` (required, TimeWindow) order delivery window
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
@@ -648,6 +649,31 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "unknown order reference"
             }
+
+### Update a Step [PATCH /steps/{step_id}]
++ Parameters
+    + step_id (required, number) - Step id provided by route itinerary
+    
++ Request (application/json)
+    + Attributes (object)
+        + `estimated_delivery_time`(optional, string)
+        + `estimated_delivery_duration`(optional, string)
+
++ Response 200 (application/json)
+    Process action successful
+    + Attributes (Step)
+
++ Response 400
+    There are missing parameters or with wrong type/format
+    + Body
+
++ Response 404
+    Returned if there is no step with the specified step_id
+    + Body
+
++ Response 500
+    Returned if an error occurred updating the step
+    + Body
 
 ## Order [/orders]    
 
@@ -855,30 +881,6 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
         
-### Process an Order [PATCH /orders/{order_number}/process]
-+ Parameters
-    + order_number (required, string) - Order id provided during the order creation request
-    
-+ Request (application/json)
-    + Attributes (object)
-        + `estimated_delivery_time`(optional, string)
-        + `estimated_delivery_duration`(optional, string)
-
-+ Response 200 (application/json)
-    Process action successful
-    + Attributes (Order)
-
-+ Response 400
-    There are missing parameters or with wrong type/format
-    + Body
-
-+ Response 404
-    Returned if there is no order with the specified order_number
-    + Body
-
-+ Response 500
-    Returned if an error occurred updating the order
-    + Body
     
 ### Deliver an Order [PATCH /orders/{order_number}/deliver]
 + Parameters
