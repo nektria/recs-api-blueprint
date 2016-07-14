@@ -266,7 +266,7 @@ An address contains information about a physical address for pick-up and deliver
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
     + `selected_delivery_windows` (required, array[TimeWindow])
     + status (required, string) - requeted, validated, confirmed or cancelled
-    + order_number (optional, string) - related order identification number, if an order has been created
+    + order_number (optional, string) - customer order reference
     + created_date (required, string) - date the service has been created, in format YYYY-mm-dd
     + confirmed_date (optional, string) - date the service has been confirmed, in format YYYY-mm-dd
     
@@ -613,7 +613,7 @@ An address contains information about a physical address for pick-up and deliver
                         "end_time": "2016-03-14T09:00:00+0100"
                     }
                 ],
-                "order_number":"XHKL-5429",
+                "order_number":"5429",
                 "confirmed_date": "2016-05-12"
             }
             
@@ -673,6 +673,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Order [/orders]    
 
 + Attributes (object)
+    + `id`: 2745 (required, string)
     + order_number: AA123456 (required, string)
     + products (required, array[Product])
     + origin (optional, Address)
@@ -713,7 +714,7 @@ An address contains information about a physical address for pick-up and deliver
     + Attributes (Order)
     + Headers
     
-            Location: /orders/{order_number}
+            Location: /orders/{order_id}
 
 + Response 400
     Returned if there is any parameter missing or with wrong type or format
@@ -744,6 +745,7 @@ An address contains information about a physical address for pick-up and deliver
                 "list": 
                 [
                     {
+                      "id": "53234",
                       "order_number": "AA123456",
                       "destination": {
                         "postal_code": "08022",
@@ -790,6 +792,7 @@ An address contains information about a physical address for pick-up and deliver
                       "shift": 123
                     },
                     {
+                      "id": "53224",
                       "order_number": "AA123678",
                       "destination": {
                         "postal_code": "08022",
@@ -845,15 +848,15 @@ An address contains information about a physical address for pick-up and deliver
                 "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Orders\\ListRoutingOrderRequest"
             ]
             
-### Get an Order [GET /orders/{order_number}]
+### Get an Order [GET /orders/{order_id}]
 + Parameters
-    + order_number (required, string) - Order ID provided during the order creation request
+    + order_id (required, string) - The Order id
 + Response 200 (application/json)
     + Attributes (Order)
 
-### Update an Order [PUT /orders/{order_number}]
+### Update an Order [PUT /orders/{order_id}]
 + Parameters
-    + order_number (required, string) - Order id provided during the order creation request
+    + order_id (required, string) - Order id
     
 + Request (application/json)
     + Attributes (object)
@@ -869,7 +872,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
 
 + Response 404
-    Returned if there is no order with the specified order_number
+    Returned if there is no order with the specified order_id
     + Body
 
 + Response 500
@@ -877,9 +880,9 @@ An address contains information about a physical address for pick-up and deliver
     + Body
         
     
-### Deliver an Order [PATCH /orders/{order_number}/deliver]
+### Deliver an Order [PATCH /orders/{order_id}/deliver]
 + Parameters
-    + order_number (required, string) - Order id provided during the order creation request
+    + order_id (required, string) - The id of the Order
     
 + Request (application/json)
     + Attributes (object)
@@ -895,21 +898,21 @@ An address contains information about a physical address for pick-up and deliver
     + Body
 
 + Response 404
-    Returned if there is no order with the specified order_number
+    Returned if there is no order with the specified order_id
     + Body
 
 + Response 500
     Returned if an error occurred updating the order
     + Body
 
-### Delete an Order [DELETE /orders/{order_number}]
+### Delete an Order [DELETE /orders/{order_id}]
 + Parameters
-    + order_number (required, string) - Order id provided during the order creation request
+    + order_id (required, id) - The Order id
 
 + Response 204
 
 + Response 404
-    Returned if there is no order with the specified order_number
+    Returned if there is no order with the specified order_id
     + Body
 
 + Response 500
@@ -920,7 +923,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Route [/routes]    
 
 + Attributes (object)
-    + `route_number`: 783 (required, string)
+    + `id`: 783 (required, string)
     + origin (required, Address)
     + `loading_window` (required, TimeWindow)
     + `execution_window` (required, TimeWindow)
@@ -949,11 +952,10 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     + Attributes 
         + list (array[Route])
-        
 
-### Get a Route [GET /routes/{route_number}]
+### Get a Route [GET /routes/{route_id}]
 + Parameters
-    + route_number (required, string) - Route unique identification number
+    + route_id (required, string) - The Route id
 + Response 200 (application/json)
     + Attributes (Route)
 
@@ -962,21 +964,20 @@ An address contains information about a physical address for pick-up and deliver
 A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
 
 + Attributes (object)
-    + shift_id: 123 (required, number) Unique shift identifier
+    + id: 123 (required, string) Unique shift identifier
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + time_span (required, TimeWindow)
     + status: pending (required, string) shift status
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
-    + area_number: BCN (required, string) unique identifier of shift area
     + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
-    + order_numbers (required, array[string]) list of orders assigned to this shift
+    + orders (required, array[string]) list of order ids assigned to this shift
 
-### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_number={area_number}&status={status}]
+### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_id={area_id}&status={status}]
 
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
-    + area_number: BCN (optional, string) - filter shift of an area
+    + area_id: BCN (optional, string) - filter shifts within an area
     + status: pending (optional, string) - filter shift by status
 
 + Response 200 (application/json)
@@ -989,7 +990,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             {
                 "list": [
                     {
-                        "shift_id": 1,
+                        "id": 1,
                         "name": "2016-03-29 mañana",
                         "span": 
                         {
@@ -999,7 +1000,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "status": "closed"
                     },
                     {
-                        "shift_id": 2,
+                        "id": 2,
                         "name": "2016-03-29 tarde",
                         "span":
                         {
@@ -1035,10 +1036,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "optimized",
-            "area": "BCN",
+            "area": {
+                    "id": "59",
+                    "name": "BCN"
+            },
             "fleet":
             [
                 {
+                    "id": "15",
                     "vehicle_number": "BCN_VAN_1",
                     "capacities" : 
                     [
@@ -1053,6 +1058,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     ]
                 },
                 {
+                    "id": "19",
                     "vehicle_number": "BCN_VAN_2",
                     "capacities" : 
                     [
@@ -1086,7 +1092,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "end_time": "2016-03-17T21:00:00+0100"
                 }
             ],
-            "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
+            "orders":["324", "309", "343"]
         }
         
 + Response 404
@@ -1113,10 +1119,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "end_time": "2016-03-17T23:00:00+0100"
                 },
                 "status": "closed",
-                "area": "BCN",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
                 "fleet":
                 [
                     {
+                        "id": "15",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -1131,6 +1141,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         ]
                     },
                     {
+                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -1164,7 +1175,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "end_time": "2016-03-17T21:00:00+0100"
                     }
                 ],
-                "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
+                "orders":["324", "309", "343"]
             }
     
     
@@ -1191,10 +1202,14 @@ Once the shift optimization has been completed, an event will be triggered.
                     "end_time": "2016-03-17T23:00:00+0100"
                 },
                 "status": "optimizing",
-                "area": "BCN",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
                 "fleet":
                 [
                     {
+                        "id": "15",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -1209,6 +1224,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         ]
                     },
                     {
+                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -1242,7 +1258,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         "end_time": "2016-03-17T21:00:00+0100"
                     }
                 ],
-                "order_numbers":["UMX-324", "UMX-309", "UMX-343"]
+                "orders":["324", "309", "343"]
             }
     
         
@@ -1253,12 +1269,12 @@ Once the shift optimization has been completed, an event will be triggered.
 + Response 200 (application/json)
         
         {
-            "unreached_orders": ["UXW-5732", "UXW-5749"],
+            "unreached_orders": ["5732", "5749"],
             "unused_vehicles": [],
             "routes": 
             [
                 {
-                    "route_number": 7654,
+                    "id": 7654,
                     "delivery_window": 
                     {
                         "start_time": "2016-03-17T09:00:00+0100",
@@ -1266,7 +1282,8 @@ Once the shift optimization has been completed, an event will be triggered.
                     },
                     "vehicle": 
                     {
-                        "vehicle_numnber": "BCN_VAN_1",
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
                             {
@@ -1281,7 +1298,7 @@ Once the shift optimization has been completed, an event will be triggered.
                     }
                 },
                 {
-                    "route_number": 7655,
+                    "id": 7655,
                     "delivery_window": 
                     {
                         "start_time": "2016-03-17T09:10:00+0100",
@@ -1289,7 +1306,8 @@ Once the shift optimization has been completed, an event will be triggered.
                     },
                     "vehicle": 
                     {
-                        "vehicle_numnber": "BCN_VAN_2",
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
                             {
