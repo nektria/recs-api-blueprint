@@ -257,11 +257,11 @@ An address contains information about a physical address for pick-up and deliver
 ## RoutingService [/services/routing]
 
 + Attributes (object)
+    + id (required, string) - Routing service id
     + destination (required, Address) - Submitted delivery address
     + products (required, array[Product]) - Submitted list of products
     + origin (optional, Address) - Submitted overriding default Warehouse address
     + excluded_windows (optional, array[RecurringTimeWindow]) - submitted excluded windows
-    + service_number (required, string) service identifier
     + availability (required, boolean) is there some delivery option available ?
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
     + `selected_delivery_windows` (required, array[TimeWindow])
@@ -289,7 +289,7 @@ An address contains information about a physical address for pick-up and deliver
             {
             "list":[
             {
-                "service_number": 4095,
+                "id": 4095,
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -370,7 +370,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "service_number": 4095,
+                "id": 4095,
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -457,7 +457,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "service_number": 4095,
+                "id": 4095,
                 "availability": true,
                 "status": "booked",
                 "created_date": "2016-05-12",
@@ -551,7 +551,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "service_number": 4095,
+                "id": 4095,
                 "availability": true,
                 "status": "confirmed",
                 "created_date": "2016-05-12",
