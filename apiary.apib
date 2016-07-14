@@ -159,7 +159,8 @@ An address contains information about a physical address for pick-up and deliver
 ## Vehicle [/vehicles]    
 
 + Attributes (object)
-    + `vehicle_number`: BCN_VAN_1 (required, string)
+    + `id`: 433 (required, string)
+    + `vehicle_number`: BCN_VAN_1 (optional, string)
     + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
     + type: van (optional, string)
     + options (optional) 
@@ -189,17 +190,19 @@ An address contains information about a physical address for pick-up and deliver
         + list (array[Vehicle])
         
 
-### Get a Vehicle [GET /vehicles/{vehicle_number}]
+### Get a Vehicle [GET /vehicles/{vehicle_id}]
 + Parameters
-    + vehicle_number (required, string) - Vehicle number provided during the vehicle creation request
+    + vehicle_id (required, string) - id of the Vehicle
 + Response 200 (application/json)
     + Attributes (Vehicle)
 
 ## Area [/areas]    
 
 + Attributes (object)
-    + `area_number`: BCN (required, string)
-    + `postal_codes` (required, array)
+    + `id`: 29 (required, string)
+    + `name`: BCN (optional, string)
+    + subareas (optional, array[string])
+    + `postal_codes` (optional, array)
 
 ### Check if an Area is valid [POST /check/area]
 
@@ -209,7 +212,8 @@ An address contains information about a physical address for pick-up and deliver
     + Body
 
             {
-                "area_number" : "BCN_1",
+                "id" : "11",
+                "name": "BCN",
                 "postal_codes": [
                     "08001", 
                     "08002", 
@@ -237,23 +241,14 @@ An address contains information about a physical address for pick-up and deliver
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[])
+        + list (array[Area])
     
-            list of area numbers
+            list of areas
         
-    + Body
-        
-            {
-                "list": [ 
-                    "BCN_MET", 
-                    "BCN_HOS",
-                    "BCN_BAD"
-                ]
-            }
-
-### Get an Area [GET /areas/{area_number}]
+    
+### Get an Area [GET /areas/{area_id}]
 + Parameters
-    + area_number (required, string) - Unique Area Identifier
+    + area_id (required, string) - The Area Id
 + Response 200 (application/json)
     + Attributes (Area)
 
