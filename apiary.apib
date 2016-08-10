@@ -966,7 +966,11 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + time_span (required, TimeWindow)
     + status: pending (required, string) shift status
+    + area (required, Area) Area covered by this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
+    + main_scenario (optional) 
+        + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
+        + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
     + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
     + orders (required, array[string]) list of order ids assigned to this shift
 
