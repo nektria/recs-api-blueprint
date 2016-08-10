@@ -974,6 +974,90 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
     + orders (required, array[string]) list of order ids assigned to this shift
 
+### Create a Shift [POST /shifts]
+
++ Request (application/json)
+
+        + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
+        + time_span (required, TimeWindow)
+        + area (required, string) id of the area assigned to this shift
+        + fleet (optional, array[string]) list of ids of the vehicles assigned to this shift
+        + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
+    
++ Response 201 (application/json)
+        
+        {
+            "span":
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100"
+            },
+            "status": "created",
+            "area": {
+                    "id": "59",
+                    "name": "BCN"
+            },
+            "fleet":
+            [
+                {
+                    "id": "15",
+                    "vehicle_number": "BCN_VAN_1",
+                    "capacities" : 
+                    [
+                        {
+                            "type": "dry",
+                            "quantity": 30
+                        },
+                        {
+                            "type": "cold",
+                            "quantity": 30
+                        }
+                    ]
+                },
+                {
+                    "id": "19",
+                    "vehicle_number": "BCN_VAN_2",
+                    "capacities" : 
+                    [
+                        {
+                            "type": "dry",
+                            "quantity": 30
+                        },
+                        {
+                            "type": "cold",
+                            "quantity": 30
+                        }
+                    ],
+                    "options":
+                    {
+                        "helpers": 1
+                    }
+                }
+            ],
+            "time_slots":
+            [
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T27:00:00+0100"
+                },
+                {
+                    "start_time": "2016-03-17T16:00:00+0100",
+                    "end_time": "2016-03-17T28:00:00+0100"
+                },
+                {
+                    "start_time": "2016-03-17T16:00:00+0100",
+                    "end_time": "2016-03-17T21:00:00+0100"
+                }
+            ],
+            "orders":[]
+        }
+        
++ Response 404
+    Shift does not exist
+    + Body
+       
+
+
 ### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_id={area_id}&status={status}]
 
 + Parameters
