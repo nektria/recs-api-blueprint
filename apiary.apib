@@ -704,8 +704,35 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + auto_assign_shift (optional, boolean)
+    + `auto_assign_shift` (optional, boolean)
     
+    
++ Response 201 (application/json)
+    Returned on creation success  
+    + Attributes (Order)
+    + Headers
+    
+            Location: /orders/{order_id}
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 409
+    Returned if there is already an order with the same order_number
+    + Body
++ Response 500
+    Returned if an error occurred storing the order
+    + Body
+
+### Create an Order for a Shift[POST /orders/create-for-shift]
++ Request (application/json)
++ Attributes (object)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
+    + products (array[Product])
+    + origin (optional, Address)
+    + `delivery_windows` (required, array[TimeWindow])
+    + `shift` (required, string) id of the shift the order belongs to
     
 + Response 201 (application/json)
     Returned on creation success  
@@ -971,6 +998,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + main_scenario (optional) 
         + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
         + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
+    + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
     + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
     + orders (required, array[string]) list of order ids assigned to this shift
 
