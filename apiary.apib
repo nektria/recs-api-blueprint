@@ -164,11 +164,16 @@ An address contains information about a physical address for pick-up and deliver
     + `closed`: false (required, boolean) is this time slot closed?
     + `price`: 9.00 (required, number) shipping price of this slot
     + `currency_code`: EUR (required, string) 3 letter currency code corresponding to this price
-    + `capacity` (required, array)
-        + `max`: 20 (required, number) time slot's maximum capacity
-        + `used`: 11 (required, number) capacity already used for this time slot
-        + `daily_max`: 200 (required, number) maximum capacity of this day
-        + `daily_used`: 87 (required, number) capacity already in use this day
+    + `capacity` (required)
+        + `max`: `20` (required, number) time slot's maximum capacity
+        + `used`: `11` (required, number) capacity already used for this time slot
+        + `daily_max`: `200` (required, number) maximum capacity of this day
+        + `daily_used`: `87` (required, number) capacity already in use this day
+
+### Check if a Grid Time Window is valid [POST /check/grid_time_window]
++ Attributes (GridTimeWindow)
++ Response 204
+
 
 ##Group Configuration & Assets
 
