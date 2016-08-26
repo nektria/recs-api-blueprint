@@ -462,7 +462,8 @@ An address contains information about a physical address for pick-up and deliver
     + price (required, number) - shopping cart total price
     + currency_code (required, string) - 3 letters currency code corresponding to the price
     + shopper_number (required, string) - shopper identifyer in client system
-    + item_quantity (required, number) - number of items in the shopping cart
+    + item_quantity (required, number) - total number of items in the shopping cart
+    + `distinct_items_quantity` (required, number) - total number of distinct items in the shopping cart
 
 + Response 201 (application/json)
   Service has been successfully requested
