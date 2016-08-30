@@ -1398,6 +1398,246 @@ A Shift groups the orders of a specific time range and area, and has relationshi
        
 
 
+### Open a Shift [PATCH /shifts/{shift_id}/open]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "closed",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
+
+### Enable a Shift [PATCH /shifts/{shift_id}/enable]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "closed",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
+
+### Disable a Shift [PATCH /shifts/{shift_id}/disable]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "closed",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
+
 ### Close a Shift [PATCH /shifts/{shift_id}/close]
 
 + Parameters
@@ -1479,7 +1719,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
 
 
-### Optimize a Shift [PATCH /shifts/{shift_id}/optimize]
+### Optimize a Shift [PATCH /shifts/{shift_id}/optimize-main-scenario]
 
 Once the shift optimization has been completed, an event will be triggered.
 
