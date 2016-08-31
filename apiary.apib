@@ -459,9 +459,9 @@ An address contains information about a physical address for pick-up and deliver
     + products (required, array[Product])
     + origin (optional, Address) - Overrides the default Warehouse address
     + delivery_windows (required, array[GridTimeWindow]) - delivery windows with details of initial situation
-    + price (required, number) - shopping cart total price
-    + currency_code (required, string) - 3 letters currency code corresponding to the price
-    + shopper_number (required, string) - shopper identifyer in client system
+    + price: 131.47 (required, number) - shopping cart total price
+    + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
+    + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
 
 + Response 201 (application/json)
   Service has been successfully requested
@@ -479,7 +479,6 @@ An address contains information about a physical address for pick-up and deliver
                 "price" : 85.35,
                 "currency_code": "EUR",
                 "shopper_number": "OBNP-690360",
-                "item_quantity": 45,
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
