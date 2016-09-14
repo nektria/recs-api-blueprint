@@ -285,6 +285,7 @@ An address contains information about a physical address for pick-up and deliver
     + origin (optional, Address) - Submitted overriding default Warehouse address
     + excluded_windows (optional, array[RecurringTimeWindow]) - submitted excluded windows
     + availability (required, boolean) is there some delivery option available ?
+    + `original_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows with details of initial situation whenever they were submitted
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
     + `selected_delivery_windows` (required, array[TimeWindow])
     + status (required, string) - requeted, validated, confirmed or cancelled
