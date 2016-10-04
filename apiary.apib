@@ -61,7 +61,7 @@ An address contains information about a physical address for pick-up and deliver
     + quantity_estimated: true (optional, boolean)
     + weight_kg: 4.5 (optional, number)
 
-### Check if an Product is valid [POST /check/product]
+### Check if a Product is valid [POST /check/product]
 + Attributes (Product)
 + Response 204
             
@@ -80,7 +80,7 @@ An address contains information about a physical address for pick-up and deliver
     + type: dry (required, string) - dry or cold, describes the type of product it can hold
     + quantity: 8 (required, number) - describes the number of products it can hold
 
-### Check if an Capacity is valid [POST /check/capacity]
+### Check if a Capacity is valid [POST /check/capacity]
 + Attributes (Capacity)
 + Response 204
             
@@ -120,6 +120,8 @@ An address contains information about a physical address for pick-up and deliver
     + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + `cost`: 90 (required, number) relative estimated cost of delivery during this time window, between 0 and 100.
     + `full`: false (required, boolean) has this window reached estimated delivery capacity?
+    + `free`: false (required, boolean) should this window be proposed for free?
+    + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
     + `external_id`: XHK-78932 (optional, string) identifier, if it was provided in the request with time windows
 
 ### Check if a Time Window Cost is valid [POST /check/time_window_cost]
