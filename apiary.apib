@@ -1204,11 +1204,12 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Request (application/json)
 
-        + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-        + time_span (required, TimeWindow)
-        + area (required, string) id of the area assigned to this shift
-        + fleet (optional, array[string]) list of ids of the vehicles assigned to this shift
-        + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
++ Attributes
+    + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
+    + time_span (required, TimeWindow)
+    + area (required, string) id of the area assigned to this shift
+    + fleet (optional, array[string]) list of ids of the vehicles assigned to this shift
+    + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
         
