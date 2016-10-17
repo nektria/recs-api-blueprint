@@ -122,6 +122,7 @@ An address contains information about a physical address for pick-up and deliver
     + `full`: false (required, boolean) has this window reached estimated delivery capacity?
     + `free`: false (required, boolean) should this window be proposed for free?
     + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
+    + `preselected`: false (optional, boolean) set to true if this is the default selection for the user.
     + `external_id`: XHK-78932 (optional, string) identifier, if it was provided in the request with time windows
 
 ### Check if a Time Window Cost is valid [POST /check/time_window_cost]
@@ -359,7 +360,8 @@ An address contains information about a physical address for pick-up and deliver
                     {
                         "start_time": "2016-03-14T09:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 78
+                        "preselected": true,
+                        "cost": 71
                     },
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
@@ -440,7 +442,8 @@ An address contains information about a physical address for pick-up and deliver
                     {
                         "start_time": "2016-03-14T09:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 78
+                        "preselected": true,
+                        "cost": 71
                     },
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
@@ -608,7 +611,8 @@ An address contains information about a physical address for pick-up and deliver
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 78,
+                        "cost": 71,
+                        "preselected": true,
                         "external_id": "8603605"
                     },
                     {
@@ -698,7 +702,8 @@ An address contains information about a physical address for pick-up and deliver
                     {
                         "start_time": "2016-03-14T09:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 78
+                        "preselected":true,
+                        "cost": 71
                     },
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
@@ -792,7 +797,8 @@ An address contains information about a physical address for pick-up and deliver
                     {
                         "start_time": "2016-03-14T09:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 78
+                        "preselected": true,
+                        "cost": 71
                     },
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
