@@ -1089,32 +1089,66 @@ An address contains information about a physical address for pick-up and deliver
     + order_id (required, string) - The Order id
 + Response 200 (application/json)
     + Attributes (Order)
-
-### Update an Order [PUT /orders/{order_id}]
-+ Parameters
-    + order_id (required, string) - Order id
     
+### Update an Order's delivery windows [PATCH /orders/{order_id}/delivery-windows]
 + Request (application/json)
-    + Attributes (object)
-        + destination (required, Address)
-        + products (array[Product])
++ Attributes (object)
+    + `delivery_windows` (required, array[TimeWindow])
+    + `shift` (required, string) id of the shift the order belongs to
 
 + Response 200 (application/json)
     Update successful
     + Attributes (Order)
 
 + Response 400
-    There are missing parameters or with wrong type/format
+    Returned if there is any parameter missing or with wrong type or format
     + Body
-
 + Response 404
-    Returned if there is no order with the specified order_id
+    Returned if the order is not found in the system
     + Body
-
 + Response 500
     Returned if an error occurred updating the order
     + Body
-        
+    
+### Update an Order's gps coordinates [PATCH /orders/{order_id}/gps]
++ Request (application/json)
++ Attributes (object)
+    + coordinates (required)
+        + latitude: 41.123456 (required, number)
+        + longitude: 2.123456 (required, number)
+    
++ Response 200 (application/json)
+    Update successful
+    + Attributes (Order)
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 404
+    Returned if the order is not found in the system
+    + Body
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+    
+### Update an Order's products [PATCH /orders/{order_id}/products]
++ Request (application/json)
++ Attributes (object)
+    + products (array[Product])
+    
++ Response 200 (application/json)
+    Update successful
+    + Attributes (Order)
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 404
+    Returned if the order is not found in the system
+    + Body
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
     
 ### Deliver an Order [PATCH /orders/{order_id}/deliver]
 + Parameters
