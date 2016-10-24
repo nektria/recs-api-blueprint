@@ -1090,7 +1090,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     + Attributes (Order)
     
-### Update an Order's delivery windows [PATCH /orders/{order_id}/delivery-windows]
+### Update an Order's delivery windows [PATCH /orders/{order_id}/reschedule-delivery]
 + Request (application/json)
 + Attributes (object)
     + `delivery_windows` (required, array[TimeWindow])
@@ -1110,7 +1110,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
     
-### Update an Order's gps coordinates [PATCH /orders/{order_id}/gps]
+### Update an Order's gps coordinates [PATCH /orders/{order_id}/update-destination-gps]
 + Request (application/json)
 + Attributes (object)
     + coordinates (required)
@@ -1131,7 +1131,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
     
-### Update an Order's products [PATCH /orders/{order_id}/products]
+### Update an Order's products [PATCH /orders/{order_id}/update-products]
 + Request (application/json)
 + Attributes (object)
     + products (array[Product])
