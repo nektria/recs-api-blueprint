@@ -1459,6 +1459,67 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     Shift does not exist
     + Body
        
+### Assign an Order to a Shift [POST /shifts/{shift_id}/orders]
+
++ Parameters
+    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
+    
++ Request (application/json)
+    + Attributes
+        + order_id (required, string) id of the order that we want to assign
+    + Body
+    
+            {
+                "order_id": "48920"
+            }
+            
++ Response 200 (application/json)
+        
+        {
+            "span":
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100"
+            },
+            "status": "open",
+            "area": {
+                    "id": "59",
+                    "name": "BCN"
+            },
+            "orders":[48920]
+        }
+        
++ Response 404
+    Shift does not exist
+    + Body
+  
+### Remove an Order from a Shift [DELETE /shifts/{shift_id}/orders/{order_id}]
+
++ Parameters
+    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
+    + order_id (required, string) - Id of the order to be removed from the shift
+    
++ Request (application/json)
+            
++ Response 200 (application/json)
+        
+        {
+            "span":
+            {
+                "start_time": "2016-03-17T15:00:00+0100",
+                "end_time": "2016-03-17T23:00:00+0100"
+            },
+            "status": "open",
+            "area": {
+                    "id": "59",
+                    "name": "BCN"
+            },
+            "orders":[]
+        }
+        
++ Response 404
+    Shift does not exist
+    + Body
 
 
 ### Open a Shift [PATCH /shifts/{shift_id}/open]
