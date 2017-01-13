@@ -1175,6 +1175,20 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
 
+### Cancel an Order [PATCH /orders/{order_id}/cancel]
++ Parameters
+    + order_id (required, id) - The Order id
+
++ Response 200
+
++ Response 404
+    Returned if there is no order with the specified order_id
+    + Body
+
++ Response 500
+    Returned if an error occurred deleting the order
+    + Body
+    
 ### Delete an Order [DELETE /orders/{order_id}]
 + Parameters
     + order_id (required, id) - The Order id
