@@ -1096,6 +1096,55 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     + Attributes (Order)
     
+### Update an Order [PUT /orders/{order_id}]
++ Request (application/json)
++ Attributes (object)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
+    + products (array[Product])
+    + origin (optional, Address)
+    + `delivery_windows` (required, array[TimeWindow])
+    + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
+    
++ Response 200 (application/json)
+    Update successful
+    + Attributes (Order)
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 404
+    Returned if the order is not found in the system
+    + Body
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+    
+### Update an Order for Shift [PUT /orders/{order_id}/update-for-shift]
++ Request (application/json)
++ Attributes (object)
+    + order_number: AA123456 (required, string)
+    + destination (required, Address)
+    + products (array[Product])
+    + origin (optional, Address)
+    + `delivery_windows` (required, array[TimeWindow])
+    + `shift` (optional, string) id of the shift the order belongs to
+    + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
+    
++ Response 200 (application/json)
+    Update successful
+    + Attributes (Order)
+
++ Response 400
+    Returned if there is any parameter missing or with wrong type or format
+    + Body
++ Response 404
+    Returned if the order is not found in the system
+    + Body
++ Response 500
+    Returned if an error occurred updating the order
+    + Body
+    
 ### Update Order delivery windows [PATCH /orders/{order_id}/reschedule-delivery]
 + Request (application/json)
 + Attributes (object)
