@@ -80,6 +80,28 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "The product is missing weight information"
             }
 
+## Shopper [/check/shopper]
+
++ Attributes (object)
+    + shopper_number: OBNP690360 (required, string) - internal user id of the shopper
+    + name: David (required, string) - name of the shopper
+    + surname: Lopez (required, string) - surname of the shopper
+    + email: david.lopez@gmail.com (required, string) - surname of the shopper
+    + phone: 665 005 493 (required, string) - surname of the shopper
+
+### Check if a Shopper is valid [POST /check/product]
++ Attributes (Product)
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid Shopper / malformatted
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The shopper is missing name information"
+            }
+
 ## Capacity [/check/capacity]
 
 + Attributes (object)
@@ -555,6 +577,66 @@ An address contains information about a physical address for pick-up and deliver
                         "end_time": "2016-03-14T13:00:00+0100",
                         "cost": 93,
                         "external_id": "8603607"
+                    }
+                ]
+            }
+            
+
+### Create Routing Service  with Deferred Availability [POST /services/routing/create-with-deferred-availability]
+
++ Request (application/json)
+
++ Attributes
+    + destination (required, Address) - Known information about destination address
+    + origin (optional, Address) - Overrides the default Warehouse address
+    + `custom_delivery_windows` (required, array[TimeWindow]) - delivery windows to be taken into account
+    + shopper (required, Shopper) - the shopper contact details
+    + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
+
++ Response 201 (application/json)
+  Service has been successfully requested
+    
+    + Attributes
+        + RoutingService
+
+    + Body
+    
+            {
+                "id": 4095,
+                "status": "prerequested",
+                "created_date": "2016-05-12",
+                "shopper":{
+                    "shopper_number": "OBNP-690360",
+                    "name": "David",
+                    "surname": "Moreno",
+                    "email": "david.moreno@gmail.com",
+                    "phone": "665 005 493",
+                },
+                "destination": {
+                    "postal_code": "08022",
+                    "country_code": "ES"
+                },
+              "custom_delivery_windows": [
+                    {
+                    
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-14T12:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100"
                     }
                 ]
             }
