@@ -80,26 +80,25 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "The product is missing weight information"
             }
 
-## Shopper [/check/shopper]
+## ShopperDetails [/check/shopper-details]
 
 + Attributes (object)
-    + shopper_number: OBNP690360 (required, string) - internal user id of the shopper
     + name: David (required, string) - name of the shopper
     + surname: Lopez (required, string) - surname of the shopper
     + email: david.lopez@gmail.com (required, string) - surname of the shopper
     + phone: 665 005 493 (required, string) - surname of the shopper
 
-### Check if a Shopper is valid [POST /check/product]
+### Check if ShopperDetails is valid [POST /check/product]
 + Attributes (Product)
 + Response 204
             
 + Response 400 (application/json)
-    Invalid Shopper / malformatted
+    Invalid ShopperDetails / malformatted
     + Body
     
             {
                 "status": "error",
-                "error": "The shopper is missing name information"
+                "error": "The shopper details misses name information"
             }
 
 ## Capacity [/check/capacity]
@@ -420,6 +419,7 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+    + shopper_details (optional, ShopperDetails) - information about the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -438,6 +438,12 @@ An address contains information about a physical address for pick-up and deliver
                 "price" : 85.35,
                 "currency_code": "EUR",
                 "shopper_number": "OBNP-690360",
+                "shopper_details": {
+                    "name": "David",
+                    "surname": "Lopez",
+                    "email": "david.lopez@gmail.com",
+                    "phone": "665 005 493"
+                },
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
@@ -603,13 +609,6 @@ An address contains information about a physical address for pick-up and deliver
                 "id": 4095,
                 "status": "prerequested",
                 "created_date": "2016-05-12",
-                "shopper":{
-                    "shopper_number": "OBNP-690360",
-                    "name": "David",
-                    "surname": "Moreno",
-                    "email": "david.moreno@gmail.com",
-                    "phone": "665 005 493",
-                },
                 "destination": {
                     "postal_code": "08022",
                     "country_code": "ES"
@@ -654,6 +653,7 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+    + shopper_details (optional, ShopperDetails) - information about the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -672,6 +672,12 @@ An address contains information about a physical address for pick-up and deliver
                 "price" : 85.35,
                 "currency_code": "EUR",
                 "shopper_number": "OBNP-690360",
+                "shopper_details": {
+                    "name": "David",
+                    "surname": "Lopez",
+                    "email": "david.lopez@gmail.com",
+                    "phone": "665 005 493"
+                },
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
@@ -827,6 +833,7 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+    + shopper_details (optional, ShopperDetails) - information about the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -845,6 +852,12 @@ An address contains information about a physical address for pick-up and deliver
                 "price" : 85.35,
                 "currency_code": "EUR",
                 "shopper_number": "OBNP-690360",
+                "shopper_details": {
+                    "name": "David",
+                    "surname": "Lopez",
+                    "email": "david.lopez@gmail.com",
+                    "phone": "665 005 493"
+                },
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
