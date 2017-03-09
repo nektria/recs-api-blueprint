@@ -921,6 +921,99 @@ An address contains information about a physical address for pick-up and deliver
             }
         
 
+### Book Routing Service [PATCH /services/routing/{service_id}/book]
+
++ Parameters
+    + service_id (required, string)
+
++ Request (application/json)
+
+        {
+            "delivery_windows":[
+                {
+                    "start_time": "2016-03-14T19:00:00+0100",
+                    "end_time": "2016-03-14T21:00:00+0100"
+                }
+            ]
+        }
+        
+    + Attributes
+        + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
+
++ Response 200 (application/json)
+  Service has been successfully requested
+    
+    + Attributes
+        + RoutingService
+
+    + Body
+    
+            {
+                "id": 4095,
+                "availability": true,
+                "status": "booked",
+                "created_date": "2016-05-12",
+                "destination": {
+                    "postal_code": "08022",
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "country_code": "ES",
+                    "elevator": true,
+                    "coordinates": {
+                      "latitude": 41.123456,
+                      "longitude": 2.123456
+                    }
+                },
+              "products": [
+                {
+                  "name": "box",
+                  "quantity": 8,
+                  "weight_kg": 4.5
+                }
+              ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
+                "proposed_delivery_windows": [
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "preselected":true,
+                        "cost": 71
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "cost": 80
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "cost": 93
+                    }
+                ],
+                "selected_delivery_windows":[
+                    {
+                        "start_time": "2016-03-14T07:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100"
+                    }
+                ]
+            }
+            
 ### Confirm Routing Service [PATCH /services/routing/{service_id}/confirm]
 
 + Parameters
