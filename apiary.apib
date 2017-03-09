@@ -590,8 +590,6 @@ An address contains information about a physical address for pick-up and deliver
     + destination (required, Address) - Known information about destination address
     + origin (optional, Address) - Overrides the default Warehouse address
     + `custom_delivery_windows` (required, array[TimeWindow]) - delivery windows to be taken into account
-    + shopper (required, Shopper) - the shopper contact details
-    + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
   Service has been successfully requested
@@ -1968,7 +1966,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
 
 
-### Optimize a Shift [PATCH /shifts/{shift_id}/optimize-main-scenario]
+### Optimize Shift Main Scenario [PATCH /shifts/{shift_id}/optimize-main-scenario]
 
 Once the shift optimization has been completed, an event will be triggered.
 
