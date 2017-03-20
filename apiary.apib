@@ -240,7 +240,7 @@ An address contains information about a physical address for pick-up and deliver
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + type: routing (optional, string) - Filter the services by type
-    + offset (optional, number) - Default 1. Postion of the first returned record.
+    + offset (optional, number) - Default 0. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
@@ -294,7 +294,7 @@ An address contains information about a physical address for pick-up and deliver
 ### List Areas [GET /areas?limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + offset (optional, number) - Default 1. Postion of the first returned record.
+    + offset (optional, number) - Default 0. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
@@ -332,7 +332,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### List Routing Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
 + Parameters
-    + offset (optional, number) - Default 1. Postion of the first returned record.
+    + offset (optional, number) - Default 0. Postion of the first returned record.
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + status (optional, string) - requested, validated, confirmed or cancelled
     + availability (optional, boolean) - do we have available delivery options ?
@@ -1213,7 +1213,6 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + `auto_assign_shift` (optional, boolean)
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
     
@@ -1262,11 +1261,12 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred storing the order
     + Body
 
-### List Orders [GET /orders?limit={limit}&offset={offset}&status={status}&created_date={created_date}&delivery_day={delivery_day}]
+### List Orders [GET /orders?limit={limit}&offset={offset}&status={status}&order_number={order_number}&created_date={created_date}&delivery_day={delivery_day}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + offset (optional, number) - Default 0. Start point of the returned array.
     + status (optional, string) - filter orders by status
+    + `order_number` (optional, string) - filter orders by order_number
     + created_date (optional, string) - Date in format YYYY-MM-DD. Filter orders starting from creation date.
     + delivery_day (optional, string) - Date in format YYYY-MM-DD. Filter orders with delivery programmed for delivery day.
 
@@ -1481,7 +1481,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
     
-### Update Order products [PATCH /orders/{order_id}/replac-products]
+### Update Order products [PATCH /orders/{order_id}/replace-products]
 + Request (application/json)
 + Attributes (object)
     + products (array[Product])
@@ -1696,10 +1696,11 @@ A Shift groups the orders of a specific time range and area, and has relationshi
        
 
 
-### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_id={area_id}&status={status}]
+### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&area_id={area_id}&status={status}]
 
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + offset (optional, number) - Default 0. Start point of the returned array.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
     + area_id: BCN (optional, string) - filter shifts within an area
     + status: pending (optional, string) - filter shift by status
