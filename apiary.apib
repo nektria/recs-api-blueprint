@@ -88,7 +88,7 @@ An address contains information about a physical address for pick-up and deliver
     + email: david.lopez@gmail.com (required, string) - surname of the shopper
     + phone: 665 005 493 (required, string) - surname of the shopper
 
-### Check if ShopperDetails is valid [POST /check/product]
+### Check if ShopperDetails is valid [POST /check/shopper-details]
 + Attributes (Product)
 + Response 204
             
@@ -149,7 +149,7 @@ An address contains information about a physical address for pick-up and deliver
     + `full`: false (required, boolean) has this window reached estimated delivery capacity?
     + `free`: false (required, boolean) should this window be proposed for free?
     + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
-    + `eco`: false (optional, boolean) should this window be proposed as ECO?ECO 
+    + `eco`: false (optional, boolean) should this window be proposed as ECO?
     + `preselected`: false (optional, boolean) set to true if this is the default selection for the user.
     + `external_id`: XHK-78932 (optional, string) identifier, if it was provided in the request with time windows
 
@@ -236,10 +236,11 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Unknown option speed"
             }
     
-### List Vehicles [GET /vehicles?type={type}&limit={limit}]
+### List Vehicles [GET /vehicles?type={type}&limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + type: routing (optional, string) - Filter the services by type
+    + offset (optional, number) - Default 1. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
@@ -290,9 +291,10 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Incorrect postal code"
             }
     
-### List Areas [GET /areas?limit={limit}]
+### List Areas [GET /areas?limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + offset (optional, number) - Default 1. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
@@ -948,9 +950,9 @@ An address contains information about a physical address for pick-up and deliver
                 }
             ]
         }
-        
-    + Attributes
-        + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
+
++ Attributes
+    + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
 
 + Response 200 (application/json)
   Service has been successfully requested
@@ -1043,7 +1045,7 @@ An address contains information about a physical address for pick-up and deliver
             ]
         }
         
-    + Attributes
++ Attributes
         + order_number (required, string) - the order number in Ulabox servers
         + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
         
@@ -1979,6 +1981,85 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     
 + Response 404
 
+### Reopen a Shift [PATCH /shifts/{shift_id}/reopen]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "closed",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
 
 ### Optimize Shift Main Scenario [PATCH /shifts/{shift_id}/optimize-main-scenario]
 
