@@ -37,6 +37,9 @@ An address contains information about a physical address for pick-up and deliver
     + street_type: Pza. (optional, string)
     + street_name: Urquinaona (optional, string)
     + street_number: 5 (optional, string)
+    + floor: "4º" (optional, string), 
+    + door: "1ª" (optional, string), 
+    + stair_building: "Escalera A" (optional, string),
     + city: Barcelona (optional, string)
     + country_code: ES (required, string)
     + elevator: 1 (optional, number) 
@@ -213,7 +216,30 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Configuration & Assets
 
-## Vehicle [/vehicles]    
+## VehicleSample [/vehicle_samples]    
+
++ Attributes (object)
+    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
+    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
+    
+
+### Check if a Vehicle Sample is valid [POST /check/vehicle_sample]
++ Attributes (VehicleSample)
+    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
+    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid VehicleSample
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Unknown option speed"
+            }
+
+
+## Vehicle [/vehicle]
 
 + Attributes (object)
     + `id`: 433 (required, string)
@@ -223,6 +249,8 @@ An address contains information about a physical address for pick-up and deliver
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
+    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
+    
 
 ### Check if a Vehicle is valid [POST /check/vehicle]
 + Attributes (Vehicle)
@@ -236,23 +264,24 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Unknown option speed"
             }
-    
-### List Vehicles [GET /vehicles?type={type}&limit={limit}&offset={offset}]
+            
+
+### List Vehicles Sample [GET /vehicles?name={name}&limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + type: routing (optional, string) - Filter the services by type
+    + name: TRUCK_3500 (optional, string) - Filter the vehicle samples by name
     + offset (optional, number) - Default 0. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[Vehicle])
+        + list (array[VehicleSample])
         
 
-### Get a Vehicle [GET /vehicles/{vehicle_id}]
+### Get a Vehicle Sample [GET /vehicles/{vehicle_id}]
 + Parameters
     + vehicle_id (required, string) - id of the Vehicle
 + Response 200 (application/json)
-    + Attributes (Vehicle)
+    + Attributes (VehicleSample)
 
 ## Area [/areas]    
 
@@ -1625,7 +1654,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
-    + fleet: `cd558960-eccb-4bc8-8f42-67e21f79290e`,`d1d95119-34c0-44f2-a9cc-c3bc0765f0cc` (optional, array[string]) list of ids of the vehicles assigned to this shift
+    + fleet (optional, array[Vehicle]) list of vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
@@ -1656,7 +1685,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                             "type": "cold",
                             "quantity": 30
                         }
-                    ]
+                    ],
+                    "vehicle_sample": "TRUCK_3500"
                 },
                 {
                     "id": "19",
@@ -1675,7 +1705,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "options":
                     {
                         "helpers": 1
-                    }
+                    },
+                    "vehicle_sample": "TRUCK_3500"
                 }
             ],
             "time_slots":
@@ -1749,7 +1780,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             [
                 "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Shifts\\ListRoutingShiftRequest"
             ]
-
 
 ### Get a Shift [GET /shifts/{shift_id}]
 
@@ -2067,6 +2097,57 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     
     
 + Response 404
+
+
+### Update Fleet for a Shift [PUT /shifts/{shift_id}/fleet]
+
++ Request (application/json)
+
+        [
+            {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "vehicle_number": "BCN_VAN_1",
+                "capacities" : 
+                [
+                    {
+                        "type": "dry",
+                        "quantity": 30
+                    },
+                    {
+                        "type": "cold",
+                        "quantity": 30
+                    }
+                ],
+                "vehicle_sample": "TRUCK_3500"
+            },
+            {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "vehicle_number": "BCN_VAN_2",
+                "capacities" : 
+                [
+                    {
+                        "type": "dry",
+                        "quantity": 30
+                    },
+                    {
+                        "type": "cold",
+                        "quantity": 30
+                    }
+                ],
+                "options":
+                {
+                    "helpers": 1
+                },
+                "vehicle_sample": "TRUCK_3500"
+            }
+        ]
+
++ Response 200 (application/json)
+        
++ Response 404
+    Shift does not exist
+    + Body
+
 
 ### Optimize Shift Main Scenario [PATCH /shifts/{shift_id}/optimize-main-scenario]
 
