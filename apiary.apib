@@ -318,7 +318,14 @@ An address contains information about a physical address for pick-up and deliver
 + Parameters
     + vehicle_id (required, string) - id of the Vehicle
 + Response 200 (application/json)
-    + Attributes (Vehicle)
+    + Attributes
+        + `id`: 433 (required, string)
+        + `vehicle_number`: BCN_VAN_1 (optional, string)
+        + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
+        + type: van (optional, string)
+        + options (optional) 
+            + efficiency: 1.2 (optional, number)
+            + helpers: 1 (optional, number)
 
 ## Area [/areas]    
 
@@ -1313,7 +1320,13 @@ An address contains information about a physical address for pick-up and deliver
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
 
 ### Check if a Step is valid [POST /check/step]
-+ Attributes (Step)
++ Attributes
+    + `id` (required, number) 
+    + `delivery_window` (required, TimeWindow) order delivery window
+    + `order` (required, Order) order coverd by this step
+    + `estimated_delivery_time` (optional, string)
+    + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
+    
 + Response 204
             
 + Response 400 (application/json)
@@ -1336,7 +1349,12 @@ An address contains information about a physical address for pick-up and deliver
 
 + Response 200 (application/json)
     Process action successful
-    + Attributes (Step)
+    + Attributes
+        + `id` (required, number) 
+        + `delivery_window` (required, TimeWindow) order delivery window
+        + `order` (required, Order) order coverd by this step
+        + `estimated_delivery_time` (optional, string)
+    p    + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
 
 + Response 400
     There are missing parameters or with wrong type/format
@@ -1850,7 +1868,14 @@ An address contains information about a physical address for pick-up and deliver
             + longitude: 2.123456 (required, number)    
     + `loading_window` (required, TimeWindow)
     + `execution_window` (required, TimeWindow)
-    + vehicle (required, Vehicle)
+    + vehicle (required)
+        + `id`: 433 (required, string)
+        + `vehicle_number`: BCN_VAN_1 (optional, string)
+        + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
+        + type: van (optional, string)
+        + options (optional) 
+            + efficiency: 1.2 (optional, number)
+            + helpers: 1 (optional, number)
     + itinerary (required, array[Step])
     + status: done (required, string)
 
