@@ -37,9 +37,6 @@ An address contains information about a physical address for pick-up and deliver
     + street_type: Pza. (optional, string)
     + street_name: Urquinaona (optional, string)
     + street_number: 5 (optional, string)
-    + floor: "4º" (optional, string), 
-    + door: "1ª" (optional, string), 
-    + stair_building: "Escalera A" (optional, string),
     + city: Barcelona (optional, string)
     + country_code: ES (required, string)
     + elevator: 1 (optional, number) 
@@ -81,28 +78,6 @@ An address contains information about a physical address for pick-up and deliver
             {
                 "status": "error",
                 "error": "The product is missing weight information"
-            }
-
-## Shopper [/check/shopper]
-
-+ Attributes (object)
-    + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
-    + name: David (required, string) - name of the shopper
-    + surname: Lopez (required, string) - surname of the shopper
-    + email: david.lopez@gmail.com (required, string) - surname of the shopper
-    + phone: 665 005 493 (required, string) - surname of the shopper
-
-### Check if Shopper is valid [POST /check/shopper]
-+ Attributes (Product)
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Shopper / malformatted
-    + Body
-    
-            {
-                "status": "error",
-                "error": "The shopper misses name information"
             }
 
 ## Capacity [/check/capacity]
@@ -153,7 +128,6 @@ An address contains information about a physical address for pick-up and deliver
     + `full`: false (required, boolean) has this window reached estimated delivery capacity?
     + `free`: false (required, boolean) should this window be proposed for free?
     + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
-    + `eco`: false (optional, boolean) should this window be proposed as ECO?
     + `preselected`: false (optional, boolean) set to true if this is the default selection for the user.
     + `external_id`: XHK-78932 (optional, string) identifier, if it was provided in the request with time windows
 
@@ -216,30 +190,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Configuration & Assets
 
-## VehicleSample [/vehicle_samples]    
-
-+ Attributes (object)
-    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
-    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
-    
-
-### Check if a Vehicle Sample is valid [POST /check/vehicle_sample]
-+ Attributes (VehicleSample)
-    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
-    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid VehicleSample
-    + Body
-    
-            {
-                "status": "error",
-                "error": "Unknown option speed"
-            }
-
-
-## Vehicle [/vehicle]
+## Vehicle [/vehicles]    
 
 + Attributes (object)
     + `id`: 433 (required, string)
@@ -249,8 +200,6 @@ An address contains information about a physical address for pick-up and deliver
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
-    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
-    
 
 ### Check if a Vehicle is valid [POST /check/vehicle]
 + Attributes (Vehicle)
@@ -264,24 +213,22 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Unknown option speed"
             }
-            
-
-### List Vehicles Sample [GET /vehicles?name={name}&limit={limit}&offset={offset}]
+    
+### List Vehicles [GET /vehicles?type={type}&limit={limit}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + name: TRUCK_3500 (optional, string) - Filter the vehicle samples by name
-    + offset (optional, number) - Default 0. Postion of the first returned record.
+    + type: routing (optional, string) - Filter the services by type
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[VehicleSample])
+        + list (array[Vehicle])
         
 
-### Get a Vehicle Sample [GET /vehicles/{vehicle_id}]
+### Get a Vehicle [GET /vehicles/{vehicle_id}]
 + Parameters
     + vehicle_id (required, string) - id of the Vehicle
 + Response 200 (application/json)
-    + Attributes (VehicleSample)
+    + Attributes (Vehicle)
 
 ## Area [/areas]    
 
@@ -321,10 +268,9 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Incorrect postal code"
             }
     
-### List Areas [GET /areas?limit={limit}&offset={offset}]
+### List Areas [GET /areas?limit={limit}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + offset (optional, number) - Default 0. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
@@ -362,7 +308,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### List Routing Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
 + Parameters
-    + offset (optional, number) - Default 0. Postion of the first returned record.
+    + offset (optional, number) - Default 1. Postion of the first returned record.
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + status (optional, string) - requested, validated, confirmed or cancelled
     + availability (optional, boolean) - do we have available delivery options ?
@@ -440,6 +386,7 @@ An address contains information about a physical address for pick-up and deliver
                 
             }
 
+
 ### Create Routing Service [POST /services/routing]
 
 + Request (application/json)
@@ -448,11 +395,7 @@ An address contains information about a physical address for pick-up and deliver
     + destination (required, Address)
     + products (required, array[Product])
     + origin (optional, Address) - Overrides the default Warehouse address
-    + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
-    + price: 131.47 (required, number) - shopping cart total price
-    + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
-    + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
+    + excluded (optional, array[RecurringTimeWindow]) - exclude delivery hours within recurring time slot
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -468,15 +411,6 @@ An address contains information about a physical address for pick-up and deliver
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
-                "price" : 85.35,
-                "currency_code": "EUR",
-                "shopper": {
-                    "shopper_number": "OBNP-690360",
-                    "name": "David",
-                    "surname": "Lopez",
-                    "email": "david.lopez@gmail.com",
-                    "phone": "665 005 493"
-                },
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
@@ -497,359 +431,37 @@ An address contains information about a physical address for pick-up and deliver
                   "weight_kg": 4.5
                 }
               ],
-              "custom_delivery_windows": [
-                    {
-                    
-                        "start_time": "2016-03-14T08:00:00+0100",
-                        "end_time": "2016-03-14T09:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 3,
-                            "daily_max": 110,
-                            "daily_used": 52
-                        },
-                        "external_id": "8603603"
-                    },
-                    {
-                        "start_time": "2016-03-14T09:00:00+0100",
-                        "end_time": "2016-03-14T10:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {                            
-                            "max": 6,
-                            "used": 2,
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603604"
-                    },
-                    {
-                        "start_time": "2016-03-14T10:00:00+0100",
-                        "end_time": "2016-03-14T11:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 0,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603605"
-                    },
-                    {
-                        "start_time": "2016-03-14T11:00:00+0100",
-                        "end_time": "2016-03-14T12:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 3,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603606"
-                    },
-                    {
-                        "start_time": "2016-03-14T12:00:00+0100",
-                        "end_time": "2016-03-14T13:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 1,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603607"
-                    }
-                ],
+              "excluded": [{
+                  "start_time": "2016-05-07T14:00:00+0200",
+                  "end_time": "2016-05-07T19:00:00+0200",
+                  "repeat_every": "month"
+                }],
                 "proposed_delivery_windows": [
                     {
-                        "start_time": "2016-03-14T08:00:00+0100",
+                        "start_time": "2016-03-14T07:00:00+0100",
                         "end_time": "2016-03-14T09:00:00+0100",
-                        "cost": 76,
-                        "external_id": "8603603"
+                        "cost": 76
+                    },
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77
                     },
                     {
                         "start_time": "2016-03-14T09:00:00+0100",
-                        "end_time": "2016-03-14T10:00:00+0100",
-                        "cost": 77,
-                        "external_id": "8603604"
-                    },
-                    {
-                        "start_time": "2016-03-14T10:00:00+0100",
                         "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 71,
                         "preselected": true,
-                        "external_id": "8603605"
-                    },
-                    {
-                        "start_time": "2016-03-14T11:00:00+0100",
-                        "end_time": "2016-03-14T12:00:00+0100",
-                        "cost": 80,
-                        "external_id": "8603606"
-                    },
-                    {
-                        "start_time": "2016-03-14T12:00:00+0100",
-                        "end_time": "2016-03-14T13:00:00+0100",
-                        "cost": 93,
-                        "external_id": "8603607"
-                    }
-                ]
-            }
-            
-
-### Create Routing Service  with Deferred Availability [POST /services/routing/create-with-deferred-availability]
-
-+ Request (application/json)
-
-+ Attributes
-    + destination (required, Address) - Known information about destination address
-    + origin (optional, Address) - Overrides the default Warehouse address
-    + `custom_delivery_windows` (required, array[TimeWindow]) - delivery windows to be taken into account
-
-+ Response 201 (application/json)
-  Service has been successfully requested
-    
-    + Attributes
-        + RoutingService
-
-    + Body
-    
-            {
-                "id": 4095,
-                "status": "prerequested",
-                "created_date": "2016-05-12",
-                "destination": {
-                    "postal_code": "08022",
-                    "country_code": "ES"
-                },
-              "custom_delivery_windows": [
-                    {
-                    
-                        "start_time": "2016-03-14T08:00:00+0100",
-                        "end_time": "2016-03-14T09:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-14T09:00:00+0100",
-                        "end_time": "2016-03-14T10:00:00+0100"
+                        "cost": 71
                     },
                     {
                         "start_time": "2016-03-14T10:00:00+0100",
-                        "end_time": "2016-03-14T11:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-14T11:00:00+0100",
-                        "end_time": "2016-03-14T12:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-14T12:00:00+0100",
-                        "end_time": "2016-03-14T13:00:00+0100"
-                    }
-                ]
-            }
-
-### Retrieve Routing Service Availability [POST /services/routing/{service_id}/retrieve-availability]
-
-+ Parameters
-    + service_id (required, string)
-
-+ Request (application/json)
-
-+ Attributes
-    + destination (required, Address)
-    + products (required, array[Product])
-    + origin (optional, Address) - Overrides the default Warehouse address
-    + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
-    + price: 131.47 (required, number) - shopping cart total price
-    + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
-    + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
-    + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
-
-+ Response 201 (application/json)
-  Service has been successfully requested
-    
-    + Attributes
-        + RoutingService
-
-    + Body
-    
-            {
-                "id": 4095,
-                "availability": true,
-                "status": "requested",
-                "created_date": "2016-05-12",
-                "price" : 85.35,
-                "currency_code": "EUR",
-                "shopper": {
-                    "shopper_number": "OBNP-690360",
-                    "name": "David",
-                    "surname": "Lopez",
-                    "email": "david.lopez@gmail.com",
-                    "phone": "665 005 493"
-                },
-                "destination": {
-                    "postal_code": "08022",
-                    "street_type": "Pza.",
-                    "street_name": "Urquinaona",
-                    "street_number": "5",
-                    "city": "Barcelona",
-                    "country_code": "ES",
-                    "elevator": true,
-                    "coordinates": {
-                      "latitude": 41.123456,
-                      "longitude": 2.123456
-                    }
-                },
-              "products": [
-                {
-                  "name": "box",
-                  "quantity": 8,
-                  "weight_kg": 4.5
-                }
-              ],
-              "custom_delivery_windows": [
-                    {
-                    
-                        "start_time": "2016-03-14T08:00:00+0100",
-                        "end_time": "2016-03-14T09:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 3,
-                            "daily_max": 110,
-                            "daily_used": 52
-                        },
-                        "external_id": "8603603"
-                    },
-                    {
-                        "start_time": "2016-03-14T09:00:00+0100",
-                        "end_time": "2016-03-14T10:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {                            
-                            "max": 6,
-                            "used": 2,
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603604"
-                    },
-                    {
-                        "start_time": "2016-03-14T10:00:00+0100",
-                        "end_time": "2016-03-14T11:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 0,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603605"
-                    },
-                    {
-                        "start_time": "2016-03-14T11:00:00+0100",
                         "end_time": "2016-03-14T12:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 3,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603606"
-                    },
-                    {
-                        "start_time": "2016-03-14T12:00:00+0100",
-                        "end_time": "2016-03-14T13:00:00+0100",
-                        "price": 9,
-                        "currency_code": "EUR",
-                        "free": false,
-                        "full": false,
-                        "closed": false,
-                        "capacity":
-                        {
-                            "max": 6,
-                            "used": 1,                            
-                            "daily_max": 110,
-                            "daily_used": 52                            
-                        },
-                        "external_id": "8603607"
-                    }
-                ],
-                "proposed_delivery_windows": [
-                    {
-                        "start_time": "2016-03-14T08:00:00+0100",
-                        "end_time": "2016-03-14T09:00:00+0100",
-                        "cost": 76,
-                        "external_id": "8603603"
-                    },
-                    {
-                        "start_time": "2016-03-14T09:00:00+0100",
-                        "end_time": "2016-03-14T10:00:00+0100",
-                        "cost": 77,
-                        "external_id": "8603604"
-                    },
-                    {
-                        "start_time": "2016-03-14T10:00:00+0100",
-                        "end_time": "2016-03-14T11:00:00+0100",
-                        "cost": 71,
-                        "preselected": true,
-                        "external_id": "8603605"
+                        "cost": 80
                     },
                     {
                         "start_time": "2016-03-14T11:00:00+0100",
-                        "end_time": "2016-03-14T12:00:00+0100",
-                        "cost": 80,
-                        "external_id": "8603606"
-                    },
-                    {
-                        "start_time": "2016-03-14T12:00:00+0100",
                         "end_time": "2016-03-14T13:00:00+0100",
-                        "cost": 93,
-                        "external_id": "8603607"
+                        "cost": 93
                     }
                 ]
             }
@@ -865,8 +477,7 @@ An address contains information about a physical address for pick-up and deliver
     + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
-    + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -884,13 +495,7 @@ An address contains information about a physical address for pick-up and deliver
                 "created_date": "2016-05-12",
                 "price" : 85.35,
                 "currency_code": "EUR",
-                "shopper": {
-                    "shopper_number": "OBNP-690360",                
-                    "name": "David",
-                    "surname": "Lopez",
-                    "email": "david.lopez@gmail.com",
-                    "phone": "665 005 493"
-                },
+                "shopper_number": "OBNP-690360",
                 "destination": {
                     "postal_code": "08022",
                     "street_type": "Pza.",
@@ -946,9 +551,79 @@ An address contains information about a physical address for pick-up and deliver
                             "daily_used": 52                            
                         },
                         "external_id": "8603604"
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "price": 9,
+                        "currency_code": "EUR",
+                        "free": false,
+                        "full": false,
+                        "closed": false,
+                        "capacity":
+                        {
+                            "max": 6,
+                            "used": 0,                            
+                            "daily_max": 110,
+                            "daily_used": 52                            
+                        },
+                        "external_id": "8603605"
+                    },
+                    {
+                        "start_time": "2016-03-14T11:00:00+0100",
+                        "end_time": "2016-03-14T12:00:00+0100",
+                        "price": 9,
+                        "currency_code": "EUR",
+                        "free": false,
+                        "full": false,
+                        "closed": false,
+                        "capacity":
+                        {
+                            "max": 6,
+                            "used": 3,                            
+                            "daily_max": 110,
+                            "daily_used": 52                            
+                        },
+                        "external_id": "8603606"
+                    },
+                    {
+                        "start_time": "2016-03-14T12:00:00+0100",
+                        "end_time": "2016-03-14T13:00:00+0100",
+                        "price": 9,
+                        "currency_code": "EUR",
+                        "free": false,
+                        "full": false,
+                        "closed": false,
+                        "capacity":
+                        {
+                            "max": 6,
+                            "used": 1,                            
+                            "daily_max": 110,
+                            "daily_used": 52                            
+                        },
+                        "external_id": "8603607"
                     }
                 ],
                 "proposed_delivery_windows": [
+                    {
+                        "start_time": "2016-03-14T08:00:00+0100",
+                        "end_time": "2016-03-14T09:00:00+0100",
+                        "cost": 76,
+                        "external_id": "8603603"
+                    },
+                    {
+                        "start_time": "2016-03-14T09:00:00+0100",
+                        "end_time": "2016-03-14T10:00:00+0100",
+                        "cost": 77,
+                        "external_id": "8603604"
+                    },
+                    {
+                        "start_time": "2016-03-14T10:00:00+0100",
+                        "end_time": "2016-03-14T11:00:00+0100",
+                        "cost": 71,
+                        "preselected": true,
+                        "external_id": "8603605"
+                    },
                     {
                         "start_time": "2016-03-14T11:00:00+0100",
                         "end_time": "2016-03-14T12:00:00+0100",
@@ -963,7 +638,7 @@ An address contains information about a physical address for pick-up and deliver
                     }
                 ]
             }
-        
+            
 
 ### Book Routing Service [PATCH /services/routing/{service_id}/book]
 
@@ -980,9 +655,9 @@ An address contains information about a physical address for pick-up and deliver
                 }
             ]
         }
-
-+ Attributes
-    + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
+        
+    + Attributes
+        + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
 
 + Response 200 (application/json)
   Service has been successfully requested
@@ -1057,7 +732,7 @@ An address contains information about a physical address for pick-up and deliver
                     }
                 ]
             }
-            
+
 ### Confirm Routing Service [PATCH /services/routing/{service_id}/confirm]
 
 + Parameters
@@ -1075,7 +750,7 @@ An address contains information about a physical address for pick-up and deliver
             ]
         }
         
-+ Attributes
+    + Attributes
         + order_number (required, string) - the order number in Ulabox servers
         + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
         
@@ -1215,7 +890,6 @@ An address contains information about a physical address for pick-up and deliver
     + origin (optional, Address)
     + destination (required, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + shift_id (optional, string)
     + status (required, string)
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
@@ -1244,7 +918,7 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + `auto_assign_shift` (optional, boolean)
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
     
@@ -1273,7 +947,6 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + `shift` (required, string) id of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
@@ -1294,12 +967,11 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred storing the order
     + Body
 
-### List Orders [GET /orders?limit={limit}&offset={offset}&status={status}&order_number={order_number}&created_date={created_date}&delivery_day={delivery_day}]
+### List Orders [GET /orders?limit={limit}&offset={offset}&status={status}&created_date={created_date}&delivery_day={delivery_day}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + offset (optional, number) - Default 0. Start point of the returned array.
     + status (optional, string) - filter orders by status
-    + `order_number` (optional, string) - filter orders by order_number
     + created_date (optional, string) - Date in format YYYY-MM-DD. Filter orders starting from creation date.
     + delivery_day (optional, string) - Date in format YYYY-MM-DD. Filter orders with delivery programmed for delivery day.
 
@@ -1432,7 +1104,6 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
 + Response 200 (application/json)
@@ -1457,7 +1128,6 @@ An address contains information about a physical address for pick-up and deliver
     + products (array[Product])
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + `shift` (optional, string) id of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
@@ -1516,7 +1186,7 @@ An address contains information about a physical address for pick-up and deliver
     Returned if an error occurred updating the order
     + Body
     
-### Update Order products [PATCH /orders/{order_id}/replace-products]
+### Update Order products [PATCH /orders/{order_id}/replac-products]
 + Request (application/json)
 + Attributes (object)
     + products (array[Product])
@@ -1654,7 +1324,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
-    + fleet (optional, array[Vehicle]) list of vehicles assigned to this shift
+    + fleet: `cd558960-eccb-4bc8-8f42-67e21f79290e`,`d1d95119-34c0-44f2-a9cc-c3bc0765f0cc` (optional, array[string]) list of ids of the vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
@@ -1685,8 +1355,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                             "type": "cold",
                             "quantity": 30
                         }
-                    ],
-                    "vehicle_sample": "TRUCK_3500"
+                    ]
                 },
                 {
                     "id": "19",
@@ -1705,8 +1374,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "options":
                     {
                         "helpers": 1
-                    },
-                    "vehicle_sample": "TRUCK_3500"
+                    }
                 }
             ],
             "time_slots":
@@ -1733,11 +1401,10 @@ A Shift groups the orders of a specific time range and area, and has relationshi
        
 
 
-### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&area_id={area_id}&status={status}]
+### List Shifts [GET /shifts?limit={limit}&expand={expand}&area_id={area_id}&status={status}]
 
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + offset (optional, number) - Default 0. Start point of the returned array.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
     + area_id: BCN (optional, string) - filter shifts within an area
     + status: pending (optional, string) - filter shift by status
@@ -1780,6 +1447,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             [
                 "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Shifts\\ListRoutingShiftRequest"
             ]
+
 
 ### Get a Shift [GET /shifts/{shift_id}]
 
@@ -1936,7 +1604,247 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
     Shift does not exist
     + Body
+
+
+### Open a Shift [PATCH /shifts/{shift_id}/open]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
     
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "open",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
+
+### Enable a Shift [PATCH /shifts/{shift_id}/enable]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "available",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
+
+### Disable a Shift [PATCH /shifts/{shift_id}/disable]
+
++ Parameters
+    + shift_id (required, string)
+
++ Request (application/json)
+        
++ Response 200 (application/json)
+    + Attributes (Shift)
+    + Body
+    
+            {
+                "span":
+                {
+                    "start_time": "2016-03-17T15:00:00+0100",
+                    "end_time": "2016-03-17T23:00:00+0100"
+                },
+                "status": "open",
+                "area": {
+                    "id": "59",
+                    "name": "BCN"
+                },
+                "fleet":
+                [
+                    {
+                        "id": "15",
+                        "vehicle_number": "BCN_VAN_1",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "vehicle_number": "BCN_VAN_2",
+                        "capacities" : 
+                        [
+                            {
+                                "type": "dry",
+                                "quantity": 30
+                            },
+                            {
+                                "type": "cold",
+                                "quantity": 30
+                            }
+                        ],
+                        "options":
+                        {
+                            "helpers": 1
+                        }
+                    }
+                ],
+                "time_slots":
+                [
+                    {
+                        "start_time": "2016-03-17T15:00:00+0100",
+                        "end_time": "2016-03-17T27:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T28:00:00+0100"
+                    },
+                    {
+                        "start_time": "2016-03-17T16:00:00+0100",
+                        "end_time": "2016-03-17T21:00:00+0100"
+                    }
+                ],
+                "orders":["324", "309", "343"]
+            }
+    
+    
++ Response 404
 
 ### Close a Shift [PATCH /shifts/{shift_id}/close]
 
@@ -2018,138 +1926,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     
 + Response 404
 
-### Reopen a Shift [PATCH /shifts/{shift_id}/reopen]
 
-+ Parameters
-    + shift_id (required, string)
-
-+ Request (application/json)
-        
-+ Response 200 (application/json)
-    + Attributes (Shift)
-    + Body
-    
-            {
-                "span":
-                {
-                    "start_time": "2016-03-17T15:00:00+0100",
-                    "end_time": "2016-03-17T23:00:00+0100"
-                },
-                "status": "closed",
-                "area": {
-                    "id": "59",
-                    "name": "BCN"
-                },
-                "fleet":
-                [
-                    {
-                        "id": "15",
-                        "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
-                        [
-                            {
-                                "type": "dry",
-                                "quantity": 30
-                            },
-                            {
-                                "type": "cold",
-                                "quantity": 30
-                            }
-                        ]
-                    },
-                    {
-                        "id": "19",
-                        "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
-                        [
-                            {
-                                "type": "dry",
-                                "quantity": 30
-                            },
-                            {
-                                "type": "cold",
-                                "quantity": 30
-                            }
-                        ],
-                        "options":
-                        {
-                            "helpers": 1
-                        }
-                    }
-                ],
-                "time_slots":
-                [
-                    {
-                        "start_time": "2016-03-17T15:00:00+0100",
-                        "end_time": "2016-03-17T27:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T28:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T21:00:00+0100"
-                    }
-                ],
-                "orders":["324", "309", "343"]
-            }
-    
-    
-+ Response 404
-
-
-### Update Fleet for a Shift [PUT /shifts/{shift_id}/fleet]
-
-+ Request (application/json)
-
-        [
-            {
-                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "vehicle_number": "BCN_VAN_1",
-                "capacities" : 
-                [
-                    {
-                        "type": "dry",
-                        "quantity": 30
-                    },
-                    {
-                        "type": "cold",
-                        "quantity": 30
-                    }
-                ],
-                "vehicle_sample": "TRUCK_3500"
-            },
-            {
-                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "vehicle_number": "BCN_VAN_2",
-                "capacities" : 
-                [
-                    {
-                        "type": "dry",
-                        "quantity": 30
-                    },
-                    {
-                        "type": "cold",
-                        "quantity": 30
-                    }
-                ],
-                "options":
-                {
-                    "helpers": 1
-                },
-                "vehicle_sample": "TRUCK_3500"
-            }
-        ]
-
-+ Response 200 (application/json)
-        
-+ Response 404
-    Shift does not exist
-    + Body
-
-
-### Optimize Shift Main Scenario [PATCH /shifts/{shift_id}/optimize-main-scenario]
+### Optimize a Shift [PATCH /shifts/{shift_id}/optimize-main-scenario]
 
 Once the shift optimization has been completed, an event will be triggered.
 
