@@ -1329,7 +1329,9 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + `id` (required, number) 
-    + `delivery_window` (required, TimeWindow) order delivery window
+    + `delivery_window` (required) order delivery window
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
@@ -1337,7 +1339,9 @@ An address contains information about a physical address for pick-up and deliver
 ### Check if a Step is valid [POST /check/step]
 + Attributes
     + `id` (required, number) 
-    + `delivery_window` (required, TimeWindow) order delivery window
+    + `delivery_window` (required) order delivery window
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
@@ -2222,8 +2226,12 @@ An address contains information about a physical address for pick-up and deliver
         + coordinates (optional)
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)    
-    + `loading_window` (required, TimeWindow)
-    + `execution_window` (required, TimeWindow)
+    + `loading_window` (required)
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+    + `execution_window` (required)
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + vehicle (required)
         + `id`: 433 (required, string)
         + `vehicle_number`: BCN_VAN_1 (optional, string)
@@ -2270,7 +2278,9 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Attributes (object)
     + id: 123 (required, string) Unique shift identifier
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-    + span (required, TimeWindow)
+    + span (required)
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
     + status: pending (required, string) shift status
     + area (required, Area) Area covered by this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
@@ -2287,7 +2297,9 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Attributes
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-    + span (required, TimeWindow)
+    + span (required)
+        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
     + fleet: `cd558960-eccb-4bc8-8f42-67e21f79290e`,`d1d95119-34c0-44f2-a9cc-c3bc0765f0cc` (optional, array[string]) list of ids of the vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
