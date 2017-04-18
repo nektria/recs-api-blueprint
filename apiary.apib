@@ -543,7 +543,12 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -817,7 +822,12 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -1017,7 +1027,12 @@ An address contains information about a physical address for pick-up and deliver
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + shopper_number: KCWS5492344 (optional, string) - [deprecated] shopper identifyer in client system
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
 
 + Response 201 (application/json)
@@ -1397,7 +1412,12 @@ An address contains information about a physical address for pick-up and deliver
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + shift_id (optional, string)
     + status (required, string)
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
@@ -1446,13 +1466,54 @@ An address contains information about a physical address for pick-up and deliver
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
     
 + Response 201 (application/json)
     Returned on creation success  
-    + Attributes (Order)
+    + Attributes
+        + `id`: 2745 (required, string)
+        + order_number: AA123456 (required, string)
+        + products (required, array[Product])
+        + origin (optional)
+            + postal_code: 08022 (required, string)
+            + street_type: Pza. (optional, string)
+            + street_name: Urquinaona (optional, string)
+            + street_number: 5 (optional, string)
+            + city: Barcelona (optional, string)
+            + country_code: ES (required, string)
+            + elevator: 1 (optional, number) 
+            + coordinates (optional)
+                + latitude: 41.123456 (required, number)
+                + longitude: 2.123456 (required, number)
+        + destination (required)
+            + postal_code: 08022 (required, string)
+            + street_type: Pza. (optional, string)
+            + street_name: Urquinaona (optional, string)
+            + street_number: 5 (optional, string)
+            + city: Barcelona (optional, string)
+            + country_code: ES (required, string)
+            + elevator: 1 (optional, number) 
+            + coordinates (optional)
+                + latitude: 41.123456 (required, number)
+                + longitude: 2.123456 (required, number)
+        + `delivery_windows` (required, array[TimeWindow])
+        + shopper (optional) - information about the shopper
+            + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+            + name: David (required, string) - name of the shopper
+            + surname: Lopez (required, string) - surname of the shopper
+            + email: david.lopez@gmail.com (required, string) - surname of the shopper
+            + phone: 665 005 493 (required, string) - surname of the shopper
+        + shift_id (optional, string)
+        + status (required, string)
+        + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
+
     + Headers
     
             Location: /orders/{order_id}
@@ -1495,7 +1556,12 @@ An address contains information about a physical address for pick-up and deliver
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + `shift` (required, string) id of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
@@ -1674,7 +1740,12 @@ An address contains information about a physical address for pick-up and deliver
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
 + Response 200 (application/json)
@@ -1719,7 +1790,12 @@ An address contains information about a physical address for pick-up and deliver
             + latitude: 41.123456 (required, number)
             + longitude: 2.123456 (required, number)    
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
+    + shopper (optional) - information about the shopper
+        + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
+        + name: David (required, string) - name of the shopper
+        + surname: Lopez (required, string) - surname of the shopper
+        + email: david.lopez@gmail.com (required, string) - surname of the shopper
+        + phone: 665 005 493 (required, string) - surname of the shopper
     + `shift` (optional, string) id of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
