@@ -274,21 +274,19 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Configuration & Assets
 
-## VehicleSample [/vehicle_samples]    
+## VehicleCategory [/vehicle_categories]    
 
 + Attributes (object)
-    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
-    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
+    + `name`: TRUCK_3500 (required, string) name of the vehicle category
     
 
-### Check if a Vehicle Sample is valid [POST /check/vehicle_sample]
+### Check if a Vehicle Category is valid [POST /check/vehicle_category]
 + Attributes
-    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
     + `name`: TRUCK_3500 (required, string) name of the vehicle sample
 + Response 204
             
 + Response 400 (application/json)
-    Invalid VehicleSample
+    Invalid VehicleCategory
     + Body
     
             {
@@ -296,28 +294,37 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Unknown option speed"
             }
 
+### List Vehicles Category [GET /vehicles?name={name}&limit={limit}&offset={offset}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + name: TRUCK_3500 (optional, string) - Filter the vehicle category by name
+    + offset (optional, number) - Default 0. Postion of the first returned record.
+
++ Response 200 (application/json)
+    + Attributes 
+        + list (array[VehicleCategory])
+
+
 ## Vehicle [/vehicle]   
 
 + Attributes (object)
-    + `id`: 433 (required, string)
     + `vehicle_number`: BCN_VAN_1 (optional, string)
     + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
     + type: van (optional, string)
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
-    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
+    + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category related
 
 ### Check if a Vehicle is valid [POST /check/vehicle]
 + Attributes
-    + `id`: 433 (required, string)
     + `vehicle_number`: BCN_VAN_1 (optional, string)
     + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
     + type: van (optional, string)
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
-    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
+    + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category related
         
 + Response 204
             
@@ -329,25 +336,6 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Unknown option speed"
             }
-
-### List Vehicles Sample [GET /vehicles?name={name}&limit={limit}&offset={offset}]
-+ Parameters
-    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + name: TRUCK_3500 (optional, string) - Filter the vehicle samples by name
-    + offset (optional, number) - Default 0. Postion of the first returned record.
-
-+ Response 200 (application/json)
-    + Attributes 
-        + list (array[VehicleSample])
-        
-
-### Get a Vehicle Sample [GET /vehicles/{vehicle_id}]
-+ Parameters
-    + vehicle_id (required, string) - id of the Vehicle
-+ Response 200 (application/json)
-    + Attributes
-        + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
-        + `name`: TRUCK_3500 (required, string) name of the vehicle sample
 
 ## Area [/areas]    
 
@@ -2254,14 +2242,13 @@ An address contains information about a physical address for pick-up and deliver
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + vehicle (required)
-        + `id`: 433 (required, string)
         + `vehicle_number`: BCN_VAN_1 (optional, string)
         + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
         + type: van (optional, string)
         + options (optional) 
             + efficiency: 1.2 (optional, number)
             + helpers: 1 (optional, number)
-        + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
+        + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
     + itinerary (required, array[Step])
     + status: done (required, string)
 
@@ -2286,14 +2273,13 @@ An address contains information about a physical address for pick-up and deliver
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + vehicle (required)
-        + `id`: 433 (required, string)
         + `vehicle_number`: BCN_VAN_1 (optional, string)
         + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
         + type: van (optional, string)
         + options (optional) 
             + efficiency: 1.2 (optional, number)
             + helpers: 1 (optional, number)
-        + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
+        + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
     + itinerary (required, array[Step])
     + status: done (required, string)
     
@@ -2341,14 +2327,13 @@ An address contains information about a physical address for pick-up and deliver
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
         + vehicle (required)
-            + `id`: 433 (required, string)
             + `vehicle_number`: BCN_VAN_1 (optional, string)
             + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
             + type: van (optional, string)
             + options (optional) 
                 + efficiency: 1.2 (optional, number)
                 + helpers: 1 (optional, number)
-            + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
+            + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
         + itinerary (required, array[Step])
         + status: done (required, string)
 
@@ -2382,7 +2367,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
-    + fleet (required, array[Vehicle]) list of ids of the vehicles assigned to this shift
+    + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
@@ -2401,7 +2386,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             "fleet":
             [
                 {
-                    "id": "15",
                     "vehicle_number": "BCN_VAN_1",
                     "capacities" : 
                     [
@@ -2413,26 +2397,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                             "type": "cold",
                             "quantity": 30
                         }
-                    ]
-                },
-                {
-                    "id": "19",
-                    "vehicle_number": "BCN_VAN_2",
-                    "capacities" : 
-                    [
-                        {
-                            "type": "dry",
-                            "quantity": 30
-                        },
-                        {
-                            "type": "cold",
-                            "quantity": 30
-                        }
                     ],
-                    "options":
-                    {
-                        "helpers": 1
-                    }
+                    "vehicle_category": "TRUCK_3500"
                 }
             ],
             "time_slots":
@@ -2530,7 +2496,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             "fleet":
             [
                 {
-                    "id": "15",
                     "vehicle_number": "BCN_VAN_1",
                     "capacities" : 
                     [
@@ -2543,10 +2508,9 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                             "quantity": 30
                         }
                     ],
-                    "vehicle_sample": "TRUCK_3500"
+                    "vehicle_category": "TRUCK_3500"
                 },
                 {
-                    "id": "19",
                     "vehicle_number": "BCN_VAN_2",
                     "capacities" : 
                     [
@@ -2563,7 +2527,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     {
                         "helpers": 1
                     },
-                    "vehicle_sample": "TRUCK_3500"
+                    "vehicle_category": "TRUCK_3500"
                 }
             ],
             "time_slots":
@@ -2705,7 +2669,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "fleet":
                 [
                     {
-                        "id": "15",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -2718,10 +2681,9 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                                 "quantity": 30
                             }
                         ],
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     },
                     {
-                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -2738,7 +2700,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         {
                             "helpers": 1
                         },
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2801,7 +2763,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "fleet":
                 [
                     {
-                        "id": "15",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -2814,10 +2775,9 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                                 "quantity": 30
                             }
                         ],
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     },
                     {
-                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -2834,7 +2794,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         {
                             "helpers": 1
                         },
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2899,7 +2859,6 @@ Once the shift optimization has been completed, an event will be triggered.
                 "fleet":
                 [
                     {
-                        "id": "15",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -2912,10 +2871,9 @@ Once the shift optimization has been completed, an event will be triggered.
                                 "quantity": 30
                             }
                         ],
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     },
                     {
-                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -2932,7 +2890,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         {
                             "helpers": 1
                         },
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2974,7 +2932,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         "quantity": 30
                     }
                 ],
-                "vehicle_sample": "TRUCK_3500"
+                "vehicle_category": "TRUCK_3500"
             },
             {
                 "vehicle_number": "BCN_VAN_2",
@@ -2993,7 +2951,7 @@ Once the shift optimization has been completed, an event will be triggered.
                 {
                     "helpers": 1
                 },
-                "vehicle_sample": "TRUCK_3500"
+                "vehicle_category": "TRUCK_3500"
             }
         ]
 
@@ -3021,7 +2979,6 @@ Once the shift optimization has been completed, an event will be triggered.
                     },
                     "vehicle": 
                     {
-                        "id": "19",
                         "vehicle_number": "BCN_VAN_1",
                         "capacities" : 
                         [
@@ -3034,7 +2991,7 @@ Once the shift optimization has been completed, an event will be triggered.
                                 "quantity": 30
                             }
                         ],
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     }
                 },
                 {
@@ -3046,7 +3003,6 @@ Once the shift optimization has been completed, an event will be triggered.
                     },
                     "vehicle": 
                     {
-                        "id": "19",
                         "vehicle_number": "BCN_VAN_2",
                         "capacities" : 
                         [
@@ -3063,7 +3019,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         {
                             "helpers": 1
                         },
-                        "vehicle_sample": "TRUCK_3500"
+                        "vehicle_category": "TRUCK_3500"
                     }
                 }
             ]
