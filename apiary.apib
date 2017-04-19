@@ -37,6 +37,9 @@ An address contains information about a physical address for pick-up and deliver
     + street_type: Pza. (optional, string)
     + street_name: Urquinaona (optional, string)
     + street_number: 5 (optional, string)
+    + floor: "4º" (optional, string), 
+    + door: "1ª" (optional, string), 
+    + stair_building: "Escalera A" (optional, string),
     + city: Barcelona (optional, string)
     + country_code: ES (required, string)
     + elevator: 1 (optional, number) 
@@ -271,7 +274,29 @@ An address contains information about a physical address for pick-up and deliver
 
 ##Group Configuration & Assets
 
-## Vehicle [/vehicles]    
+## VehicleSample [/vehicle_samples]    
+
++ Attributes (object)
+    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
+    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
+    
+
+### Check if a Vehicle Sample is valid [POST /check/vehicle_sample]
++ Attributes
+    + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
+    + `name`: TRUCK_3500 (required, string) name of the vehicle sample
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid VehicleSample
+    + Body
+    
+            {
+                "status": "error",
+                "error": "Unknown option speed"
+            }
+
+## Vehicle [/vehicle]   
 
 + Attributes (object)
     + `id`: 433 (required, string)
@@ -281,6 +306,7 @@ An address contains information about a physical address for pick-up and deliver
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
+    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
 
 ### Check if a Vehicle is valid [POST /check/vehicle]
 + Attributes
@@ -291,6 +317,7 @@ An address contains information about a physical address for pick-up and deliver
     + options (optional) 
         + efficiency: 1.2 (optional, number)
         + helpers: 1 (optional, number)
+    + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample related
         
 + Response 204
             
@@ -302,30 +329,25 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Unknown option speed"
             }
-    
-### List Vehicles [GET /vehicles?type={type}&limit={limit}&offset={offset}]
+
+### List Vehicles Sample [GET /vehicles?name={name}&limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
-    + type: routing (optional, string) - Filter the services by type
+    + name: TRUCK_3500 (optional, string) - Filter the vehicle samples by name
     + offset (optional, number) - Default 0. Postion of the first returned record.
 
 + Response 200 (application/json)
     + Attributes 
-        + list (array[Vehicle])
+        + list (array[VehicleSample])
         
 
-### Get a Vehicle [GET /vehicles/{vehicle_id}]
+### Get a Vehicle Sample [GET /vehicles/{vehicle_id}]
 + Parameters
     + vehicle_id (required, string) - id of the Vehicle
 + Response 200 (application/json)
     + Attributes
-        + `id`: 433 (required, string)
-        + `vehicle_number`: BCN_VAN_1 (optional, string)
-        + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
-        + type: van (optional, string)
-        + options (optional) 
-            + efficiency: 1.2 (optional, number)
-            + helpers: 1 (optional, number)
+        + `id`: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (required, string)
+        + `name`: TRUCK_3500 (required, string) name of the vehicle sample
 
 ## Area [/areas]    
 
@@ -368,7 +390,7 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Incorrect postal code"
             }
-    
+
 ### List Areas [GET /areas?limit={limit}&offset={offset}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
@@ -379,8 +401,7 @@ An address contains information about a physical address for pick-up and deliver
         + list (array[Area])
     
             list of areas
-        
-    
+
 ### Get an Area [GET /areas/{area_id}]
 + Parameters
     + area_id (required, string) - The Area Id
@@ -1373,7 +1394,7 @@ An address contains information about a physical address for pick-up and deliver
         + `delivery_window` (required, TimeWindow) order delivery window
         + `order` (required, Order) order coverd by this step
         + `estimated_delivery_time` (optional, string)
-    p    + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
+        + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
 
 + Response 400
     There are missing parameters or with wrong type/format
@@ -1744,7 +1765,7 @@ An address contains information about a physical address for pick-up and deliver
             [
                 "Invalid Data: Incorrect data format: The test_error key is not expected in Nektria\\Recs\\RoutingApiBundle\\Model\\Requests\\Orders\\ListRoutingOrderRequest"
             ]
-            
+
 ### Get an Order [GET /orders/{order_id}]
 + Parameters
     + order_id (required, string) - The Order id
@@ -1785,7 +1806,7 @@ An address contains information about a physical address for pick-up and deliver
         + shift_id (optional, string)
         + status (required, string)
         + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
-    
+
 ### Update an Order [PUT /orders/{order_id}]
 + Request (application/json)
 + Attributes (object)
@@ -1870,7 +1891,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred updating the order
     + Body
-    
+
 ### Update an Order for Shift [PUT /orders/{order_id}/update-for-shift]
 + Request (application/json)
 + Attributes (object)
@@ -1956,7 +1977,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred updating the order
     + Body
-    
+
 ### Update Order delivery windows [PATCH /orders/{order_id}/reschedule-delivery]
 + Request (application/json)
 + Attributes (object)
@@ -2011,7 +2032,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred updating the order
     + Body
-    
+
 ### Update Order gps coordinates [PATCH /orders/{order_id}/replace-destination-gps]
 + Request (application/json)
 + Attributes (object)
@@ -2067,7 +2088,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred updating the order
     + Body
-    
+
 ### Update Order products [PATCH /orders/{order_id}/replace-products]
 + Request (application/json)
 + Attributes (object)
@@ -2121,7 +2142,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred updating the order
     + Body
-    
+
 ### Deliver an Order [PATCH /orders/{order_id}/deliver]
 + Parameters
     + order_id (required, string) - The id of the Order
@@ -2195,7 +2216,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 500
     Returned if an error occurred deleting the order
     + Body
-    
+
 ### Delete an Order [DELETE /orders/{order_id}]
 + Parameters
     + order_id (required, id) - The Order id
@@ -2240,6 +2261,7 @@ An address contains information about a physical address for pick-up and deliver
         + options (optional) 
             + efficiency: 1.2 (optional, number)
             + helpers: 1 (optional, number)
+        + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
     + itinerary (required, array[Step])
     + status: done (required, string)
 
@@ -2271,6 +2293,7 @@ An address contains information about a physical address for pick-up and deliver
         + options (optional) 
             + efficiency: 1.2 (optional, number)
             + helpers: 1 (optional, number)
+        + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
     + itinerary (required, array[Step])
     + status: done (required, string)
     
@@ -2284,7 +2307,7 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "Unknown vehicle BCN_VAN_15"
             }
-    
+
 ### List Routes [GET /routes?status={status}&limit={limit}]
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
@@ -2325,6 +2348,7 @@ An address contains information about a physical address for pick-up and deliver
             + options (optional) 
                 + efficiency: 1.2 (optional, number)
                 + helpers: 1 (optional, number)
+            + `vehicle_sample`: TRUCK_3500 (required, string) name of the vehicle sample
         + itinerary (required, array[Step])
         + status: done (required, string)
 
@@ -2358,7 +2382,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
-    + fleet: `cd558960-eccb-4bc8-8f42-67e21f79290e`,`d1d95119-34c0-44f2-a9cc-c3bc0765f0cc` (optional, array[string]) list of ids of the vehicles assigned to this shift
+    + fleet (required, array[Vehicle]) list of ids of the vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
@@ -2432,7 +2456,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
     Shift does not exist
     + Body
-       
 
 
 ### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&area_id={area_id}&status={status}]
@@ -2519,7 +2542,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                             "type": "cold",
                             "quantity": 30
                         }
-                    ]
+                    ],
+                    "vehicle_sample": "TRUCK_3500"
                 },
                 {
                     "id": "19",
@@ -2538,7 +2562,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "options":
                     {
                         "helpers": 1
-                    }
+                    },
+                    "vehicle_sample": "TRUCK_3500"
                 }
             ],
             "time_slots":
@@ -2571,7 +2596,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
     Shift does not exist
     + Body
-       
+
 ### Assign an Order to a Shift [PATCH /shifts/{shift_id}/add-order]
 
 + Parameters
@@ -2605,7 +2630,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Response 404
     Shift does not exist
     + Body
-  
+
 ### Remove an Order from a Shift [PATCH /shifts/{shift_id}/remove-order]
 
 + Parameters
@@ -2649,7 +2674,21 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Request (application/json)
         
 + Response 200 (application/json)
-    + Attributes (Shift)
+    + Attributes
+        + id: 123 (required, string) Unique shift identifier
+        + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
+        + span (required)
+            + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+            + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+        + status: pending (required, string) shift status
+        + area (required, Area) Area covered by this shift
+        + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
+        + main_scenario (optional) 
+            + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
+            + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
+        + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
+        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
+        + orders (required, array[string]) list of order ids assigned to this shift    
     + Body
     
             {
@@ -2678,7 +2717,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                                 "type": "cold",
                                 "quantity": 30
                             }
-                        ]
+                        ],
+                        "vehicle_sample": "TRUCK_3500"
                     },
                     {
                         "id": "19",
@@ -2697,7 +2737,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "options":
                         {
                             "helpers": 1
-                        }
+                        },
+                        "vehicle_sample": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2729,7 +2770,21 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Request (application/json)
         
 + Response 200 (application/json)
-    + Attributes (Shift)
+    + Attributes
+        + id: 123 (required, string) Unique shift identifier
+        + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
+        + span (required)
+            + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+            + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+        + status: pending (required, string) shift status
+        + area (required, Area) Area covered by this shift
+        + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
+        + main_scenario (optional) 
+            + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
+            + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
+        + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
+        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
+        + orders (required, array[string]) list of order ids assigned to this shift    
     + Body
     
             {
@@ -2758,7 +2813,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                                 "type": "cold",
                                 "quantity": 30
                             }
-                        ]
+                        ],
+                        "vehicle_sample": "TRUCK_3500"
                     },
                     {
                         "id": "19",
@@ -2777,7 +2833,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "options":
                         {
                             "helpers": 1
-                        }
+                        },
+                        "vehicle_sample": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2811,7 +2868,21 @@ Once the shift optimization has been completed, an event will be triggered.
 + Request (application/json)
         
 + Response 200 (application/json)
-    + Attributes (Shift)
+    + Attributes
+        + id: 123 (required, string) Unique shift identifier
+        + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
+        + span (required)
+            + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
+            + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+        + status: pending (required, string) shift status
+        + area (required, Area) Area covered by this shift
+        + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
+        + main_scenario (optional) 
+            + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
+            + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
+        + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
+        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
+        + orders (required, array[string]) list of order ids assigned to this shift    
     + Body
     
             {
@@ -2840,7 +2911,8 @@ Once the shift optimization has been completed, an event will be triggered.
                                 "type": "cold",
                                 "quantity": 30
                             }
-                        ]
+                        ],
+                        "vehicle_sample": "TRUCK_3500"
                     },
                     {
                         "id": "19",
@@ -2859,7 +2931,8 @@ Once the shift optimization has been completed, an event will be triggered.
                         "options":
                         {
                             "helpers": 1
-                        }
+                        },
+                        "vehicle_sample": "TRUCK_3500"
                     }
                 ],
                 "time_slots":
@@ -2882,6 +2955,55 @@ Once the shift optimization has been completed, an event will be triggered.
     
         
 + Response 404
+
+### Update Fleet for a Shift [PUT /shifts/{shift_id}/fleet]
+
++ Request (application/json)
+
+        [
+            {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "vehicle_number": "BCN_VAN_1",
+                "capacities" : 
+                [
+                    {
+                        "type": "dry",
+                        "quantity": 30
+                    },
+                    {
+                        "type": "cold",
+                        "quantity": 30
+                    }
+                ],
+                "vehicle_sample": "TRUCK_3500"
+            },
+            {
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "vehicle_number": "BCN_VAN_2",
+                "capacities" : 
+                [
+                    {
+                        "type": "dry",
+                        "quantity": 30
+                    },
+                    {
+                        "type": "cold",
+                        "quantity": 30
+                    }
+                ],
+                "options":
+                {
+                    "helpers": 1
+                },
+                "vehicle_sample": "TRUCK_3500"
+            }
+        ]
+
++ Response 200 (application/json)
+        
++ Response 404
+    Shift does not exist
+    + Body
 
 ### Get Shift Roadmap [GET /shifts/{shift_id}/roadmap]
         
@@ -2913,7 +3035,8 @@ Once the shift optimization has been completed, an event will be triggered.
                                 "type": "cold",
                                 "quantity": 30
                             }
-                        ]
+                        ],
+                        "vehicle_sample": "TRUCK_3500"
                     }
                 },
                 {
@@ -2941,7 +3064,8 @@ Once the shift optimization has been completed, an event will be triggered.
                         "options":
                         {
                             "helpers": 1
-                        }
+                        },
+                        "vehicle_sample": "TRUCK_3500"
                     }
                 }
             ]
