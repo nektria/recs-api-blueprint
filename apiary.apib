@@ -1156,6 +1156,10 @@ An address contains information about a physical address for pick-up and deliver
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
+    + `parking_cost` (number) number of estimated parking seconds
+    + `distance_to_arrive` (number) driving distance in meters
+    + `time_to_arrive` (number) driving time in seconds
+    + `waiting_seconds` (number) number of seconds between parking time and selected delivery time
 
 ### Check if a Step is valid [POST /check/step]
 + Attributes (Step)
@@ -1170,31 +1174,6 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "unknown order reference"
             }
-
-### Update a Step [PATCH /steps/{step_id}]
-+ Parameters
-    + step_id (required, number) - Step id provided by route itinerary
-    
-+ Request (application/json)
-    + Attributes (object)
-        + `estimated_delivery_time`(optional, string)
-        + `estimated_delivery_duration`(optional, string)
-
-+ Response 200 (application/json)
-    Process action successful
-    + Attributes (Step)
-
-+ Response 400
-    There are missing parameters or with wrong type/format
-    + Body
-
-+ Response 404
-    Returned if there is no step with the specified step_id
-    + Body
-
-+ Response 500
-    Returned if an error occurred updating the step
-    + Body
 
 ## Order [/orders]    
 
