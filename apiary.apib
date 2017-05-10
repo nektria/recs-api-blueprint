@@ -1152,9 +1152,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + `id` (required, number) 
-    + `delivery_window` (required) order delivery window
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
+    + `delivery_window` (required, TimeWindow) order delivery window
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
@@ -1587,12 +1585,8 @@ An address contains information about a physical address for pick-up and deliver
 + Attributes (object)
     + `id`: 783 (required, string)
     + origin (required, Address)
-    + `loading_window` (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
-    + `execution_window` (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
+    + `loading_window` (required, TimeWindow)
+    + `execution_window` (required, TimeWindow)
     + vehicle (required, Vehicle)
     + itinerary (required, array[Step])
     + status: done (required, string)
@@ -1689,9 +1683,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Attributes (object)
     + id: 123 (required, string) Unique shift identifier
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-    + span (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+    + span (required, TimeWindow)
     + status: pending (required, string) shift status
     + area (required, Area) Area covered by this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
@@ -1708,9 +1700,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 
 + Attributes
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
-    + span (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
+    + span (required, TimeWindow)
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
     + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
