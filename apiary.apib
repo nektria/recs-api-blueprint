@@ -1175,14 +1175,7 @@ An address contains information about a physical address for pick-up and deliver
     + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
 
 ### Check if a Step is valid [POST /check/step]
-+ Attributes
-    + `id` (required, number) 
-    + `delivery_window` (required) order delivery window
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + `order` (required, Order) order coverd by this step
-    + `estimated_delivery_time` (optional, string)
-    + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
++ Attributes (Step)
     
 + Response 204
             
@@ -1206,12 +1199,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Response 200 (application/json)
     Process action successful
-    + Attributes
-        + `id` (required, number) 
-        + `delivery_window` (required, TimeWindow) order delivery window
-        + `order` (required, Order) order coverd by this step
-        + `estimated_delivery_time` (optional, string)
-        + `estimated_delivery_duration` (optional, string) time spent with the customer in seconds
+    + Attributes (Step)
 
 + Response 400
     There are missing parameters or with wrong type/format
@@ -1975,14 +1963,7 @@ An address contains information about a physical address for pick-up and deliver
     + `execution_window` (required)
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + vehicle (required)
-        + `vehicle_number`: BCN_VAN_1 (optional, string)
-        + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
-        + type: van (optional, string)
-        + options (optional) 
-            + efficiency: 1.2 (optional, number)
-            + helpers: 1 (optional, number)
-        + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
+    + vehicle (required, Vehicle)
     + itinerary (required, array[Step])
     + status: done (required, string)
 
