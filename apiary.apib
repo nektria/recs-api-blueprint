@@ -48,17 +48,7 @@ An address contains information about a physical address for pick-up and deliver
         + longitude: 2.123456 (required, number)
 
 ### Check if an Address is valid [POST /check/address]
-+ Attributes
-    + postal_code: 08022 (required, string)
-    + street_type: Pza. (optional, string)
-    + street_name: Urquinaona (optional, string)
-    + street_number: 5 (optional, string)
-    + city: Barcelona (optional, string)
-    + country_code: ES (required, string)
-    + elevator: 1 (optional, number) 
-    + coordinates (optional)
-        + latitude: 41.123456 (required, number)
-        + longitude: 2.123456 (required, number)
++ Attributes (Address)
         
 + Response 204
     
@@ -82,12 +72,7 @@ An address contains information about a physical address for pick-up and deliver
     + weight_kg: 4.5 (optional, number)
 
 ### Check if a Product is valid [POST /check/product]
-+ Attributes
-    + name: box (required, string) - should be set to box for Ulabox requests
-    + type: dry (required, string) - dry or cold, describes the type of product
-    + quantity: 8 (required, number)
-    + quantity_estimated: true (optional, boolean)
-    + weight_kg: 4.5 (optional, number)
++ Attributes (Product)
 + Response 204
             
 + Response 400 (application/json)
@@ -405,29 +390,9 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + id (required, string) - Routing service id
-    + destination (required) - Submitted delivery address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address) - Submitted delivery address
     + products (required, array[Product]) - Submitted list of products
-    + origin (optional) - Submitted overriding default Warehouse address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address) - Submitted overriding default Warehouse address
     + excluded_windows (optional, array[RecurringTimeWindow]) - submitted excluded windows
     + availability (required, boolean) is there some delivery option available ?
     + `custom_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows with details of initial situation whenever they were submitted
@@ -525,29 +490,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
 + Attributes
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (required, array[Product])
-    + origin (optional) - Overrides the default Warehouse address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address) - Overrides the default Warehouse address
     + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
@@ -731,28 +676,8 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
 + Attributes
-    + destination (required) - Known information about destination address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
-    + origin (optional) - Overrides the default Warehouse address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address) - Known information about destination address
+    + origin (optional, Address) - Overrides the default Warehouse address
     + `custom_delivery_windows` (required, array[TimeWindow]) - delivery windows to be taken into account
 
 + Response 201 (application/json)
@@ -796,7 +721,7 @@ An address contains information about a physical address for pick-up and deliver
                 ]
             }
 
-### Retrieve Routing Service Availability [POST /services/routing/{service_id}/retrieve-availability]
+### Retrieve Routing Service Availability [PATCH /services/routing/{service_id}/retrieve-availability]
 
 + Parameters
     + service_id (required, string)
@@ -804,29 +729,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
 + Attributes
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (required, array[Product])
-    + origin (optional) - Overrides the default Warehouse address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address) - Overrides the default Warehouse address
     + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
@@ -1009,29 +914,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 
 + Attributes
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (required, array[Product])
-    + origin (optional) - Overrides the default Warehouse address
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address) - Overrides the default Warehouse address
     + `custom_delivery_windows` (required, array[GridTimeWindow]) - delivery windows with details of initial situation
     + price: 131.47 (required, number) - shopping cart total price
     + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
@@ -1402,28 +1287,8 @@ An address contains information about a physical address for pick-up and deliver
     + `id`: 2745 (required, string)
     + order_number: AA123456 (required, string)
     + products (required, array[Product])
-    + origin (optional)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address)
+    + destination (required, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional) - information about the shopper
         + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
@@ -1455,29 +1320,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 + Attributes (object)
     + order_number: AA123456 (required, string)
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (array[Product])
-    + origin (optional)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional) - information about the shopper
         + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
@@ -1499,6 +1344,9 @@ An address contains information about a physical address for pick-up and deliver
             + street_type: Pza. (optional, string)
             + street_name: Urquinaona (optional, string)
             + street_number: 5 (optional, string)
+            + floor: "4º" (optional, string), 
+            + door: "1ª" (optional, string), 
+            + stair_building: "Escalera A" (optional, string),
             + city: Barcelona (optional, string)
             + country_code: ES (required, string)
             + elevator: 1 (optional, number) 
@@ -1510,6 +1358,9 @@ An address contains information about a physical address for pick-up and deliver
             + street_type: Pza. (optional, string)
             + street_name: Urquinaona (optional, string)
             + street_number: 5 (optional, string)
+            + floor: "4º" (optional, string), 
+            + door: "1ª" (optional, string), 
+            + stair_building: "Escalera A" (optional, string),
             + city: Barcelona (optional, string)
             + country_code: ES (required, string)
             + elevator: 1 (optional, number) 
@@ -1545,29 +1396,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 + Attributes (object)
     + order_number: AA123456 (required, string)
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (array[Product])
-    + origin (optional)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional) - information about the shopper
         + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
@@ -1589,6 +1420,9 @@ An address contains information about a physical address for pick-up and deliver
             + street_type: Pza. (optional, string)
             + street_name: Urquinaona (optional, string)
             + street_number: 5 (optional, string)
+            + floor: "4º" (optional, string), 
+            + door: "1ª" (optional, string), 
+            + stair_building: "Escalera A" (optional, string),
             + city: Barcelona (optional, string)
             + country_code: ES (required, string)
             + elevator: 1 (optional, number) 
@@ -1600,6 +1434,9 @@ An address contains information about a physical address for pick-up and deliver
             + street_type: Pza. (optional, string)
             + street_name: Urquinaona (optional, string)
             + street_number: 5 (optional, string)
+            + floor: "4º" (optional, string), 
+            + door: "1ª" (optional, string), 
+            + stair_building: "Escalera A" (optional, string),
             + city: Barcelona (optional, string)
             + country_code: ES (required, string)
             + elevator: 1 (optional, number) 
@@ -1767,6 +1604,9 @@ An address contains information about a physical address for pick-up and deliver
             + street_type: Pza. (optional, string)
             + street_name: Urquinaona (optional, string)
             + street_number: 5 (optional, string)
+            + floor: "4º" (optional, string), 
+            + door: "1ª" (optional, string), 
+            + stair_building: "Escalera A" (optional, string),
             + city: Barcelona (optional, string)
             + country_code: ES (required, string)
             + elevator: 1 (optional, number) 
@@ -1799,29 +1639,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 + Attributes (object)
     + order_number: AA123456 (required, string)
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (array[Product])
-    + origin (optional)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional) - information about the shopper
         + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
@@ -1884,29 +1704,9 @@ An address contains information about a physical address for pick-up and deliver
 + Request (application/json)
 + Attributes (object)
     + order_number: AA123456 (required, string)
-    + destination (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)
+    + destination (required, Address)
     + products (array[Product])
-    + origin (optional)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)    
+    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional) - information about the shopper
         + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
@@ -2224,17 +2024,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + `id`: 783 (required, string)
-    + origin (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)    
+    + origin (required, Address)
     + `loading_window` (required)
         + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
         + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
