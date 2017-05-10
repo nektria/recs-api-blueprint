@@ -1592,36 +1592,7 @@ An address contains information about a physical address for pick-up and deliver
     + status: done (required, string)
 
 ### Check if a Route is valid [POST /check/route]
-+ Attributes
-    + `id`: 783 (required, string)
-    + origin (required)
-        + postal_code: 08022 (required, string)
-        + street_type: Pza. (optional, string)
-        + street_name: Urquinaona (optional, string)
-        + street_number: 5 (optional, string)
-        + city: Barcelona (optional, string)
-        + country_code: ES (required, string)
-        + elevator: 1 (optional, number) 
-        + coordinates (optional)
-            + latitude: 41.123456 (required, number)
-            + longitude: 2.123456 (required, number)    
-    + `loading_window` (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
-    + `execution_window` (required)
-        + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-        + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + vehicle (required)
-        + `vehicle_number`: BCN_VAN_1 (optional, string)
-        + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
-        + type: van (optional, string)
-        + options (optional) 
-            + efficiency: 1.2 (optional, number)
-            + helpers: 1 (optional, number)
-        + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
-    + itinerary (required, array[Step])
-    + status: done (required, string)
-    
++ Attributes (Route)
 + Response 204
             
 + Response 400 (application/json)
@@ -1646,35 +1617,7 @@ An address contains information about a physical address for pick-up and deliver
 + Parameters
     + route_id (required, string) - The Route id
 + Response 200 (application/json)
-    + Attributes
-        + `id`: 783 (required, string)
-        + origin (required)
-            + postal_code: 08022 (required, string)
-            + street_type: Pza. (optional, string)
-            + street_name: Urquinaona (optional, string)
-            + street_number: 5 (optional, string)
-            + city: Barcelona (optional, string)
-            + country_code: ES (required, string)
-            + elevator: 1 (optional, number) 
-            + coordinates (optional)
-                + latitude: 41.123456 (required, number)
-                + longitude: 2.123456 (required, number)    
-        + `loading_window` (required)
-            + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-            + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
-        + `execution_window` (required)
-            + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-            + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-        + vehicle (required)
-            + `vehicle_number`: BCN_VAN_1 (optional, string)
-            + capacity (required, array[Capacity]) - list describing transportation areas of the vehicle
-            + type: van (optional, string)
-            + options (optional) 
-                + efficiency: 1.2 (optional, number)
-                + helpers: 1 (optional, number)
-            + `vehicle_category`: TRUCK_3500 (required, string) name of the vehicle category
-        + itinerary (required, array[Step])
-        + status: done (required, string)
+    + Attributes (Route)
 
 ## Shift [/shifts]
 
