@@ -154,6 +154,9 @@ An address contains information about a physical address for pick-up and deliver
     + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
     + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
     + `cost`: 90 (required, number) relative estimated cost of delivery during this time window, between 0 and 100.
+    + `final_price`: 9 (required, number) the final price that is recomended for transportation
+    + `currency_code`: EUR (required, string) 3 letter currency code corresponding to this price
+    + `logistic_cost`: 120 (required, number) the estimated difficulty for performing this delivery, as a percentage
     + `full`: false (required, boolean) has this window reached estimated delivery capacity?
     + `free`: false (required, boolean) should this window be proposed for free?
     + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
@@ -1675,10 +1678,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             ],
             "orders":[]
         }
-        
-+ Response 404
-    Shift does not exist
-    + Body
 
 
 ### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&area_id={area_id}&status={status}]
