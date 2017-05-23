@@ -322,7 +322,7 @@ An address contains information about a physical address for pick-up and deliver
     + availability (required, boolean) is there some delivery option available ?
     + `custom_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows with details of initial situation whenever they were submitted
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
-    + `selected_delivery_windows` (required, array[TimeWindow])
+    + `selected_delivery_windows` (optional, array[TimeWindow])
     + status (required, string) - requested, validated, confirmed or cancelled
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
     + order_number (optional, string) - customer order reference
