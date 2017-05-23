@@ -178,27 +178,6 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "Invalid cost 'low'"
             }
 
-## RecurringTimeWindow [/recurring_time_windows] 
-
-+ Attributes (object)
-    + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-    + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + `repeat_every`: weekday (required, string) string defining the frequency of the repeated time window. 
-                        Allowed values are never, day, weekday, week, month, year
-
-### Check if a Recurring Time Window is valid [POST /check/recurring_time_window]
-+ Attributes (RecurringTimeWindow)
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Recurring Time Window
-    + Body
-    
-            {
-                "status": "error",
-                "error": "Incorrect recurring value"
-            }
-
 ## GridTimeWindow [/grid_time_windows] 
 
 + Attributes (object)
@@ -340,7 +319,6 @@ An address contains information about a physical address for pick-up and deliver
     + destination (required, Address) - Submitted delivery address
     + products (required, array[Product]) - Submitted list of products
     + origin (optional, Address) - Submitted overriding default Warehouse address
-    + excluded_windows (optional, array[RecurringTimeWindow]) - submitted excluded windows
     + availability (required, boolean) is there some delivery option available ?
     + `custom_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows with details of initial situation whenever they were submitted
     + `proposed_delivery_windows` (required, array[TimeWindowCost])
@@ -394,11 +372,6 @@ An address contains information about a physical address for pick-up and deliver
                   "weight_kg": 4.5
                 }
               ],
-              "excluded": [{
-                  "start_time": "2016-05-07T14:00:00+0200",
-                  "end_time": "2016-05-07T19:00:00+0200",
-                  "repeat_every": "month"
-                }],
                 "proposed_delivery_windows": [
                     {
                         "start_time": "2016-03-14T07:00:00+0100",
@@ -1009,11 +982,6 @@ An address contains information about a physical address for pick-up and deliver
                   "weight_kg": 4.5
                 }
               ],
-              "excluded": [{
-                  "start_time": "2016-05-07T14:00:00+0200",
-                  "end_time": "2016-05-07T19:00:00+0200",
-                  "repeat_every": "month"
-                }],
                 "proposed_delivery_windows": [
                     {
                         "start_time": "2016-03-14T07:00:00+0100",
@@ -1104,11 +1072,6 @@ An address contains information about a physical address for pick-up and deliver
                   "weight_kg": 4.5
                 }
               ],
-              "excluded": [{
-                  "start_time": "2016-05-07T14:00:00+0200",
-                  "end_time": "2016-05-07T19:00:00+0200",
-                  "repeat_every": "month"
-                }],
                 "proposed_delivery_windows": [
                     {
                         "start_time": "2016-03-14T07:00:00+0100",
