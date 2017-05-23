@@ -65,7 +65,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Product [/check/product]
 
 + Attributes (object)
-    + name: box (required, string) - should be set to box for Ulabox requests
+    + name: box (required, string) - should be set to box when box estimate
     + type: dry (required, string) - dry or cold, describes the type of product
     + quantity: 8 (required, number)
     + quantity_estimated: true (optional, boolean)
@@ -315,7 +315,9 @@ An address contains information about a physical address for pick-up and deliver
 ## RoutingService [/services/routing]
 
 + Attributes (object)
-    + id (required, string) - Routing service id
+    + id (required, string) - Routing service uuid    
+    + price: 131.47 (required, number) - shopping cart total price
+    + currency_code: EUR (required, string) - 3 letters currency code corresponding to the price
     + destination (required, Address) - Submitted delivery address
     + products (required, array[Product]) - Submitted list of products
     + origin (optional, Address) - Submitted overriding default Warehouse address
@@ -325,9 +327,10 @@ An address contains information about a physical address for pick-up and deliver
     + `selected_delivery_windows` (optional, array[TimeWindow])
     + status (required, string) - requested, validated, confirmed or cancelled
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
-    + order_number (optional, string) - customer order reference
+    + order (optional, Order) - customer order details
     + created_date (required, string) - date the service has been created, in format YYYY-mm-dd
     + confirmed_date (optional, string) - date the service has been confirmed, in format YYYY-mm-dd
+    + shopper (optional, Shopper) - details about the eCommerce client
     
 
 ### List Routing Services [GET /services/routing?offset={offset}&limit={limit}&status={status}&availability={availability}&created_date={created_date}&confirmed_date={confirmed_date}]
@@ -348,7 +351,7 @@ An address contains information about a physical address for pick-up and deliver
             {
             "list":[
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -429,7 +432,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -604,7 +607,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "status": "prerequested",
                 "created_date": "2016-05-12",
                 "destination": {
@@ -663,7 +666,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -843,7 +846,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "requested",
                 "created_date": "2016-05-12",
@@ -958,7 +961,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "booked",
                 "created_date": "2016-05-12",
@@ -1036,7 +1039,7 @@ An address contains information about a physical address for pick-up and deliver
         }
         
 + Attributes
-        + order_number (required, string) - the order number in Ulabox servers
+        + order_number (required, string) - the order number created by the eCommerce
         + delivery_windows (required, array[TimeWindow]) - the selected delivery time windows
         
 + Response 200 (application/json)
@@ -1048,7 +1051,7 @@ An address contains information about a physical address for pick-up and deliver
     + Body
     
             {
-                "id": 4095,
+                "id": "25baa73d-1345-4075-8ad9-81f20daeb555",
                 "availability": true,
                 "status": "confirmed",
                 "created_date": "2016-05-12",
@@ -1106,7 +1109,32 @@ An address contains information about a physical address for pick-up and deliver
                         "end_time": "2016-03-14T09:00:00+0100"
                     }
                 ],
-                "order_number":"5429",
+                "order": {
+                    "id": "a3634d36-3fa2-11e7-a8c6-ac87a32559ad",
+                    "shift": "ee18de70-2c4e-11e7-a3b0-24cc1c381f6d",
+                    "order_number": "815593001495534535",
+                    "destination": {
+                        "postal_code": "08022",
+                        "street_type": "Pza.",
+                        "street_name": "Urquinaona",
+                        "street_number": "5",
+                        "city": "Barcelona",
+                        "country_code": "ES",
+                        "elevator": true,
+                        "coordinates": {
+                          "latitude": 41.123456,
+                          "longitude": 2.123456
+                        }
+                    },
+                    "products": [
+                      {
+                        "name": "items",
+                        "quantity": 23,
+                        "type": "generic",
+                        "quantity_estimated": false
+                      }
+                    ]
+                },
                 "confirmed_date": "2016-05-12"
             }
             
@@ -1117,7 +1145,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Step [/steps] 
 
 + Attributes (object)
-    + `id` (required, number) 
+    + `id` (required, number) step uuid
     + `delivery_window` (required, TimeWindow) order delivery window
     + `order` (required, Order) order coverd by this step
     + `estimated_delivery_time` (optional, string)
@@ -1144,7 +1172,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Order [/orders]    
 
 + Attributes (object)
-    + `id`: 2745 (required, string)
+    + `id`: "a08f5828-1630-4afc-aec7-1a172ceb919a" (required, string) order uuid
     + order_number: AA123456 (required, string)
     + products (required, array[Product])
     + origin (optional, Address)
@@ -1209,7 +1237,7 @@ An address contains information about a physical address for pick-up and deliver
     + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
     + shopper (optional, Shopper) - information about the shopper
-    + `shift` (required, string) id of the shift the order belongs to
+    + `shift` (required, string) uuid of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
 + Response 201 (application/json)
@@ -1249,7 +1277,7 @@ An address contains information about a physical address for pick-up and deliver
                 "list": 
                 [
                     {
-                      "id": "53234",
+                      "id": "a08f5828-1630-4afc-aec7-1a172ceb919a",
                       "order_number": "AA123456",
                       "destination": {
                         "postal_code": "08022",
@@ -1528,7 +1556,7 @@ An address contains information about a physical address for pick-up and deliver
 ## Route [/routes]    
 
 + Attributes (object)
-    + `id`: 783 (required, string)
+    + `id`: "58f20afa-098f-4821-a1a2-a8833b4685fd" (required, string) route uuid
     + origin (required, Address)
     + `loading_window` (required, TimeWindow)
     + `execution_window` (required, TimeWindow)
@@ -1560,7 +1588,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Get a Route [GET /routes/{route_id}]
 + Parameters
-    + route_id (required, string) - The Route id
+    + route_id (required, string) - The Route uuid
 + Response 200 (application/json)
     + Attributes (Route)
 
@@ -1569,7 +1597,7 @@ An address contains information about a physical address for pick-up and deliver
 A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
 
 + Attributes (object)
-    + id: 123 (required, string) Unique shift identifier
+    + id: "6b61eab6-8e65-4e83-b410-ae6c0a397449" (required, string) shift uuid
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
@@ -1580,7 +1608,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
     + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
     + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
-    + orders (required, array[string]) list of order ids assigned to this shift
+    + orders (required, array[string]) list of order uuid assigned to this shift
 
 ### Create a Shift [POST /shifts]
 
@@ -1952,7 +1980,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         
 + Response 200 (application/json)
     + Attributes
-        + id: 123 (required, string) Unique shift identifier
+        + id: "59c73102-3fb5-11e7-8f72-ac87a32559ad" (required, string)  shift uuid
         + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
         + span (required)
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
@@ -1965,7 +1993,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
         + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
         + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
-        + orders (required, array[string]) list of order ids assigned to this shift    
+        + orders (required, array[string]) list of order uuids assigned to this shift    
     + Body
     
             {
@@ -2031,7 +2059,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "end_time": "2016-03-17T21:00:00+0100"
                     }
                 ],
-                "orders":["324", "309", "343"]
+                "orders":["20e4af75-0e8e-4e1d-8247-b319922fe677", "a34db12c-224b-40fe-9082-84be67a481f0", "4d1ba181-ef17-4d95-acd2-67445d526a0f"]
             }
     
     
@@ -2048,7 +2076,7 @@ Once the shift optimization has been completed, an event will be triggered.
         
 + Response 200 (application/json)
     + Attributes
-        + id: 123 (required, string) Unique shift identifier
+        + id: 4d6078f7-6279-4ca4-9787-637447b943c4 (required, string) Unique shift identifier
         + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
         + span (required)
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
@@ -2127,7 +2155,7 @@ Once the shift optimization has been completed, an event will be triggered.
                         "end_time": "2016-03-17T21:00:00+0100"
                     }
                 ],
-                "orders":["324", "309", "343"]
+                "orders":["20e4af75-0e8e-4e1d-8247-b319922fe677", "a34db12c-224b-40fe-9082-84be67a481f0", "4d1ba181-ef17-4d95-acd2-67445d526a0f"]
             }
     
         
@@ -2185,12 +2213,12 @@ Once the shift optimization has been completed, an event will be triggered.
 + Response 200 (application/json)
         
         {
-            "unreached_orders": ["5732", "5749"],
+            "unreached_orders": ["e361be10-f4bf-4896-8cb6-8fb0e80eea63", "359a8f65-0b03-4433-8682-11129236669f"],
             "unused_vehicles": [],
             "routes": 
             [
                 {
-                    "id": 7654,
+                    "id": "80cd4323-d8c0-439b-a0ac-3e062459ae95",
                     "delivery_window": 
                     {
                         "start_time": "2016-03-17T09:00:00+0100",
@@ -2214,7 +2242,7 @@ Once the shift optimization has been completed, an event will be triggered.
                     }
                 },
                 {
-                    "id": 7655,
+                    "id": "2beac30e-a082-4398-81b3-a1532c86ba3f",
                     "delivery_window": 
                     {
                         "start_time": "2016-03-17T09:10:00+0100",
