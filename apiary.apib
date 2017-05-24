@@ -106,6 +106,27 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "The shopper misses name information"
             }
+            
+## Warehouse [/check/warehouse]
+
++ Attributes (object)
+    + id: 9b4cdc19-bc39-4e53-bda7-f828070f233e (required, string) - warehouse uuid
+    + area: CASTILLA (required, string) - area covered by this warehouse
+    + location (required, Address) - warehouse location
+
+### Check if Warehouse is valid [POST /check/warehouse]
++ Attributes (Shopper)
+
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid Warehouse / malformatted
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The warehouse should have a location"
+            }
 
 ## Capacity [/check/capacity]
 
@@ -1602,12 +1623,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
     + area (required, Area) Area covered by this shift
+    + warehouse (required, Warehouse) warehouse serving this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
     + main_scenario (optional) 
         + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
         + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
     + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
     + orders (required, array[string]) list of order uuid assigned to this shift
+    
 
 ### Create a Shift [POST /shifts]
 
