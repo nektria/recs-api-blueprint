@@ -1678,6 +1678,563 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     + Attributes (Route)
 
+### Evaluate a Route Scheduling Proposal [POST /routes/schedule-proposal]
++ Request (application/json)
+
+    + Body
+    
+            {
+                "shift_id": "38acd884-454e-11e7-be3e-20d27ac1aaf7",
+                "vehicle": {
+                    "id": "c822b608-dbe2-11e6-b87e-080027346f30",
+                    "vehicle_number": "BCN_TRUCK_ULABOX_29",
+                    "capacities": [
+                        {
+                            "type": "dry",
+                            "quantity": 50
+                        }
+                    ],
+                    "vehicle_category": "TRUCK_3500"
+                },
+                "orders": [
+                    {
+                  "order_number": "AA123460",
+                  "destination": {
+                    "postal_code": "08022",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.000030000000002,
+                      "longitude": 2.0000399999999998
+                    },
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "elevator": 1
+                  },
+                  "delivery_windows": [
+                    {
+                      "start_time": "2016-03-29T15:19:00+0100",
+                      "end_time": "2016-03-29T15:37:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 8,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ],
+                  "origin": {
+                    "postal_code": "08820",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.317397,
+                      "longitude": 2.1213139999999999
+                    },
+                    "street_type": "",
+                    "street_name": "Carrer Numero 112",
+                    "street_number": "",
+                    "city": "El prat de llobregat",
+                    "elevator": 1
+                  },
+                  "shopper": {
+                    "shopper_number": "CVLFNC86D10L682A",
+                    "name": "Francesco",
+                    "surname": "Cavallari"
+                  }
+                },
+                {
+                  "order_number": "REF000067",
+                  "destination": {
+                    "postal_code": "08028",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.375757999999998,
+                      "longitude": 2.1299670000000002
+                    },
+                    "street_type": "",
+                    "street_name": "Rambla Brasil",
+                    "street_number": "1",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-05T16:00:00+0100",
+                      "end_time": "2017-04-05T18:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                },
+                {
+                  "order_number": "REF000066",
+                  "destination": {
+                    "postal_code": "08017",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.403930000000003,
+                      "longitude": 2.1293090000000001
+                    },
+                    "street_type": "",
+                    "street_name": "P Bonanova",
+                    "street_number": "49",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-19T12:00:00+0100",
+                      "end_time": "2017-04-19T14:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                },
+                {
+                  "order_number": "REF000062",
+                  "destination": {
+                    "postal_code": "08026",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.410339,
+                      "longitude": 2.1825450000000002
+                    },
+                    "street_type": "",
+                    "street_name": "Carrer de Provença",
+                    "street_number": "589",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-19T10:00:00+0100",
+                      "end_time": "2017-04-19T12:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                }
+                ]
+            }
+
++ Response 200 (application/json)
+        
+    + Body
+    
+            {
+              "roadmaps": {
+                "unreached_orders": [],
+                "unused_vehicles": [],
+                "routes": [
+                  {
+                    "origin": {
+                      "postal_code": "08820",
+                      "country_code": "ES",
+                      "coordinates": {
+                        "latitude": 41.318787,
+                        "longitude": 2.118863
+                      },
+                      "street_name": "Carrer 111",
+                      "street_number": "s.n.",
+                      "city": "El Prat de Llobregat"
+                    },
+                    "loading_window": {
+                      "start_time": "2017-05-07T07:00:00+0200",
+                      "end_time": "2017-05-07T08:00:00+0200"
+                    },
+                    "execution_window": {
+                      "start_time": "2017-05-07T07:00:00+0200",
+                      "end_time": "2017-05-07T09:13:14+0200"
+                    },
+                    "shift": "38acd884-454e-11e7-be3e-20d27ac1aaf7",
+                    "vehicle": {
+                      "id": "c822b608-dbe2-11e6-b87e-080027346f30",
+                      "vehicle_number": "BCN_TRUCK_ULABOX_29",
+                      "capacities": [
+                        {
+                          "type": "dry",
+                          "quantity": 50
+                        }
+                      ],
+                      "vehicle_category": "TRUCK_3500"
+                    },
+                    "itinerary": [
+                      {
+                        "delivery_window": {
+                          "start_time": "2016-03-29T15:19:00+0100",
+                          "end_time": "2016-03-29T15:37:00+0100"
+                        },
+                        "order": {
+                          "order_number": "AA123460",
+                          "destination": {
+                            "postal_code": "08022",
+                            "country_code": "ES",
+                            "coordinates": {
+                              "latitude": 41.00003,
+                              "longitude": 2.00004
+                            },
+                            "street_type": "Pza.",
+                            "street_name": "Urquinaona",
+                            "street_number": "5",
+                            "city": "Barcelona",
+                            "elevator": 1
+                          },
+                          "status": "pending",
+                          "delivery_windows": [
+                            {
+                              "start_time": "2016-03-29T15:19:00+0100",
+                              "end_time": "2016-03-29T15:37:00+0100"
+                            }
+                          ],
+                          "products": [
+                            {
+                              "name": "box",
+                              "quantity": 8,
+                              "type": "dry",
+                              "quantity_estimated": true,
+                              "weight_kg": 4.5
+                            }
+                          ],
+                          "origin": {
+                            "postal_code": "08820",
+                            "country_code": "ES",
+                            "coordinates": {
+                              "latitude": 41.317397,
+                              "longitude": 2.121314
+                            },
+                            "street_type": "",
+                            "street_name": "Carrer Numero 112",
+                            "street_number": "",
+                            "city": "El prat de llobregat",
+                            "elevator": 1
+                          },
+                          "shopper": {
+                            "shopper_number": "CVLFNC86D10L682A",
+                            "name": "Francesco",
+                            "surname": "Cavallari"
+                          }
+                        },
+                        "estimated_delivery_time": "2017-05-07T07:33:19+0200",
+                        "estimated_delivery_duration": 450,
+                        "parking_cost": 180,
+                        "distance_to_arrive": 29658,
+                        "time_to_arrive": 1819,
+                        "waiting_seconds": 0
+                      },
+                      {
+                        "delivery_window": {
+                          "start_time": "2017-04-05T16:00:00+0100",
+                          "end_time": "2017-04-05T18:00:00+0100"
+                        },
+                        "order": {
+                          "order_number": "REF000067",
+                          "destination": {
+                            "postal_code": "08028",
+                            "country_code": "ES",
+                            "coordinates": {
+                              "latitude": 41.375758,
+                              "longitude": 2.129967
+                            },
+                            "street_type": "",
+                            "street_name": "Rambla Brasil",
+                            "street_number": "1",
+                            "city": "Barcelona",
+                            "elevator": 0
+                          },
+                          "status": "pending",
+                          "delivery_windows": [
+                            {
+                              "start_time": "2017-04-05T16:00:00+0100",
+                              "end_time": "2017-04-05T18:00:00+0100"
+                            }
+                          ],
+                          "products": [
+                            {
+                              "name": "box",
+                              "quantity": 4,
+                              "type": "dry",
+                              "quantity_estimated": true,
+                              "weight_kg": 4.5
+                            }
+                          ]
+                        },
+                        "estimated_delivery_time": "2017-05-07T08:19:41+0200",
+                        "estimated_delivery_duration": 450,
+                        "parking_cost": 240,
+                        "distance_to_arrive": 33832,
+                        "time_to_arrive": 2092,
+                        "waiting_seconds": 0
+                      },
+                      {
+                        "delivery_window": {
+                          "start_time": "2017-04-19T12:00:00+0100",
+                          "end_time": "2017-04-19T14:00:00+0100"
+                        },
+                        "order": {
+                          "order_number": "REF000066",
+                          "destination": {
+                            "postal_code": "08017",
+                            "country_code": "ES",
+                            "coordinates": {
+                              "latitude": 41.40393,
+                              "longitude": 2.129309
+                            },
+                            "street_type": "",
+                            "street_name": "P Bonanova",
+                            "street_number": "49",
+                            "city": "Barcelona",
+                            "elevator": 0
+                          },
+                          "status": "pending",
+                          "delivery_windows": [
+                            {
+                              "start_time": "2017-04-19T12:00:00+0100",
+                              "end_time": "2017-04-19T14:00:00+0100"
+                            }
+                          ],
+                          "products": [
+                            {
+                              "name": "box",
+                              "quantity": 4,
+                              "type": "dry",
+                              "quantity_estimated": true,
+                              "weight_kg": 4.5
+                            }
+                          ]
+                        },
+                        "estimated_delivery_time": "2017-05-07T08:39:33+0200",
+                        "estimated_delivery_duration": 450,
+                        "parking_cost": 180,
+                        "distance_to_arrive": 3934,
+                        "time_to_arrive": 562,
+                        "waiting_seconds": 0
+                      },
+                      {
+                        "delivery_window": {
+                          "start_time": "2017-04-19T10:00:00+0100",
+                          "end_time": "2017-04-19T12:00:00+0100"
+                        },
+                        "order": {
+                          "order_number": "REF000062",
+                          "destination": {
+                            "postal_code": "08026",
+                            "country_code": "ES",
+                            "coordinates": {
+                              "latitude": 41.410339,
+                              "longitude": 2.182545
+                            },
+                            "street_type": "",
+                            "street_name": "Carrer de Provença",
+                            "street_number": "589",
+                            "city": "Barcelona",
+                            "elevator": 0
+                          },
+                          "status": "pending",
+                          "delivery_windows": [
+                            {
+                              "start_time": "2017-04-19T10:00:00+0100",
+                              "end_time": "2017-04-19T12:00:00+0100"
+                            }
+                          ],
+                          "products": [
+                            {
+                              "name": "box",
+                              "quantity": 4,
+                              "type": "dry",
+                              "quantity_estimated": true,
+                              "weight_kg": 4.5
+                            }
+                          ]
+                        },
+                        "estimated_delivery_time": "2017-05-07T09:05:44+0200",
+                        "estimated_delivery_duration": 450,
+                        "parking_cost": 180,
+                        "distance_to_arrive": 5799,
+                        "time_to_arrive": 941,
+                        "waiting_seconds": 0
+                      }
+                    ],
+                    "name": "Route 1"
+                  }
+                ]
+              },
+              "orders": [
+                {
+                  "order_number": "AA123460",
+                  "destination": {
+                    "postal_code": "08022",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.00003,
+                      "longitude": 2.00004
+                    },
+                    "street_type": "Pza.",
+                    "street_name": "Urquinaona",
+                    "street_number": "5",
+                    "city": "Barcelona",
+                    "elevator": 1
+                  },
+                  "status": "pending",
+                  "delivery_windows": [
+                    {
+                      "start_time": "2016-03-29T15:19:00+0100",
+                      "end_time": "2016-03-29T15:37:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 8,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ],
+                  "origin": {
+                    "postal_code": "08820",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.317397,
+                      "longitude": 2.121314
+                    },
+                    "street_type": "",
+                    "street_name": "Carrer Numero 112",
+                    "street_number": "",
+                    "city": "El prat de llobregat",
+                    "elevator": 1
+                  },
+                  "shopper": {
+                    "shopper_number": "CVLFNC86D10L682A",
+                    "name": "Francesco",
+                    "surname": "Cavallari"
+                  }
+                },
+                {
+                  "order_number": "REF000067",
+                  "destination": {
+                    "postal_code": "08028",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.375758,
+                      "longitude": 2.129967
+                    },
+                    "street_type": "",
+                    "street_name": "Rambla Brasil",
+                    "street_number": "1",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "status": "pending",
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-05T16:00:00+0100",
+                      "end_time": "2017-04-05T18:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                },
+                {
+                  "order_number": "REF000066",
+                  "destination": {
+                    "postal_code": "08017",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.40393,
+                      "longitude": 2.129309
+                    },
+                    "street_type": "",
+                    "street_name": "P Bonanova",
+                    "street_number": "49",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "status": "pending",
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-19T12:00:00+0100",
+                      "end_time": "2017-04-19T14:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                },
+                {
+                  "order_number": "REF000062",
+                  "destination": {
+                    "postal_code": "08026",
+                    "country_code": "ES",
+                    "coordinates": {
+                      "latitude": 41.410339,
+                      "longitude": 2.182545
+                    },
+                    "street_type": "",
+                    "street_name": "Carrer de Provença",
+                    "street_number": "589",
+                    "city": "Barcelona",
+                    "elevator": 0
+                  },
+                  "status": "pending",
+                  "delivery_windows": [
+                    {
+                      "start_time": "2017-04-19T10:00:00+0100",
+                      "end_time": "2017-04-19T12:00:00+0100"
+                    }
+                  ],
+                  "products": [
+                    {
+                      "name": "box",
+                      "quantity": 4,
+                      "type": "dry",
+                      "quantity_estimated": true,
+                      "weight_kg": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+        
++ Response 404
+
 ## Shift [/shifts]
 
 A Shift groups the orders of a specific time range and area, and has relationships with the resources that are assigned to fullfill these orders.
