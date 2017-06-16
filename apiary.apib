@@ -106,27 +106,6 @@ An address contains information about a physical address for pick-up and deliver
                 "status": "error",
                 "error": "The shopper misses name information"
             }
-            
-## Warehouse [/check/warehouse]
-
-+ Attributes (object)
-    + id: 9b4cdc19-bc39-4e53-bda7-f828070f233e (required, string) - warehouse uuid
-    + area: CASTILLA (required, string) - area covered by this warehouse
-    + location (required, Address) - warehouse location
-
-### Check if Warehouse is valid [POST /check/warehouse]
-+ Attributes (Shopper)
-
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Warehouse / malformatted
-    + Body
-    
-            {
-                "status": "error",
-                "error": "The warehouse should have a location"
-            }
 
 ## Capacity [/check/capacity]
 
@@ -330,6 +309,27 @@ An address contains information about a physical address for pick-up and deliver
     + area_id (required, string) - The Area Id
 + Response 200 (application/json)
     + Attributes (Area)
+    
+## Warehouse [/warehouse]
+
++ Attributes (object)
+    + id: 9b4cdc19-bc39-4e53-bda7-f828070f233e (required, string) - warehouse uuid
+    + area: CASTILLA (required, string) - area covered by this warehouse
+    + location (required, Address) - warehouse location
+
+### Check if Warehouse is valid [POST /check/warehouse]
++ Attributes (Shopper)
+
++ Response 204
+            
++ Response 400 (application/json)
+    Invalid Warehouse / malformatted
+    + Body
+    
+            {
+                "status": "error",
+                "error": "The warehouse should have a location"
+            }    
     
 ## Warehouses [/warehouses]
 
