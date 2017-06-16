@@ -330,6 +330,78 @@ An address contains information about a physical address for pick-up and deliver
     + area_id (required, string) - The Area Id
 + Response 200 (application/json)
     + Attributes (Area)
+    
+## Warehouses [/warehouses]
+
+### Create a New Warehouse [POST]
+
++ Request (application/json)
+
++ Attributes (object)
+    + id: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (required, string) - warehouse uuid
+    + location (required, Address) - warehouse location
+    + postal_codes: 08001, 08002, 08003 (optional, array) - list of postal codes covered by warehouse
+
+
++ Response 201 (application/json)
+    + Headers
+    
+            Location: /warehouses/{id}
+
+### Update Warehouse [PUT /warehouses/{id}]
++ Parameters
+    + id: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (required, string)
+    
++ Request (application/json)
+
++ Attributes (object)
+    + location (required, Address) - warehouse location
+    + postal_codes: 08001, 08002, 08003, 08005 (optional, array) - list of postal codes covered by warehouse
+
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+              "location": {
+                "postal_code": "08022",
+                "street_type": "Pza.",
+                "street_name": "Urquinaona",
+                "street_number": "5",
+                "floor": "4º",
+                "door": "1ª",
+                "stair_building": "Escalera A",
+                "city": "Barcelona",
+                "country_code": "ES",
+                "elevator": 1,
+                "coordinates": {
+                  "latitude": 41.123456,
+                  "longitude": 2.123456
+                }
+              },
+              "postal_codes": [
+                "08001",
+                "08002",
+                "08003",
+                "08005"
+              ]
+            }
+            
+### Update Warehouse Postal Codes [PUT /warehouses/{id}/postalcodes]
+
++ Request (application/json)
+
+        {
+            "postal_codes": [
+                "08001",
+                "08002",
+                "08004"
+            ]
+            
+        }
+
++ Response 202 (application/json)
 
 ##Group Services
 
