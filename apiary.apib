@@ -2334,7 +2334,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + span (required, TimeWindow)
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
-    + time_slots (optional, array[TimeWindow]) delivery time windows to be proposed to the shopper
     
 + Response 201 (application/json)
         
@@ -2365,21 +2364,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         }
                     ],
                     "vehicle_category": "TRUCK_3500"
-                }
-            ],
-            "time_slots":
-            [
-                {
-                    "start_time": "2016-03-17T15:00:00+0100",
-                    "end_time": "2016-03-17T27:00:00+0100"
-                },
-                {
-                    "start_time": "2016-03-17T16:00:00+0100",
-                    "end_time": "2016-03-17T28:00:00+0100"
-                },
-                {
-                    "start_time": "2016-03-17T16:00:00+0100",
-                    "end_time": "2016-03-17T21:00:00+0100"
                 }
             ],
             "orders":[]
@@ -2492,21 +2476,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "vehicle_category": "TRUCK_3500"
                 }
             ],
-            "time_slots":
-            [
-                {
-                    "start_time": "2016-03-17T15:00:00+0100",
-                    "end_time": "2016-03-17T27:00:00+0100"
-                },
-                {
-                    "start_time": "2016-03-17T16:00:00+0100",
-                    "end_time": "2016-03-17T28:00:00+0100"
-                },
-                {
-                    "start_time": "2016-03-17T16:00:00+0100",
-                    "end_time": "2016-03-17T21:00:00+0100"
-                }
-            ],
             "orders":[
                 {
                     "id" : "00000000-0000-0000-0000-0000000000",
@@ -2613,7 +2582,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
             + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
         + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
-        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
         + orders (required, array[string]) list of order ids assigned to this shift    
     + Body
     
@@ -2665,21 +2633,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "vehicle_category": "TRUCK_3500"
                     }
                 ],
-                "time_slots":
-                [
-                    {
-                        "start_time": "2016-03-17T15:00:00+0100",
-                        "end_time": "2016-03-17T27:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T28:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T21:00:00+0100"
-                    }
-                ],
                 "orders":["324", "309", "343"]
             }
     
@@ -2707,7 +2660,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
             + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
         + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
-        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
         + orders (required, array[string]) list of order uuids assigned to this shift    
     + Body
     
@@ -2759,21 +2711,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "vehicle_category": "TRUCK_3500"
                     }
                 ],
-                "time_slots":
-                [
-                    {
-                        "start_time": "2016-03-17T15:00:00+0100",
-                        "end_time": "2016-03-17T27:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T28:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T21:00:00+0100"
-                    }
-                ],
                 "orders":["20e4af75-0e8e-4e1d-8247-b319922fe677", "a34db12c-224b-40fe-9082-84be67a481f0", "4d1ba181-ef17-4d95-acd2-67445d526a0f"]
             }
     
@@ -2803,7 +2740,6 @@ Once the shift optimization has been completed, an event will be triggered.
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
             + selected_vehicles (required, array[string]) list of vehicle ids selected for this scenario
         + other_scenarios (optional, array[string]) list of ids of scenarios beside the main senario
-        + time_slots (required, array[TimeWindow]) delivery time windows proposed to the shopper
         + orders (required, array[string]) list of order ids assigned to this shift    
     + Body
     
@@ -2853,21 +2789,6 @@ Once the shift optimization has been completed, an event will be triggered.
                             "helpers": 1
                         },
                         "vehicle_category": "TRUCK_3500"
-                    }
-                ],
-                "time_slots":
-                [
-                    {
-                        "start_time": "2016-03-17T15:00:00+0100",
-                        "end_time": "2016-03-17T27:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T28:00:00+0100"
-                    },
-                    {
-                        "start_time": "2016-03-17T16:00:00+0100",
-                        "end_time": "2016-03-17T21:00:00+0100"
                     }
                 ],
                 "orders":["20e4af75-0e8e-4e1d-8247-b319922fe677", "a34db12c-224b-40fe-9082-84be67a481f0", "4d1ba181-ef17-4d95-acd2-67445d526a0f"]
