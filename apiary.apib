@@ -2323,7 +2323,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
-    + cutoff_time: `2017-04-19T12:00:00+0100` (required, string) ISO8601 time at which the order assignations end (informative)
+    + cutoff_time: `2017-04-19T12:00:00+0100` (optional, string) ISO8601 time at which the order assignations end (informative)
+    + capacity (optional, array[Capacity]) array of capacities that can be handled by this shift. The elements in the list are the elements that will be checked against. Thus, if no capacity is specified, it means there is no limit of capacity.
     + area (required, Area) Area covered by this shift
     + warehouse (required, Warehouse) warehouse serving this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
