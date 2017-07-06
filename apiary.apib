@@ -311,7 +311,7 @@ An address contains information about a physical address for pick-up and deliver
 + Response 200 (application/json)
     + Attributes (Area)
     
-## Warehouse [/warehouse]
+## Warehouse [/warehouses]
 
 + Attributes (object)
     + id: 9b4cdc19-bc39-4e53-bda7-f828070f233e (required, string) - warehouse uuid
@@ -332,7 +332,25 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "The warehouse should have a location"
             }    
 
-### Create a New Warehouse [POST]
+### List Warehouses [GET /warehouses?limit={limit}&offset={offset}]
++ Parameters
+    + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
+    + offset (optional, number) - Default 0. Postion of the first returned record.
+
++ Response 200 (application/json)
+    + Attributes 
+        + list (array[Warehouse])
+    
+            list of warehouses
+
+### Get a Warehouse [GET /warehouses/{warehouse_id}]
++ Parameters
+    + warehouse_id (required, string) - The Warehouse UUID
++ Response 200 (application/json)
+    + Attributes (Warehouse)
+
+
+### Create a New Warehouse [POST /warehouses]
 
 + Request (application/json)
 
