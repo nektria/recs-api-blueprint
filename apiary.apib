@@ -442,7 +442,8 @@ An address contains information about a physical address for pick-up and deliver
     + origin (optional, Address) - Submitted overriding default Warehouse address
     + availability (required, boolean) is there some delivery option available ?
     + `custom_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows with details of initial situation whenever they were submitted
-    + `proposed_delivery_windows` (required, array[TimeWindowCost])
+    + `proposed_delivery_windows` (required, array[TimeWindowCost]) - recomendation for dynamic pricing
+    + `generic_delivery_windows` (optional, array[GridTimeWindow]) - delivery windows to be used for system cache
     + `selected_delivery_windows` (optional, array[TimeWindow])
     + status (required, string) - requested, validated, confirmed or cancelled
     + priority (optional, number) - priority of the resulting order, on a scale from 1 (high) to 10 (low).
