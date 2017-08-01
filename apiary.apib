@@ -1786,7 +1786,7 @@ An address contains information about a physical address for pick-up and deliver
                 "shift_id": "38acd884-454e-11e7-be3e-20d27ac1aaf7",
                 "vehicle": {
                     "vehicle_number": "BCN_TRUCK_ULABOX_29",
-                    "capacities": [
+                    "capacity": [
                         {
                             "type": "dry",
                             "quantity": 50
@@ -1973,7 +1973,7 @@ An address contains information about a physical address for pick-up and deliver
                     "vehicle": {
                       "id": "c822b608-dbe2-11e6-b87e-080027346f30",
                       "vehicle_number": "BCN_TRUCK_ULABOX_29",
-                      "capacities": [
+                      "capacity": [
                         {
                           "type": "dry",
                           "quantity": 50
@@ -2343,7 +2343,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
     + cutoff_time: `2017-04-19T12:00:00+0100` (optional, string) ISO8601 time at which the order assignations end (informative)
-    + capacity (optional, array[Capacity]) array of capacities that can be handled by this shift. The elements in the list are the elements that will be checked against. Thus, if no capacity is specified, it means there is no limit of capacity.
+    + capacity (optional, array[Capacity]) array of capacities that can be handled by this shift (usually one element,  expressed in lines)
     + area (optional, Area) DEPRECATED - Area covered by this shift
     + warehouse (required, Warehouse) warehouse serving this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
@@ -2362,7 +2362,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
     + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (optional, string) DEPRECATED - id of the area assigned to this shift
-    + warehouse: `79069bce-317e-4e12-819c-cec27aa02048` (required, string) id of the warehouse assigned to this shift    
+    + warehouse: `79069bce-317e-4e12-819c-cec27aa02048` (required, string) id of the warehouse assigned to this shift
+    + capacity (optional, array[Capacity]) capacity for preparing orders in this shift (usually measured in lines)
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
     
 + Response 201 (application/json)
@@ -2374,20 +2375,30 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "created",
+            "capacity" : 
+                    [
+                        {
+                            "type": "purchase",
+                            "quantity": 315,
+                            "unit": "line"
+                        }
+                    ],
             "warehouse": "79069bce-317e-4e12-819c-cec27aa02048",
             "fleet":
             [
                 {
                     "vehicle_number": "BCN_VAN_1",
-                    "capacities" : 
+                    "capacity" : 
                     [
                         {
-                            "type": "dry",
-                            "quantity": 30
+                            "type": "formatosPedido",
+                            "quantity": 50,
+                            "unit": "box"
                         },
                         {
-                            "type": "cold",
-                            "quantity": 30
+                            "type": "weight",
+                            "quantity": 750,
+                            "unit": "kg"
                         }
                     ],
                     "vehicle_category": "TRUCK_3500"
@@ -2418,6 +2429,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     {
                         "id": 1,
                         "name": "2016-03-29 mañana",
+                        "capacity" : 
+                        [
+                            {
+                                "type": "purchase",
+                                "quantity": 315,
+                                "unit": "line"
+                            }
+                        ],
                         "span": 
                         {
                             "start_time": "2016-03-14T07:00:00+0100",
@@ -2428,6 +2447,14 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     {
                         "id": 2,
                         "name": "2016-03-29 tarde",
+                        "capacity" : 
+                        [
+                            {
+                                "type": "purchase",
+                                "quantity": 315,
+                                "unit": "line"
+                            }
+                        ],
                         "span":
                         {
                             "start_time": "2016-03-14T15:00:00+0100",
@@ -2462,38 +2489,47 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "optimized",
-            "area": {
-                    "id": "59",
-                    "name": "BCN"
-            },
+            "warehouse": "fb3251d4-95f8-4580-8d51-928419085f5b",
+            "capacity" : 
+            [
+                {
+                    "type": "purchase",
+                    "quantity": 315,
+                    "unit": "line"
+                }
+            ]
             "fleet":
             [
                 {
                     "vehicle_number": "BCN_VAN_1",
-                    "capacities" : 
+                    "capacity" : 
                     [
                         {
-                            "type": "dry",
-                            "quantity": 30
+                            "type": "formatosPedido",
+                            "quantity": 50,
+                            "unit": "box"
                         },
                         {
-                            "type": "cold",
-                            "quantity": 30
+                            "type": "weight",
+                            "quantity": 750,
+                            "unit": "kg"
                         }
                     ],
                     "vehicle_category": "TRUCK_3500"
                 },
                 {
                     "vehicle_number": "BCN_VAN_2",
-                    "capacities" : 
+                    "capacity" : 
                     [
                         {
-                            "type": "dry",
-                            "quantity": 30
+                            "type": "formatosPedido",
+                            "quantity": 50,
+                            "unit": "box"
                         },
                         {
-                            "type": "cold",
-                            "quantity": 30
+                            "type": "weight",
+                            "quantity": 750,
+                            "unit": "kg"
                         }
                     ],
                     "options":
@@ -2505,12 +2541,12 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             ],
             "orders":[
                 {
-                    "id" : "00000000-0000-0000-0000-0000000000",
-                    "order_number" : "0000000"
+                    "id" : "48af0d84-52d1-478d-a5b3-775e139a8825",
+                    "order_number" : "GPK55849"
                 },
                 {
-                    "id" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                    "order_number" : "xxxxxxx"
+                    "id" : "c63ce5b4-f214-4ca6-992b-58f20349d9d0",
+                    "order_number" : "GPK55850"
                 }
             ]
         }
@@ -2542,11 +2578,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "open",
-            "area": {
-                    "id": "59",
-                    "name": "BCN"
-            },
-            "orders":[48920]
+            "warehouse": "cd44b02f-f2c1-4615-bd47-f7eb56a4cca7",
+            "orders":["c63ce5b4-f214-4ca6-992b-58f20349d9d0"]
         }
         
 + Response 404
@@ -2556,7 +2589,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 ### Remove an Order from a Shift [PATCH /shifts/{shift_id}/remove-order]
 
 + Parameters
-    + shift_id (required, string) - Id of the shift, retrievable with a GET request.
+    + shift_id (required, string) - UUID of the shift, retrievable with a GET request.
 
 + Request (application/json)
     + Attributes
@@ -2564,7 +2597,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + Body
     
             {
-                "order_id": "48920"
+                "order_id": "c63ce5b4-f214-4ca6-992b-58f20349d9d0"
             }
             
 + Response 200 (application/json)
@@ -2576,10 +2609,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "open",
-            "area": {
-                    "id": "59",
-                    "name": "BCN"
-            },
+            "warehouse": "118bc89d-351f-4874-95ba-31d3fd3ca42f",
             "orders":[]
         }
         
@@ -2603,7 +2633,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
         + status: pending (required, string) shift status
-        + area (required, Area) Area covered by this shift
+        + area (optional, Area) DEPRECATED - Area covered by this shift
+        + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
@@ -2619,38 +2650,39 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                     "end_time": "2016-03-17T23:00:00+0100"
                 },
                 "status": "closed",
-                "area": {
-                    "id": "59",
-                    "name": "BCN"
-                },
+                "warehouse": "3236ff22-4e8f-4f3d-a1bb-d69910de9011",
                 "fleet":
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "vehicle_category": "TRUCK_3500"
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "options":
@@ -2660,7 +2692,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                         "vehicle_category": "TRUCK_3500"
                     }
                 ],
-                "orders":["324", "309", "343"]
+                "orders":["69fa08c3-55aa-480c-b394-d9d2b170d514", "86b165c6-85a6-4c13-b360-83ef64b3e79b", "1e82e6d0-d7ea-4a6e-bc1a-1c0dd2fab1af"]
             }
     
     
@@ -2681,7 +2713,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
         + status: pending (required, string) shift status
-        + area (required, Area) Area covered by this shift
+        + area (optional, Area) DEPRECATED - Area covered by this shift
+        + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
@@ -2705,30 +2738,34 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "vehicle_category": "TRUCK_3500"
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "options":
@@ -2761,7 +2798,8 @@ Once the shift optimization has been completed, an event will be triggered.
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
         + status: pending (required, string) shift status
-        + area (required, Area) Area covered by this shift
+        + area (optional, Area) DEPRECATED - Area covered by this shift
+        + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
             + status (required, string) status of the main scenario - created, optimizing, optimized, ongoing or done
@@ -2785,22 +2823,24 @@ Once the shift optimization has been completed, an event will be triggered.
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "vehicle_category": "TRUCK_3500"
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
                                 "type": "dry",
@@ -2831,30 +2871,34 @@ Once the shift optimization has been completed, an event will be triggered.
         [
             {
                 "vehicle_number": "BCN_VAN_1",
-                "capacities" : 
+                "capacity" : 
                 [
                     {
-                        "type": "dry",
-                        "quantity": 30
+                        "type": "formatosPedido",
+                        "quantity": 50,
+                        "unit": "box"
                     },
                     {
-                        "type": "cold",
-                        "quantity": 30
+                        "type": "weight",
+                        "quantity": 750,
+                        "unit": "kg"
                     }
                 ],
                 "vehicle_category": "TRUCK_3500"
             },
             {
                 "vehicle_number": "BCN_VAN_2",
-                "capacities" : 
+                "capacity" : 
                 [
                     {
-                        "type": "dry",
-                        "quantity": 30
+                        "type": "formatosPedido",
+                        "quantity": 50,
+                        "unit": "box"
                     },
                     {
-                        "type": "cold",
-                        "quantity": 30
+                        "type": "weight",
+                        "quantity": 750,
+                        "unit": "kg"
                     }
                 ],
                 "options":
@@ -2890,15 +2934,17 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "vehicle_category": "TRUCK_3500"
@@ -2914,15 +2960,17 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
+                        "capacity" : 
                         [
                             {
-                                "type": "dry",
-                                "quantity": 30
+                                "type": "formatosPedido",
+                                "quantity": 50,
+                                "unit": "box"
                             },
                             {
-                                "type": "cold",
-                                "quantity": 30
+                                "type": "weight",
+                                "quantity": 750,
+                                "unit": "kg"
                             }
                         ],
                         "options":
