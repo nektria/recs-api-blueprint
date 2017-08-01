@@ -2344,7 +2344,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
     + status: pending (required, string) shift status
     + cutoff_time: `2017-04-19T12:00:00+0100` (optional, string) ISO8601 time at which the order assignations end (informative)
     + capacity (optional, array[Capacity]) array of capacities that can be handled by this shift. The elements in the list are the elements that will be checked against. Thus, if no capacity is specified, it means there is no limit of capacity.
-    + area (required, Area) Area covered by this shift
+    + area (optional, Area) DEPRECATED - Area covered by this shift
     + warehouse (required, Warehouse) warehouse serving this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
     + main_scenario (optional) 
@@ -2361,7 +2361,8 @@ A Shift groups the orders of a specific time range and area, and has relationshi
 + Attributes
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
-    + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (required, string) id of the area assigned to this shift
+    + area: `bf7976da-ddc7-4801-b8d5-95577f05e411` (optional, string) DEPRECATED - id of the area assigned to this shift
+    + warehouse: `79069bce-317e-4e12-819c-cec27aa02048` (required, string) id of the warehouse assigned to this shift    
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
     
 + Response 201 (application/json)
@@ -2373,10 +2374,7 @@ A Shift groups the orders of a specific time range and area, and has relationshi
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "created",
-            "area": {
-                    "id": "59",
-                    "name": "BCN"
-            },
+            "warehouse": "79069bce-317e-4e12-819c-cec27aa02048",
             "fleet":
             [
                 {
