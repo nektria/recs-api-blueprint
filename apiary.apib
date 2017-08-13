@@ -2408,13 +2408,12 @@ A Shift groups the orders of a specific time range and area, and has relationshi
         }
 
 
-### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&area_id={area_id}&status={status}]
+### List Shifts [GET /shifts?limit={limit}&offset={offset}&expand={expand}&status={status}]
 
 + Parameters
     + limit (optional, number) - Default 10, from 1 to 100. Number of returned values.
     + offset (optional, number) - Default 0. Start point of the returned array.
     + expand: false (optional, boolean) - When true, returns entire shift objects.
-    + area_id: BCN (optional, string) - filter shifts within an area
     + status: pending (optional, string) - filter shift by status
 
 + Response 200 (application/json)
@@ -2633,7 +2632,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
         + status: pending (required, string) shift status
-        + area (optional, Area) DEPRECATED - Area covered by this shift
         + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
@@ -2713,7 +2711,6 @@ A Shift groups the orders of a specific time range and area, and has relationshi
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
         + status: pending (required, string) shift status
-        + area (optional, Area) DEPRECATED - Area covered by this shift
         + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
@@ -2797,8 +2794,7 @@ Once the shift optimization has been completed, an event will be triggered.
         + span (required)
             + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
             + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends    
-        + status: pending (required, string) shift status
-        + area (optional, Area) DEPRECATED - Area covered by this shift
+        + status: pending (required, string) shift statusmo
         + warehouse (required, Warehouse) - Warehouse supplying this shift
         + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
         + main_scenario (optional) 
