@@ -2343,7 +2343,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
     + span (required, TimeWindow)
     + status: pending (required, string) shift status
     + cutoff_time: `2017-04-19T12:00:00+0100` (optional, string) ISO8601 time at which the order assignations end (informative)
-    + capacity (optional, array[Capacity]) array of capacities that can be handled by this shift (usually one element,  expressed in lines)
+    + capacities (optional, array[Capacity]) array of capacities that can be handled by this shift (usually one element,  expressed in lines)
     + warehouse (required, Warehouse) warehouse serving this shift
     + fleet (required, array[Vehicle]) list of vehicles assigned to this shift
     + main_scenario (optional) 
@@ -2362,7 +2362,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
     + span (required, TimeWindow)
     + cutoff_time: `2017-04-19T12:00:00` (optional, string) ISO8601 time at which the order assignations end (informative)
     + warehouse: `79069bce-317e-4e12-819c-cec27aa02048` (required, string) id of the warehouse assigned to this shift
-    + capacity (optional, array[Capacity]) capacity for preparing orders in this shift (usually measured in lines)
+    + capacities (optional, array[Capacity]) capacities for preparing orders in this shift (usually measured in lines)
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
     
 + Response 201 (application/json)
@@ -2374,7 +2374,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                 "end_time": "2016-03-17T23:00:00+0100"
             },
             "status": "created",
-            "capacity" : 
+            "capacities" : 
                     [
                         {
                             "type": "purchase",
@@ -2427,7 +2427,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                     {
                         "id": 1,
                         "name": "2016-03-29 mañana",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "purchase",
@@ -2445,7 +2445,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                     {
                         "id": 2,
                         "name": "2016-03-29 tarde",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "purchase",
@@ -2488,7 +2488,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
             },
             "status": "optimized",
             "warehouse": "fb3251d4-95f8-4580-8d51-928419085f5b",
-            "capacity" : 
+            "capacities" : 
             [
                 {
                     "type": "purchase",
