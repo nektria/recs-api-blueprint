@@ -238,7 +238,7 @@ An address contains information about a physical address for pick-up and deliver
 
 + Attributes (object)
     + `vehicle_number`: BCN_VAN_1 (optional, string)
-    + capacity (required, array[Capacity]) - list describing the type of load the vehicle can carry
+    + capacities (required, array[Capacity]) - list describing the type of load the vehicle can carry
     + type: van (optional, string)
     + options (optional) 
         + efficiency: 1.2 (optional, number)
@@ -1786,7 +1786,7 @@ An address contains information about a physical address for pick-up and deliver
                 "shift_id": "38acd884-454e-11e7-be3e-20d27ac1aaf7",
                 "vehicle": {
                     "vehicle_number": "BCN_TRUCK_ULABOX_29",
-                    "capacity": [
+                    "capacities": [
                         {
                             "type": "dry",
                             "quantity": 50
@@ -1973,7 +1973,7 @@ An address contains information about a physical address for pick-up and deliver
                     "vehicle": {
                       "id": "c822b608-dbe2-11e6-b87e-080027346f30",
                       "vehicle_number": "BCN_TRUCK_ULABOX_29",
-                      "capacity": [
+                      "capacities": [
                         {
                           "type": "dry",
                           "quantity": 50
@@ -2360,6 +2360,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
 + Attributes
     + name: `2016-03-29 mañana` (optional, string) Custom name of this shift
     + span (required, TimeWindow)
+    + cutoff_time: `2017-04-19T12:00:00` (optional, string) ISO8601 time at which the order assignations end (informative)
     + warehouse: `79069bce-317e-4e12-819c-cec27aa02048` (required, string) id of the warehouse assigned to this shift
     + capacity (optional, array[Capacity]) capacity for preparing orders in this shift (usually measured in lines)
     + fleet (required, array[Vehicle]) list of the vehicles assigned to this shift
@@ -2386,7 +2387,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
             [
                 {
                     "vehicle_number": "BCN_VAN_1",
-                    "capacity" : 
+                    "capacities" : 
                     [
                         {
                             "type": "formatosPedido",
@@ -2499,7 +2500,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
             [
                 {
                     "vehicle_number": "BCN_VAN_1",
-                    "capacity" : 
+                    "capacities" : 
                     [
                         {
                             "type": "formatosPedido",
@@ -2516,7 +2517,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                 },
                 {
                     "vehicle_number": "BCN_VAN_2",
-                    "capacity" : 
+                    "capacities" : 
                     [
                         {
                             "type": "formatosPedido",
@@ -2651,7 +2652,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2668,7 +2669,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2733,7 +2734,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2750,7 +2751,7 @@ A Shift groups the orders of a specific time range and warehouse, and has relati
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2817,7 +2818,7 @@ Once the shift optimization has been completed, an event will be triggered.
                 [
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2834,7 +2835,7 @@ Once the shift optimization has been completed, an event will be triggered.
                     },
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "dry",
@@ -2865,7 +2866,7 @@ Once the shift optimization has been completed, an event will be triggered.
         [
             {
                 "vehicle_number": "BCN_VAN_1",
-                "capacity" : 
+                "capacities" : 
                 [
                     {
                         "type": "formatosPedido",
@@ -2882,7 +2883,7 @@ Once the shift optimization has been completed, an event will be triggered.
             },
             {
                 "vehicle_number": "BCN_VAN_2",
-                "capacity" : 
+                "capacities" : 
                 [
                     {
                         "type": "formatosPedido",
@@ -2928,7 +2929,7 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_number": "BCN_VAN_1",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
@@ -2954,7 +2955,7 @@ Once the shift optimization has been completed, an event will be triggered.
                     "vehicle": 
                     {
                         "vehicle_number": "BCN_VAN_2",
-                        "capacity" : 
+                        "capacities" : 
                         [
                             {
                                 "type": "formatosPedido",
