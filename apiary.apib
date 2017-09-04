@@ -267,7 +267,7 @@ An address contains information about a physical address for pick-up and deliver
 
 ### Check if an Area is valid [POST /check/area]
 
-    + Attributes (Area)
++ Attributes (Area)
     + Body
 
             {
@@ -310,7 +310,7 @@ An address contains information about a physical address for pick-up and deliver
     + area_id (required, string) - The Area Id
 + Response 200 (application/json)
     + Attributes (Area)
-    
+
 ## Warehouse [/warehouses]
 
 + Attributes (object)
@@ -319,7 +319,10 @@ An address contains information about a physical address for pick-up and deliver
     + location (required, Address) - warehouse location
 
 ### Check if Warehouse is valid [POST /check/warehouse]
-+ Attributes (Shopper)
++ Attributes (object)
+    + id: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (required, string) - warehouse uuid
+    + location (required, Address) - warehouse location
+    + postal_codes: 08001, 08002, 08003 (optional, array) - list of postal codes covered by warehouse
 
 + Response 204
             
