@@ -158,7 +158,7 @@ An address contains information about a physical address for pick-up and deliver
     + `final_price`: 9 (required, number) the final price that is recomended for transportation
     + `currency_code`: EUR (required, string) 3 letter currency code corresponding to this price
     + `logistic_cost`: 120 (required, number) the estimated difficulty for performing this delivery, as a percentage
-    + `full`: false (optional, boolean) has this window reached estimated delivery capacity?
+    + `full`: false (optional, boolean) has this window reached estimated delivery capacity? If this attribute is not returned for a time window, Nektria won't manage orders for that time window. If you want Nektria to manage it, you need to create the corresponding shift before.
     + `free`: false (required, boolean) should this window be proposed for free?
     + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
     + `eco`: false (optional, boolean) should this window be proposed as ECO?
