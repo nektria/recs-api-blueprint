@@ -81,29 +81,6 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "The product is missing weight information"
             }
 
-## Shopper [/check/shopper]
-
-+ Attributes (object)
-    + shopper_number: KCWS5492344 (required, string) - shopper identifyer in client system
-    + name: David (required, string) - name of the shopper
-    + surname: Lopez (required, string) - surname of the shopper
-    + email: david.lopez@gmail.com (required, string) - surname of the shopper
-    + phone: 665 005 493 (required, string) - surname of the shopper
-
-### Check if Shopper is valid [POST /check/shopper]
-+ Attributes (Shopper)
-
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Shopper / malformatted
-    + Body
-    
-            {
-                "status": "error",
-                "error": "The shopper misses name information"
-            }
-
 ## Capacity [/check/capacity]
 
 + Attributes (object)
@@ -410,10 +387,8 @@ An address contains information about a physical address for pick-up and deliver
     + `id`: "a08f5828-1630-4afc-aec7-1a172ceb919a" (required, string) order uuid
     + order_number: AA123456 (required, string)
     + products (required, array[Product])
-    + origin (optional, Address)
     + destination (required, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + shift_id (optional, string)
     + status (required, string)
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
@@ -440,9 +415,7 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
-    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
     
@@ -469,9 +442,7 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
-    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + `shift` (required, string) uuid of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
@@ -543,19 +514,6 @@ An address contains information about a physical address for pick-up and deliver
                           "weight_kg": 4.5
                         }
                       ],
-                      "origin": {
-                        "postal_code": "08022",
-                        "street_type": "Pza.",
-                        "street_name": "Urquinaona",
-                        "street_number": "5",
-                        "city": "Barcelona",
-                        "country_code": "ES",
-                        "elevator": 1,
-                        "coordinates": {
-                          "latitude": 41.123456,
-                          "longitude": 2.123456
-                        }
-                      },
                       "shift": 123
                     },
                     {
@@ -590,19 +548,6 @@ An address contains information about a physical address for pick-up and deliver
                           "weight_kg": 4.5
                         }
                       ],
-                      "origin": {
-                        "postal_code": "08022",
-                        "street_type": "Pza.",
-                        "street_name": "Urquinaona",
-                        "street_number": "5",
-                        "city": "Barcelona",
-                        "country_code": "ES",
-                        "elevator": 1,
-                        "coordinates": {
-                          "latitude": 41.123456,
-                          "longitude": 2.123456
-                        }
-                      },
                       "shift": 123,
                       "priority": 3
                     }
@@ -628,9 +573,7 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
-    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
 + Response 200 (application/json)
@@ -653,9 +596,7 @@ An address contains information about a physical address for pick-up and deliver
     + order_number: AA123456 (required, string)
     + destination (required, Address)
     + products (array[Product])
-    + origin (optional, Address)
     + `delivery_windows` (required, array[TimeWindow])
-    + shopper (optional, Shopper) - information about the shopper
     + `shift` (optional, string) id of the shift the order belongs to
     + priority (optional, number) - priority, on a scale from 1 (high) to 10 (low).
     
@@ -874,25 +815,7 @@ An address contains information about a physical address for pick-up and deliver
                       "quantity_estimated": true,
                       "weight_kg": 4.5
                     }
-                  ],
-                  "origin": {
-                    "postal_code": "08820",
-                    "country_code": "ES",
-                    "coordinates": {
-                      "latitude": 41.317397,
-                      "longitude": 2.1213139999999999
-                    },
-                    "street_type": "",
-                    "street_name": "Carrer Numero 112",
-                    "street_number": "",
-                    "city": "El prat de llobregat",
-                    "elevator": 1
-                  },
-                  "shopper": {
-                    "shopper_number": "CVLFNC86D10L682A",
-                    "name": "Francesco",
-                    "surname": "Cavallari"
-                  }
+                  ]
                 },
                 {
                   "order_number": "REF000067",
@@ -1067,25 +990,7 @@ An address contains information about a physical address for pick-up and deliver
                               "quantity_estimated": true,
                               "weight_kg": 4.5
                             }
-                          ],
-                          "origin": {
-                            "postal_code": "08820",
-                            "country_code": "ES",
-                            "coordinates": {
-                              "latitude": 41.317397,
-                              "longitude": 2.121314
-                            },
-                            "street_type": "",
-                            "street_name": "Carrer Numero 112",
-                            "street_number": "",
-                            "city": "El prat de llobregat",
-                            "elevator": 1
-                          },
-                          "shopper": {
-                            "shopper_number": "CVLFNC86D10L682A",
-                            "name": "Francesco",
-                            "surname": "Cavallari"
-                          }
+                          ]
                         },
                         "estimated_delivery_time": "2017-05-07T07:33:19+0200",
                         "estimated_delivery_duration": 450,
@@ -1262,25 +1167,7 @@ An address contains information about a physical address for pick-up and deliver
                       "quantity_estimated": true,
                       "weight_kg": 4.5
                     }
-                  ],
-                  "origin": {
-                    "postal_code": "08820",
-                    "country_code": "ES",
-                    "coordinates": {
-                      "latitude": 41.317397,
-                      "longitude": 2.121314
-                    },
-                    "street_type": "",
-                    "street_name": "Carrer Numero 112",
-                    "street_number": "",
-                    "city": "El prat de llobregat",
-                    "elevator": 1
-                  },
-                  "shopper": {
-                    "shopper_number": "CVLFNC86D10L682A",
-                    "name": "Francesco",
-                    "surname": "Cavallari"
-                  }
+                  ]
                 },
                 {
                   "order_number": "REF000067",
