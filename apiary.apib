@@ -1919,7 +1919,7 @@ Once the shift optimization has been completed, an event will be triggered.
 
 ##Group Callbacks
 
-## External System Shifts [/scale-shifts]
+## External System Shifts [/external-shifts]
 
 ### Optimization closed [PATCH /shifts/{shift_id}]
 + Parameters
@@ -1928,21 +1928,6 @@ Once the shift optimization has been completed, an event will be triggered.
 + Attributes (object)
     + action: close (required, string)
 
-+ Response 202
-    
-+ Response 404
-
-## External System Orders [/scale-orders]    
-
-### Assign an Order to a Route [PATCH /shifts/{shift_id}/routes/{route_id}/orders/{order_number}]
-
-+ Parameters
-    + shift_id (required, string)
-
-+ Request (application/json)
-+ Attributes
-    + action: assign (required, string)
-        
 + Response 202
     
 + Response 404
