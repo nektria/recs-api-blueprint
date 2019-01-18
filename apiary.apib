@@ -146,59 +146,6 @@ An address contains information about a physical address for pick-up and deliver
                 "error": "start time is earlier than end time"
             }
 
-## TimeWindowCost [/time_window_costs] 
-
-+ Attributes (object)
-    + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-    + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + `cost`: 90 (required, number) relative estimated cost of delivery during this time window, between 0 and 100.
-    + `final_price`: 9 (required, number) the final price that is recomended for transportation
-    + `currency_code`: EUR (required, string) 3 letter currency code corresponding to this price
-    + `logistic_cost`: 120 (required, number) the estimated difficulty for performing this delivery, as a percentage
-    + `full`: false (optional, boolean) has this window reached estimated delivery capacity? If this attribute is not returned for a time window, Nektria won't manage orders for that time window. If you want Nektria to manage it, you need to create the corresponding shift before.
-    + `free`: false (required, boolean) should this window be proposed for free?
-    + `closed`: false (required, boolean) should this window be closed for reasons that are not related to delivery capacity?
-    + `eco`: false (optional, boolean) should this window be proposed as ECO?
-    + `preselected`: false (optional, boolean) set to true if this is the default selection for the user.
-    + `external_id`: XHK-78932 (optional, string) identifier, if it was provided in the request with time windows
-
-### Check if a Time Window Cost is valid [POST /check/time_window_cost]
-+ Attributes (TimeWindowCost)
-
-+ Response 204
-            
-+ Response 400 (application/json)
-    Invalid Time Window Cost
-    + Body
-    
-            {
-                "status": "error",
-                "error": "Invalid cost 'low'"
-            }
-
-## GridTimeWindow [/grid_time_windows] 
-
-+ Attributes (object)
-    + `start_time`: `2016-03-29T15:19:00+01:00` (required, string) ISO8601 time at which the window starts
-    + `end_time`: `2016-03-29T15:37:00+01:00` (required, string) ISO8601 time at which the window ends
-    + `free`: false (required, boolean) is this time slot proposed for free?
-    + `full`: false (required, boolean) has this time slot reached maximum capacity?
-    + `closed`: false (required, boolean) is this time slot closed?
-    + `extra_order`: false (optional, boolean) is this slot the delivery slot of another order for this client? Default value is false.
-    + `price`: 9.00 (required, number) shipping price of this slot
-    + `currency_code`: EUR (required, string) 3 letter currency code corresponding to this price
-    + `capacity` (required)
-        + `max`: `20` (required, number) time slot's maximum capacity
-        + `used`: `11` (required, number) capacity already used for this time slot
-        + `daily_max`: `200` (optional, number) maximum capacity of this day
-        + `daily_used`: `87` (optional, number) capacity already in use this day
-    + `external_id`: XHK-78932 (optional, string) identifier for short access to this time window in the response
-
-### Check if a Grid Time Window is valid [POST /check/grid_time_window]
-+ Attributes (GridTimeWindow)
-+ Response 204
-
-
 ##Group Configuration & Assets
 
 ## VehicleCategory [/vehicle_categories]    
