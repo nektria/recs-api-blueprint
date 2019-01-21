@@ -1848,72 +1848,494 @@ Once the shift optimization has been completed, an event will be triggered.
     + Body
 
 ### Get Shift Roadmap [GET /shifts/{shift_id}/roadmap]
+
+Once the shift optimization has been completed, an event will be triggered.
+
++ Parameters
+    + shift_id (required, string)
+        
++ Request (application/json)
         
 + Response 200 (application/json)
-        
-        {
-            "unreached_orders": ["e361be10-f4bf-4896-8cb6-8fb0e80eea63", "359a8f65-0b03-4433-8682-11129236669f"],
-            "unused_vehicles": [],
-            "routes": 
-            [
-                {
-                    "id": "80cd4323-d8c0-439b-a0ac-3e062459ae95",
-                    "delivery_window": 
-                    {
-                        "start_time": "2016-03-17T09:00:00+0100",
-                        "end_time": "2016-03-17T12:15:00+0100"
-                    },
-                    "vehicle": 
-                    {
-                        "vehicle_number": "BCN_VAN_1",
-                        "capacities" : 
-                        [
-                            {
-                                "type": "formatosPedido",
-                                "quantity": 50,
-                                "unit": "box"
-                            },
-                            {
-                                "type": "weight",
-                                "quantity": 750,
-                                "unit": "kg"
-                            }
-                        ],
-                        "vehicle_category": "TRUCK_3500"
-                    }
-                },
-                {
-                    "id": "2beac30e-a082-4398-81b3-a1532c86ba3f",
-                    "delivery_window": 
-                    {
-                        "start_time": "2016-03-17T09:10:00+0100",
-                        "end_time": "2016-03-17T11:45:00+0100"
-                    },
-                    "vehicle": 
-                    {
-                        "vehicle_number": "BCN_VAN_2",
-                        "capacities" : 
-                        [
-                            {
-                                "type": "formatosPedido",
-                                "quantity": 50,
-                                "unit": "box"
-                            },
-                            {
-                                "type": "weight",
-                                "quantity": 750,
-                                "unit": "kg"
-                            }
-                        ],
-                        "options":
-                        {
-                            "helpers": 1
-                        },
-                        "vehicle_category": "TRUCK_3500"
-                    }
+    + Attributes
+        + unused_vehicles (required, array[Vehicle]) list of vehicles not used in thisdelivery plan
+        + unreached_orders (required, array[string]) list of orders not covered by this delivery plan
+        + routes (required, array[Route]) routes of the delivery plan
+    + Body
+
+            {
+            "unreached_orders": [
+              "0e5502c0-aa67-4fb3-abf6-80c2dc1b1ba6"
+            ],
+            "unused_vehicles": [
+              {
+                "id": "fefcb55c-7ec0-11e8-968d-0225d9a31508",
+                "vehicle_number": "BCN1-IVECO_03",
+                "capacities": [
+                  {
+                    "type": "cold",
+                    "quantity": 35,
+                    "unit": "box"
+                  },
+                  {
+                    "type": "dry",
+                    "quantity": 96,
+                    "unit": "box"
+                  }
+                ],
+                "vehicle_category": "TRUCK_3500",
+                "options": {
+                  "helpers": "0",
+                  "efficiency": "1"
                 }
+              }
+            ],
+            "routes": [
+              {
+                "id": "92fdb850-7f6b-11e8-b08d-0225d96abc66",
+                "origin": {
+                  "postal_code": "08820",
+                  "country_code": "ES",
+                  "coordinates": {
+                    "latitude": 40.878731,
+                    "longitude": 2.886311
+                  },
+                  "street_name": "Carrer 111",
+                  "street_number": "s.n.",
+                  "city": "El Prat de Llobregat"
+                },
+                "loading_window": {
+                  "start_time": "2018-07-05T07:00:00+0200",
+                  "end_time": "2018-07-05T08:00:00+0200"
+                },
+                "execution_window": {
+                  "start_time": "2018-07-05T07:10:23+0200",
+                  "end_time": "2018-07-05T14:05:13+0200"
+                },
+                "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66",
+                "vehicle": {
+                  "id": "fefee192-7ec0-11e8-a3da-0225d9a31508",
+                  "vehicle_number": "BCN1-IVECO_07",
+                  "capacities": [
+                    {
+                      "type": "cold",
+                      "quantity": 35,
+                      "unit": "box"
+                    },
+                    {
+                      "type": "dry",
+                      "quantity": 96,
+                      "unit": "box"
+                    }
+                  ],
+                  "vehicle_category": "TRUCK_3500",
+                  "options": {
+                    "helpers": "0",
+                    "efficiency": "1"
+                  }
+                },
+                "itinerary": [
+                  {
+                    "id": "780458ea-7f9f-11e8-b6a1-0225d9a31508",
+                    "delivery_window": {
+                      "start_time": "2018-07-05T12:00:00+0200",
+                      "end_time": "2018-07-05T14:00:00+0200"
+                    },
+                    "order": {
+                      "id": "0cfb4eb2-7f15-11e8-b9ce-0225d9a31508",
+                      "order_number": "PV00818872",
+                      "destination": {
+                        "postal_code": "08004",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3733801,
+                          "longitude": 2.1664954
+                        },
+                        "street_type": "",
+                        "street_name": "Carrer Roser",
+                        "street_number": "30",
+                        "city": "Barcelona",
+                        "elevator": 0,
+                        "floor": "3-2"
+                      },
+                      "status": "assigned",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2018-07-05T12:00:00+0200",
+                          "end_time": "2018-07-05T14:00:00+0200"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "quantity": 0,
+                          "type": "cold",
+                          "quantity_estimated": true,
+                          "weight_kg": 0
+                        },
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "dry",
+                          "quantity_estimated": true,
+                          "weight_kg": 65.496
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08820",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3174343,
+                          "longitude": 2.1205662
+                        },
+                        "street_type": "",
+                        "street_name": "Poligono Ind. Pratense",
+                        "street_number": "111",
+                        "city": "El Prat de Llobregat",
+                        "elevator": 0,
+                        "floor": "Calle 100 con 112"
+                      },
+                      "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66"
+                    },
+                    "estimated_delivery_time": "2018-07-05T13:43:43+0200",
+                    "estimated_delivery_duration": 1290,
+                    "parking_cost": 240,
+                    "distance_to_arrive": 3910,
+                    "time_to_arrive": 1013,
+                    "waiting_seconds": 0
+                  },
+                  {
+                    "id": "7803f4e0-7f9f-11e8-bc11-0225d9a31508",
+                    "delivery_window": {
+                      "start_time": "2018-07-05T13:00:00+0200",
+                      "end_time": "2018-07-05T15:00:00+0200"
+                    },
+                    "order": {
+                      "id": "f756312a-7f6a-11e8-bbb0-0225d9a31508",
+                      "order_number": "PV00818977",
+                      "destination": {
+                        "postal_code": "08014",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3716587,
+                          "longitude": 2.1335995
+                        },
+                        "street_type": "",
+                        "street_name": "Riera de Tena",
+                        "street_number": "34-36",
+                        "city": "Barcelona",
+                        "elevator": 1,
+                        "floor": "1-4"
+                      },
+                      "status": "assigned",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2018-07-05T13:00:00+0200",
+                          "end_time": "2018-07-05T15:00:00+0200"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "cold",
+                          "quantity_estimated": true,
+                          "weight_kg": 2.358
+                        },
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "dry",
+                          "quantity_estimated": true,
+                          "weight_kg": 14.665
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08820",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3174343,
+                          "longitude": 2.1205662
+                        },
+                        "street_type": "",
+                        "street_name": "Poligono Ind. Pratense",
+                        "street_number": "111",
+                        "city": "El Prat de Llobregat",
+                        "elevator": 0,
+                        "floor": "Calle 100 con 112"
+                      },
+                      "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66"
+                    },
+                    "estimated_delivery_time": "2018-07-05T13:13:20+0200",
+                    "estimated_delivery_duration": 570,
+                    "parking_cost": 240,
+                    "distance_to_arrive": 5899,
+                    "time_to_arrive": 887,
+                    "waiting_seconds": 0
+                  }
+                ],
+                "created_at": "2018-07-04T11:21:03+02:00",
+                "name": "Castelldefels"
+              },
+              {
+                "id": "17958946-7f6a-11e8-a190-0225d9969ed1",
+                "origin": {
+                  "postal_code": "08820",
+                  "country_code": "ES",
+                  "coordinates": {
+                    "latitude": 40.878731,
+                    "longitude": 2.886311
+                  },
+                  "street_name": "Carrer 111",
+                  "street_number": "s.n.",
+                  "city": "El Prat de Llobregat"
+                },
+                "loading_window": {
+                  "start_time": "2018-07-05T07:00:00+0200",
+                  "end_time": "2018-07-05T08:00:00+0200"
+                },
+                "execution_window": {
+                  "start_time": "2018-07-05T13:38:39+0200",
+                  "end_time": "2018-07-05T17:07:47+0200"
+                },
+                "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66",
+                "vehicle": {
+                  "id": "feff8b10-7ec0-11e8-93c8-0225d9a31508",
+                  "vehicle_number": "BCN1-IVECO_TEMP_01",
+                  "capacities": [
+                    {
+                      "type": "cold",
+                      "quantity": 35,
+                      "unit": "box"
+                    },
+                    {
+                      "type": "dry",
+                      "quantity": 96,
+                      "unit": "box"
+                    }
+                  ],
+                  "vehicle_category": "TRUCK_3500",
+                  "options": {
+                    "helpers": "0",
+                    "efficiency": "1"
+                  }
+                },
+                "itinerary": [
+                  {
+                    "id": "bf75d104-7f9f-11e8-8cea-0225d96abc66",
+                    "delivery_window": {
+                      "start_time": "2018-07-05T15:00:00+0200",
+                      "end_time": "2018-07-05T17:00:00+0200"
+                    },
+                    "order": {
+                      "id": "c47e58cc-7f60-11e8-95fb-0225d9969ed1",
+                      "order_number": "PV00818941",
+                      "destination": {
+                        "postal_code": "08008",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3918824,
+                          "longitude": 2.1575388
+                        },
+                        "street_type": "",
+                        "street_name": "Calle Provenza 197",
+                        "street_number": "197, 2do 3ra",
+                        "city": "Barcelona",
+                        "elevator": 1,
+                        "floor": ", Barcelona CP:08008"
+                      },
+                      "status": "assigned",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2018-07-05T15:00:00+0200",
+                          "end_time": "2018-07-05T17:00:00+0200"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "cold",
+                          "quantity_estimated": true,
+                          "weight_kg": 5.548
+                        },
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "dry",
+                          "quantity_estimated": true,
+                          "weight_kg": 23.345
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08820",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3174343,
+                          "longitude": 2.1205662
+                        },
+                        "street_type": "",
+                        "street_name": "Poligono Ind. Pratense",
+                        "street_number": "111",
+                        "city": "El Prat de Llobregat",
+                        "elevator": 0,
+                        "floor": "Calle 100 con 112"
+                      },
+                      "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66"
+                    },
+                    "estimated_delivery_time": "2018-07-05T16:58:17+0200",
+                    "estimated_delivery_duration": 570,
+                    "parking_cost": 60,
+                    "distance_to_arrive": 2521,
+                    "time_to_arrive": 654,
+                    "waiting_seconds": 0
+                  },
+                  {
+                    "id": "bf7581a4-7f9f-11e8-9e0b-0225d96abc66",
+                    "delivery_window": {
+                      "start_time": "2018-07-05T15:00:00+0200",
+                      "end_time": "2018-07-05T17:00:00+0200"
+                    },
+                    "order": {
+                      "id": "fdcc7034-7f86-11e8-9c5e-0225d9a31508",
+                      "order_number": "PV00819045",
+                      "destination": {
+                        "postal_code": "08003",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3874576,
+                          "longitude": 2.1762678
+                        },
+                        "street_type": "",
+                        "street_name": "C/ Mare de Deu del Pilar",
+                        "street_number": "20",
+                        "city": "Barcelona",
+                        "elevator": 0,
+                        "floor": "2-2"
+                      },
+                      "status": "assigned",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2018-07-05T15:00:00+0200",
+                          "end_time": "2018-07-05T17:00:00+0200"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "cold",
+                          "quantity_estimated": true,
+                          "weight_kg": 3.196
+                        },
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "dry",
+                          "quantity_estimated": true,
+                          "weight_kg": 105.868
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08820",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3174343,
+                          "longitude": 2.1205662
+                        },
+                        "street_type": "",
+                        "street_name": "Poligono Ind. Pratense",
+                        "street_number": "111",
+                        "city": "El Prat de Llobregat",
+                        "elevator": 0,
+                        "floor": "Calle 100 con 112"
+                      },
+                      "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66"
+                    },
+                    "estimated_delivery_time": "2018-07-05T16:22:23+0200",
+                    "estimated_delivery_duration": 1440,
+                    "parking_cost": 300,
+                    "distance_to_arrive": 4676,
+                    "time_to_arrive": 768,
+                    "waiting_seconds": 0
+                  },
+                  {
+                    "id": "bf73e0ec-7f9f-11e8-9438-0225d96abc66",
+                    "delivery_window": {
+                      "start_time": "2018-07-05T14:00:00+0200",
+                      "end_time": "2018-07-05T16:00:00+0200"
+                    },
+                    "order": {
+                      "id": "5c81c346-7ef5-11e8-b4c0-0225d96abc66",
+                      "order_number": "PV00818763",
+                      "destination": {
+                        "postal_code": "08860",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.2864879,
+                          "longitude": 1.9849223
+                        },
+                        "street_type": "",
+                        "street_name": "Calle Esglesia",
+                        "street_number": "152",
+                        "city": "Castelldefels",
+                        "elevator": 1,
+                        "floor": "3 - 3"
+                      },
+                      "status": "assigned",
+                      "delivery_windows": [
+                        {
+                          "start_time": "2018-07-05T14:00:00+0200",
+                          "end_time": "2018-07-05T16:00:00+0200"
+                        }
+                      ],
+                      "products": [
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "cold",
+                          "quantity_estimated": true,
+                          "weight_kg": 0.383
+                        },
+                        {
+                          "name": "box",
+                          "quantity": 1,
+                          "type": "dry",
+                          "quantity_estimated": true,
+                          "weight_kg": 89.53
+                        }
+                      ],
+                      "origin": {
+                        "postal_code": "08820",
+                        "country_code": "ES",
+                        "coordinates": {
+                          "latitude": 41.3174343,
+                          "longitude": 2.1205662
+                        },
+                        "street_type": "",
+                        "street_name": "Poligono Ind. Pratense",
+                        "street_number": "111",
+                        "city": "El Prat de Llobregat",
+                        "elevator": 0,
+                        "floor": "Calle 100 con 112"
+                      },
+                      "shift": "11af55c6-7ac8-11e8-b49c-0225d96abc66"
+                    },
+                    "estimated_delivery_time": "2018-07-05T14:00:00+0200",
+                    "estimated_delivery_duration": 750,
+                    "parking_cost": 120,
+                    "distance_to_arrive": 16743,
+                    "time_to_arrive": 1161,
+                    "waiting_seconds": 0
+                  }
+                ],
+                "created_at": "2018-07-04T11:10:27+02:00",
+                "name": "Migdia Sud"
+              }
             ]
-        }
+            }
+        
++ Response 200 (application/json)
         
 + Response 404
 
